@@ -1,0 +1,24 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Stellarity.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+        x:Class="Stellarity.Views.MainView" Width="400" Height="300"
+        x:CompileBindings="True" x:DataType="viewModels:MainViewModel"
+        Title="Stellarity">
+    <Design.DataContext>
+        <viewModels:MainViewModel />
+    </Design.DataContext>
+    
+    <Grid RowDefinitions="* * 0.5* 0.5*" Margin="10">
+        <TextBox Grid.Row="0" Text="{Binding Email, Mode=TwoWay}" Watermark="Электронная почта"
+                 VerticalAlignment="Top" />
+        <TextBox Grid.Row="1" Text="{Binding Password, Mode=TwoWay}" Watermark="Пароль"
+                 VerticalAlignment="Top" />
+        <Button Grid.Row="2" Command="{Binding Register}" Content="Зарегистрироваться" 
+                HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Button Grid.Row="3" Command="{Binding HaveAccount}" Content="У меня есть аккаунт" 
+                HorizontalAlignment="Center" VerticalAlignment="Top" />
+    </Grid>
+</Window>
