@@ -5,8 +5,18 @@
     <Application.DataTemplates>
         <basic:ViewLocator />
     </Application.DataTemplates>
-    
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/UserControls/Styles and resources/HamburgerResources.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
     <Application.Styles>
-        <FluentTheme Mode="Light"/>
+        <FluentTheme Mode="Light" />
+        <StyleInclude Source="/UserControls/Styles and resources/HamburgerItemStyles.axaml" />
+        <StyleInclude Source="/UserControls/Styles and resources/HamburgerMenuStyles.axaml" />
     </Application.Styles>
 </Application>

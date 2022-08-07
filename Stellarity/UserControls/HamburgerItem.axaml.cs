@@ -1,18 +1,45 @@
-﻿using Avalonia;
+﻿using System;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace Stellarity.UserControls;
 
-public partial class HamburgerItem : UserControl
+/// <summary>
+/// An item of <see cref="HamburgerMenu"/>
+/// </summary>
+public class HamburgerItem : TabItem
 {
-    public HamburgerItem()
+    // ReSharper disable once MemberCanBePrivate.Global
+    public static readonly RoutedEvent<RoutedEventArgs> SelectedClickEvent =
+        RoutedEvent.Register<HamburgerItem, RoutedEventArgs>(nameof(SelectedClick), RoutingStrategies.Bubble);
+    
+    // ReSharper disable once MemberCanBePrivate.Global
+    public static readonly RoutedEvent<RoutedEventArgs> UnselectedClickEvent =
+        RoutedEvent.Register<HamburgerItem, RoutedEventArgs>(nameof(UnselectedClick), RoutingStrategies.Bubble);
+
+    /// <summary>
+    /// Raised when the user clicks the selected <see cref="HamburgerItem"/>
+    /// </summary>
+    public event EventHandler<RoutedEventArgs> SelectedClick
     {
-        InitializeComponent();
+        add => AddHandler(SelectedClickEvent, value);
+        remove => RemoveHandler(SelectedClickEvent, value);
+    }
+    
+    /// <summary>
+    /// Raised when the user clicks not selected <see cref="HamburgerItem"/>
+    /// </summary>
+    public event EventHandler<RoutedEventArgs> UnselectedClick
+    {
+        add => AddHandler(UnselectedClickEvent, value);
+        remove => RemoveHandler(UnselectedClickEvent, value);
     }
 
-    private void InitializeComponent()
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
-        AvaloniaXamlLoader.Load(this);
+        base.OnPointerPressed(e);
+        var clickEventArgs = new RoutedEventArgs(IsSelected ? SelectedClickEvent : UnselectedClickEvent); 
+        RaiseEvent(clickEventArgs);
     }
 }
