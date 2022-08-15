@@ -18,6 +18,8 @@
         <TrimmableAssembly Include="Avalonia.Themes.Default" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Aura.UI" Version="0.1.4.1" />
+        <PackageReference Include="Aura.UI.FluentTheme" Version="0.1.4" />
         <PackageReference Include="Avalonia" Version="0.10.17" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.17" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -42,5 +44,21 @@
     <ItemGroup>
       <Folder Include="Models" />
       <Folder Include="Services" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="Assets\Locales\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Assets\Locales\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <AvaloniaResource Include="Assets\stellaris-logo.ico" />
     </ItemGroup>
 </Project>

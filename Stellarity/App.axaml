@@ -10,12 +10,14 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/UserControls/Styles and resources/HamburgerResources.axaml" />
+                <ResourceInclude Source="/Assets/Icons.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 
     <Application.Styles>
         <FluentTheme Mode="Light" />
+        <StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml"/>
         <StyleInclude Source="/UserControls/Styles and resources/HamburgerItemStyles.axaml" />
         <StyleInclude Source="/UserControls/Styles and resources/HamburgerMenuStyles.axaml" />
     </Application.Styles>
