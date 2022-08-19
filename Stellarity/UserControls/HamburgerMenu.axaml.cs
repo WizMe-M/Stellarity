@@ -99,7 +99,8 @@ public class HamburgerMenu : TabControl, IScreen
 
     private void OnSelectedClick(object? sender, RoutedEventArgs routedEventArgs)
     {
-        // just open item content
+        if(sender is not HamburgerItem item) return;
+        var vm = item.Content as PageViewModel;
     }
 
     private void OnUnselectedClick(object? sender, RoutedEventArgs routedEventArgs)
