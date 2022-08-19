@@ -7,16 +7,15 @@ using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Microsoft.EntityFrameworkCore;
-using Stellarity.Database;
 
-namespace Stellarity.Models;
+namespace Stellarity.Database.Entities;
 
 public partial class Image
 {
     public Image()
     {
         Games = new HashSet<Game>();
-        Users = new HashSet<User>();
+        Users = new HashSet<Account>();
     }
 
     public Image(Guid guid, string name, string alter, byte[] data) : this()
@@ -37,7 +36,7 @@ public partial class Image
     public string Alter { get; set; } = null!;
 
     public virtual ICollection<Game> Games { get; set; }
-    public virtual ICollection<User> Users { get; set; }
+    public virtual ICollection<Account> Users { get; set; }
 
     public static Image? Find(Guid? guid)
     {
@@ -45,16 +44,16 @@ public partial class Image
         return context.Images.FirstOrDefault(img => img.Guid == guid);
     }
 
-    public static async Task SaveAsync(string path, User user)
+    public static async Task SaveAsync(string path, Account account)
     {
         var data = await File.ReadAllBytesAsync(path);
         await using var context = new StellarisContext();
-        var image = await context.Images.FirstOrDefaultAsync(img => img.Guid == user.AvatarGuid);
+        var image = await context.Images.FirstOrDefaultAsync(img => img.Guid == account.AvatarGuid);
         if (image is null)
         {
             var guid = Guid.NewGuid();
-            var name = $"{user.Email}";
-            var alter = $"{user.Email} avatar";
+            var name = $"{account.Email}";
+            var alter = $"{account.Email} avatar";
             image = new Image(guid, name, alter, data);
             context.Images.Add(image);
         }
@@ -64,8 +63,8 @@ public partial class Image
             context.Images.Update(image);
         }
 
-        user.AvatarGuid = image.Guid;
-        context.Users.Update(user);
+        account.AvatarGuid = image.Guid;
+        context.Users.Update(account);
         await context.SaveChangesAsync();
 
         // await ImageCacheService.SaveToGlobalCache(image);
@@ -97,17 +96,17 @@ public partial class Image
         // await ImageCacheService.SaveToGlobalCache(image);
     }
 
-    public static async Task<Bitmap?> OpenAsync(User user)
+    public static async Task<Bitmap?> OpenAsync(Account account)
     {
-        if (user.AvatarGuid is null) return await OpenDefaultImageAsync();
+        if (account.AvatarGuid is null) return await OpenDefaultImageAsync();
 
-        var url = user.AvatarGuid.Value.ToString();
+        var url = account.AvatarGuid.Value.ToString();
         // var bitmap = await ImageCacheService.LoadFromGlobalCache(url);
         // if (bitmap != null) return bitmap;
 
         try
         {
-            var image = Find(user.AvatarGuid)!;
+            var image = Find(account.AvatarGuid)!;
             using var memoryStream = new MemoryStream(image.Data);
             // bitmap = new Bitmap(memoryStream);
             // await ImageCacheService.SaveToGlobalCache(image);

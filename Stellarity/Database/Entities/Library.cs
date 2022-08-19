@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stellarity.Models;
+namespace Stellarity.Database.Entities;
 
 public partial class Library
 {
@@ -9,5 +9,5 @@ public partial class Library
     public DateTime PurchaseDate { get; set; }
 
     public virtual Game Game { get; set; } = null!;
-    public virtual User User { get; set; } = null!;
+    public virtual Account Account { get; set; } = null!;
 }

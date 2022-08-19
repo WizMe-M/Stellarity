@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Stellarity.Models;
+using Stellarity.Database.Entities;
 
 namespace Stellarity.Database;
 
@@ -21,7 +21,7 @@ public sealed class StellarisContext : DbContext
     public DbSet<Image> Images { get; set; } = null!;
     public DbSet<Library> Libraries { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Account> Users { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -154,7 +154,7 @@ public sealed class StellarisContext : DbContext
                 .HasForeignKey(d => d.GameId)
                 .HasConstraintName("fk_library_game");
 
-            entity.HasOne(d => d.User)
+            entity.HasOne(d => d.Account)
                 .WithMany(p => p.Library)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("fk_library_user");
@@ -177,7 +177,7 @@ public sealed class StellarisContext : DbContext
             entity.Ignore(e => e.CanAddGames);
         });
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<Account>(entity =>
         {
             entity.ToTable("users");
 
@@ -241,7 +241,7 @@ public sealed class StellarisContext : DbContext
             new Role { Id = 1, Name = "Администратор" },
             new Role { Id = 2, Name = "Игрок" });
 
-        modelBuilder.Entity<User>().HasData(new User
+        modelBuilder.Entity<Account>().HasData(new Account
         {
             Id = 1,
             RoleId = 1,

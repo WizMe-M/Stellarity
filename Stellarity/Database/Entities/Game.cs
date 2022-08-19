@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Stellarity.Database;
 
-namespace Stellarity.Models;
+namespace Stellarity.Database.Entities;
 
 public partial class Game
 {

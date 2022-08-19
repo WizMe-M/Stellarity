@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Stellarity.Database;
 
-namespace Stellarity.Models;
+namespace Stellarity.Database.Entities;
 
-public partial class User
+public partial class Account
 {
-    public User()
+    public Account()
     {
         CommentAuthors = new HashSet<Comment>();
         CommentProfiles = new HashSet<Comment>();
         Library = new HashSet<Library>();
     }
 
-    public User(string email, string password) : this()
+    public Account(string email, string password) : this()
     {
         Email = email;
         Password = password;
@@ -55,7 +54,7 @@ public partial class User
     public virtual ICollection<Comment> CommentProfiles { get; set; }
     public virtual ICollection<Library> Library { get; set; }
 
-    public static User? Find(string email, string password)
+    public static Account? Find(string email, string password)
     {
         using var context = new StellarisContext();
         return context.Users
@@ -71,10 +70,10 @@ public partial class User
         return user != null;
     }
 
-    public static User Register(string email, string password)
+    public static Account Register(string email, string password)
     {
         using var context = new StellarisContext();
-        var user = new User(email, password)
+        var user = new Account(email, password)
         {
             RoleId = 1
         };
