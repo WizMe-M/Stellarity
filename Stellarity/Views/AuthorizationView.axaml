@@ -1,0 +1,123 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
+        xmlns:uc="clr-namespace:Stellarity.UserControls"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
+        x:Class="Stellarity.Views.AuthorizationView"
+        Width="350" Height="400" CanResize="False"
+        Icon="/Assets/stellaris-logo.ico"
+        
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        
+        ExtendClientAreaChromeHints="SystemChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        ExtendClientAreaToDecorationsHint="True"
+        SystemDecorations="None"
+        
+        ShowActivated="True" ShowInTaskbar="True"
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
+        Title="Авторизация">
+    <Window.Styles>
+        <Style Selector="sg|SpacedGrid > :is(Control)">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector=":is(Control).left">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style Selector=":is(Control).right">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style Selector="TextBlock.watermark">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Medium" />
+        </Style>
+
+        <Style Selector="TextBlock.question">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Regular" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="TextAlignment" Value="Right" />
+        </Style>
+
+        <Style Selector="TextBox">
+            <Setter Property="Width" Value="130" />
+            <Setter Property="CornerRadius" Value="2" />
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Margin" Value="0 0 15 0" />
+            <Setter Property="Padding" Value="20 5" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+        
+        <Style Selector="Button.title">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Margin" Value="7 0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
+    
+        <Style Selector="Button.title /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        
+        <Style Selector="Button.title:pointerover > AccessText">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+    </Window.Styles>
+    
+    <Panel Background="DarkGray">
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black"
+                    TintOpacity="0.5" MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        
+        <Border Name="DragBorder" Height="30" VerticalAlignment="Top" 
+                Background="Transparent" ZIndex="2" />
+        
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" ZIndex="3">
+            <Button Content="-" Click="MinimizeButton_OnClick" Classes="title" />
+            <Button Content="x" Click="CloseButton_OnClick" Classes="title" />
+        </StackPanel>
+        
+        <DockPanel ZIndex="1">
+            <TextBlock DockPanel.Dock="Top" Text="{Binding $parent[Window].Title}"
+                       FontWeight="Bold" FontSize="16" Margin="0 40 0 30" HorizontalAlignment="Center" />
+
+            <sg:SpacedGrid DockPanel.Dock="Top" ColumnSpacing="10" RowSpacing="20" 
+                           ColumnDefinitions="* 2*" RowDefinitions="* * * *">
+                <TextBlock Grid.Column="0" Grid.Row="0" Classes="right watermark" Text="Email:" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Classes="right watermark" Text="Password:" />
+                <TextBox Grid.Column="1" Grid.Row="0" Classes="left" />
+                <TextBox Grid.Column="1" Grid.Row="1" Classes="left" />
+                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
+                          Content="Запомнить меня" IsChecked="True" />
+                <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="Войти" FontSize="14"
+                        Padding="50 5" Margin="0 0 0 10" HorizontalAlignment="Center" />
+            </sg:SpacedGrid>
+
+            <uc:LineSeparator Width="270" Margin="10" DockPanel.Dock="Top" />
+
+            <sg:SpacedGrid ColumnSpacing="5" RowSpacing="0" ColumnDefinitions="* 2.5*" RowDefinitions="* *">
+                <TextBlock Grid.Column="0" Grid.Row="0" Classes="right question" Text="Забыли пароль?" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Classes="right question" Text="Не имеете аккаунт?" />
+                <Button Grid.Column="1" Grid.Row="0" Content="Сменить пароль" />
+                <Button Grid.Column="1" Grid.Row="1" Content="Регистрация" />
+            </sg:SpacedGrid>
+
+        </DockPanel>
+    </Panel>
+</Window>
