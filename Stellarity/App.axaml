@@ -16,7 +16,7 @@
     </Application.Resources>
 
     <Application.Styles>
-        <FluentTheme Mode="Light" />
+        <FluentTheme Mode="Dark" />
         <StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml"/>
         <StyleInclude Source="/UserControls/Styles and resources/HamburgerItemStyles.axaml" />
         <StyleInclude Source="/UserControls/Styles and resources/HamburgerMenuStyles.axaml" />
