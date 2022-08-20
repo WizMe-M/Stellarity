@@ -6,7 +6,7 @@ using ReactiveValidation;
 namespace Stellarity.Basic;
 
 /// <summary>
-/// Reactive view model base implemented validate logic exactly as in <see cref="ValidatableObject"/>)
+/// Reactive view model base implementing validate logic exactly as in <see cref="ValidatableObject"/>
 /// </summary>
 public class ValidatableViewModelBase : ReactiveViewModelBase, IValidatableObject
 {
