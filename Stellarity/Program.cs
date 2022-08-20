@@ -3,6 +3,8 @@ using System.Globalization;
 using System.Threading;
 using Avalonia;
 using Avalonia.ReactiveUI;
+using Projektanker.Icons.Avalonia;
+using Projektanker.Icons.Avalonia.MaterialDesign;
 using ReactiveValidation.Avalonia;
 
 namespace Stellarity;
@@ -28,5 +30,7 @@ class Program
             .UsePlatformDetect()
             .UseReactiveUI()
             .UseReactiveValidation()
-            .LogToTrace();
+            .LogToTrace()
+            .WithIcons(container => container
+                .Register<MaterialDesignIconProvider>());
 }
