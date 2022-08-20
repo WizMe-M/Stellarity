@@ -4,22 +4,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
         xmlns:uc="clr-namespace:Stellarity.UserControls"
+        xmlns:locales="clr-namespace:Stellarity.Assets.Locales"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
         x:Class="Stellarity.Views.AuthorizationView"
         Width="350" Height="400" CanResize="False"
         Icon="/Assets/stellaris-logo.ico"
-        
+
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
-        
+
         ExtendClientAreaChromeHints="SystemChrome"
         ExtendClientAreaTitleBarHeightHint="-1"
         ExtendClientAreaToDecorationsHint="True"
         SystemDecorations="None"
-        
+
         ShowActivated="True" ShowInTaskbar="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
-        Title="Авторизация">
+        Title="{x:Static locales:Resources.authorization}">
     <Window.Styles>
         <Style Selector="sg|SpacedGrid > :is(Control)">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -58,7 +59,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="FontSize" Value="12" />
         </Style>
-        
+
         <Style Selector="Button.title">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Margin" Value="7 0" />
@@ -67,55 +68,57 @@
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Foreground" Value="Black" />
         </Style>
-    
+
         <Style Selector="Button.title /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="Transparent" />
         </Style>
-        
+
         <Style Selector="Button.title:pointerover > AccessText">
             <Setter Property="Foreground" Value="White" />
         </Style>
     </Window.Styles>
-    
+
     <Panel Background="DarkGray">
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black"
-                    TintOpacity="0.5" MaterialOpacity="0.65" />
+                                             TintOpacity="0.5" MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        
-        <Border Name="DragBorder" Height="30" VerticalAlignment="Top" 
+
+        <Border Name="DragBorder" Height="30" VerticalAlignment="Top"
                 Background="Transparent" ZIndex="2" />
-        
+
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" ZIndex="3">
             <Button Content="-" Click="MinimizeButton_OnClick" Classes="title" />
             <Button Content="x" Click="CloseButton_OnClick" Classes="title" />
         </StackPanel>
-        
+
         <DockPanel ZIndex="1">
             <TextBlock DockPanel.Dock="Top" Text="{Binding $parent[Window].Title}"
                        FontWeight="Bold" FontSize="16" Margin="0 40 0 30" HorizontalAlignment="Center" />
 
-            <sg:SpacedGrid DockPanel.Dock="Top" ColumnSpacing="10" RowSpacing="20" 
+            <sg:SpacedGrid DockPanel.Dock="Top" ColumnSpacing="10" RowSpacing="20"
                            ColumnDefinitions="* 2*" RowDefinitions="* * * *">
-                <TextBlock Grid.Column="0" Grid.Row="0" Classes="right watermark" Text="Email:" />
-                <TextBlock Grid.Column="0" Grid.Row="1" Classes="right watermark" Text="Password:" />
+                <TextBlock Grid.Column="0" Grid.Row="0" Classes="right watermark"
+                           Text="{x:Static locales:Resources.email_colon}" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Classes="right watermark"
+                           Text="{x:Static locales:Resources.password_colon}" />
                 <TextBox Grid.Column="1" Grid.Row="0" Classes="left" />
                 <TextBox Grid.Column="1" Grid.Row="1" Classes="left" />
                 <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
-                          Content="Запомнить меня" IsChecked="True" />
-                <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="Войти" FontSize="14"
+                          Content="{x:Static locales:Resources.remember_me}" IsChecked="True" />
+                <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{x:Static locales:Resources.log_in}" FontSize="14"
                         Padding="50 5" Margin="0 0 0 10" HorizontalAlignment="Center" />
             </sg:SpacedGrid>
 
             <uc:LineSeparator Width="270" Margin="10" DockPanel.Dock="Top" />
 
             <sg:SpacedGrid ColumnSpacing="5" RowSpacing="0" ColumnDefinitions="* 2.5*" RowDefinitions="* *">
-                <TextBlock Grid.Column="0" Grid.Row="0" Classes="right question" Text="Забыли пароль?" />
-                <TextBlock Grid.Column="0" Grid.Row="1" Classes="right question" Text="Не имеете аккаунт?" />
-                <Button Grid.Column="1" Grid.Row="0" Content="Сменить пароль" />
-                <Button Grid.Column="1" Grid.Row="1" Content="Регистрация" />
+                <TextBlock Grid.Column="0" Grid.Row="0" Classes="right question" Text="{x:Static locales:Resources.forgot_password_q}" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Classes="right question" Text="{x:Static locales:Resources.have_not_account_q}" />
+                <Button Grid.Column="1" Grid.Row="0" Content="{x:Static locales:Resources.change_password}" />
+                <Button Grid.Column="1" Grid.Row="1" Content="{x:Static locales:Resources.register}" />
             </sg:SpacedGrid>
 
         </DockPanel>

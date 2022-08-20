@@ -48,10 +48,16 @@
       <Folder Include="Services" />
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Update="Assets\Locales\Resources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Locales\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Locales\Resources.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Locales\Resources.ru.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Assets\Locales\Resources.Designer.cs">

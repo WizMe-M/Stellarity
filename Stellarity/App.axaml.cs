@@ -1,8 +1,6 @@
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Stellarity.Database;
 using Stellarity.Views;
 
 namespace Stellarity;
@@ -13,7 +11,7 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Task.Run(StellarisContext.CreateDatabaseAsync);
+        // Task.Run(StellarisContext.CreateDatabaseAsync);
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
