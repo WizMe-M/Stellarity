@@ -82,11 +82,11 @@
         </Style>
     </Window.Styles>
 
-    <Panel Background="DarkGray">
+    <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black"
-                                             TintOpacity="0.5" MaterialOpacity="0.65" />
+                                             TintOpacity="1" MaterialOpacity="0.55" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
 
