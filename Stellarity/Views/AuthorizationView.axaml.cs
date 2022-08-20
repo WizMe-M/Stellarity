@@ -2,13 +2,16 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using Stellarity.ViewModels;
 
 namespace Stellarity.Views;
 
-public partial class AuthorizationView : Window
+public partial class AuthorizationView : ReactiveWindow<AuthorizationViewModel>
 {
     public AuthorizationView()
     {
+        ViewModel = new AuthorizationViewModel();
         InitializeComponent();
 #if DEBUG
         this.AttachDevTools();

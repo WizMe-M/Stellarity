@@ -5,6 +5,7 @@
         xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
         xmlns:uc="clr-namespace:Stellarity.UserControls"
         xmlns:locales="clr-namespace:Stellarity.Assets.Locales"
+        xmlns:vm="clr-namespace:Stellarity.ViewModels"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
         x:Class="Stellarity.Views.AuthorizationView"
         Width="350" Height="400" CanResize="False"
@@ -21,6 +22,11 @@
         ShowActivated="True" ShowInTaskbar="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Title="{x:Static locales:Resources.authorization}">
+    
+    <Design.DataContext>
+        <vm:AuthorizationViewModel />
+    </Design.DataContext>
+    
     <Window.Styles>
         <Style Selector="sg|SpacedGrid > :is(Control)">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -104,12 +110,18 @@
                            Text="{x:Static locales:Resources.email_colon}" />
                 <TextBlock Grid.Column="0" Grid.Row="1" Classes="right watermark"
                            Text="{x:Static locales:Resources.password_colon}" />
-                <TextBox Grid.Column="1" Grid.Row="0" Classes="left" />
-                <TextBox Grid.Column="1" Grid.Row="1" Classes="left" />
-                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
-                          Content="{x:Static locales:Resources.remember_me}" IsChecked="True" />
-                <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{x:Static locales:Resources.log_in}" FontSize="14"
-                        Padding="50 5" Margin="0 0 0 10" HorizontalAlignment="Center" />
+                
+                <TextBox Grid.Column="1" Grid.Row="0" Classes="left" Text="{Binding Email}" />
+                <TextBox Grid.Column="1" Grid.Row="1" Classes="left"  Text="{Binding Password}" />
+                
+                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" 
+                          Content="{x:Static locales:Resources.remember_me}" 
+                          IsChecked="{Binding RememberUser}"
+                          IsThreeState="False" />
+                
+                <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{x:Static locales:Resources.log_in}"
+                        Command="{Binding LogIn}" IsEnabled="{Binding !LogIn.IsExecuting}"
+                        FontSize="14" Padding="50 5" Margin="0 0 0 10" HorizontalAlignment="Center" />
             </sg:SpacedGrid>
 
             <uc:LineSeparator Width="270" Margin="10" DockPanel.Dock="Top" />
