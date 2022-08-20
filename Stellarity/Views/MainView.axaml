@@ -2,23 +2,41 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:Stellarity.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
-        x:Class="Stellarity.Views.MainView" Width="400" Height="300"
-        x:CompileBindings="True" x:DataType="viewModels:MainViewModel"
+        xmlns:vm="clr-namespace:Stellarity.ViewModels"
+        xmlns:uc="clr-namespace:Stellarity.UserControls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="Stellarity.Views.MainView" x:DataType="vm:MainViewModel"
+        x:CompileBindings="True"
+        MinWidth="1000" MinHeight="600"
+        Width="1000" Height="600"
+        MaxWidth="1600" MaxHeight="860"
+
+        Icon="/Assets/stellaris-logo.ico"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+
+        ExtendClientAreaChromeHints="Default"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        ExtendClientAreaToDecorationsHint="True"
+        SystemDecorations="Full"
+
+        ShowActivated="True" ShowInTaskbar="True"
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
         Title="Stellarity">
-    <Design.DataContext>
-        <viewModels:MainViewModel />
-    </Design.DataContext>
     
-    <Grid RowDefinitions="* * 0.5* 0.5*" Margin="10">
-        <TextBox Grid.Row="0" Text="{Binding Email, Mode=TwoWay}" Watermark="Электронная почта"
-                 VerticalAlignment="Top" />
-        <TextBox Grid.Row="1" Text="{Binding Password, Mode=TwoWay}" Watermark="Пароль"
-                 VerticalAlignment="Top" />
-        <Button Grid.Row="2" Command="{Binding Register}" Content="Зарегистрироваться" 
-                HorizontalAlignment="Center" VerticalAlignment="Top" />
-        <Button Grid.Row="3" Command="{Binding HaveAccount}" Content="У меня есть аккаунт" 
-                HorizontalAlignment="Center" VerticalAlignment="Top" />
-    </Grid>
+    <Window.Styles>
+        <Style Selector="Window[WindowState=Normal] Panel#RootPanel">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        <Style Selector="Window[WindowState=Maximized] Panel#RootPanel">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+    </Window.Styles>
+    
+    <Panel Name="RootPanel">
+        <Border Name="DragBorder" Background="Transparent" Height="40" Margin="40 0 0 0" VerticalAlignment="Top" ZIndex="2" />
+        <NavigationView Header="Stellarity" IsFloatingHeader="True" AlwaysOpen="False" Background="Transparent">
+            <uc:NavigationViewItem IconValue="{StaticResource Profile}" Header="Profile" />
+        </NavigationView>
+    </Panel>
 </Window>

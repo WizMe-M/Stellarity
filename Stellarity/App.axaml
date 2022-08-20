@@ -10,7 +10,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/UserControls/Styles and resources/HamburgerResources.axaml" />
-                <ResourceInclude Source="/Assets/Icons.axaml" />
+                <ResourceInclude Source="/Assets/MaterialDesignIcons.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

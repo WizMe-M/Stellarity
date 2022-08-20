@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
@@ -15,8 +16,10 @@ public partial class MainView : ReactiveWindow<MainViewModel>
 #if DEBUG
         this.AttachDevTools();
 #endif
+        var border = this.GetControl<Border>(nameof(DragBorder));
+        border.PointerPressed += (_, e) => BeginMoveDrag(e);
     }
 
-    
+
     private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 }

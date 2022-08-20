@@ -34,7 +34,6 @@
 
                                     <i:Icon Name="PART_ImgT"
                                             Value="{Binding $parent[uc:NavigationViewItem].IconValue}"
-                                            Width="40" Height="40"
                                             HorizontalAlignment="Left"
                                             Margin="{DynamicResource NavigationViewItemIconMargin}"
                                             VerticalAlignment="Center" />
