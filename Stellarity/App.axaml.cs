@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Ninject;
 using Stellarity.Ninject;
+using Stellarity.ViewModels;
 using Stellarity.Views;
 
 namespace Stellarity;
@@ -33,7 +34,10 @@ public class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
 #if DEBUG
-            desktop.MainWindow = new AuthorizationView();
+            desktop.MainWindow = new MainView
+            {
+                ViewModel = DiContainer.Get<MainViewModel>()
+            };
 #else
             desktop.MainWindow = new AuthorizationView();
 #endif
