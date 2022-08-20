@@ -8,7 +8,7 @@ namespace Stellarity.ViewModels;
 
 public class AuthorizationViewModel : Basic.ReactiveViewModelBase
 {
-    private IDialogService _windowService = null!;
+    private readonly IDialogService _windowService = null!;
 
     public AuthorizationViewModel()
     {

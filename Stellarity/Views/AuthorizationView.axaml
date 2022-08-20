@@ -8,6 +8,8 @@
         xmlns:vm="clr-namespace:Stellarity.ViewModels"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
         x:Class="Stellarity.Views.AuthorizationView"
+        x:DataType="vm:AuthorizationViewModel" 
+        x:CompileBindings="True"
         Width="350" Height="400" CanResize="False"
         Icon="/Assets/stellaris-logo.ico"
 
@@ -22,10 +24,6 @@
         ShowActivated="True" ShowInTaskbar="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Title="{x:Static locales:Resources.authorization}">
-    
-    <Design.DataContext>
-        <vm:AuthorizationViewModel />
-    </Design.DataContext>
     
     <Window.Styles>
         <Style Selector="sg|SpacedGrid > :is(Control)">
@@ -120,7 +118,7 @@
                           IsThreeState="False" />
                 
                 <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{x:Static locales:Resources.log_in}"
-                        Command="{Binding LogIn}" IsEnabled="{Binding !LogIn.IsExecuting}"
+                        Command="{ReflectionBinding  LogIn}" IsEnabled="{ReflectionBinding !LogIn.IsExecuting}"
                         FontSize="14" Padding="50 5" Margin="0 0 0 10" HorizontalAlignment="Center" />
             </sg:SpacedGrid>
 
