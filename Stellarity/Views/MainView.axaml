@@ -41,14 +41,17 @@
                                              TintOpacity="1" MaterialOpacity="0.75" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        <Border Name="DragBorder" Background="Transparent" Height="40" Margin="40 0 0 0" VerticalAlignment="Top"
-                ZIndex="2" />
-        <NavigationView Header="Stellarity" IsFloatingHeader="True" AlwaysOpen="False" Background="Transparent">
+        <Border Name="DragBorder" Background="Transparent" 
+                Height="40" Margin="40 0 0 0" 
+                VerticalAlignment="Top" ZIndex="2" />
+        <NavigationView Background="Transparent" Header="Stellarity" IsFloatingHeader="True"
+                        IsOpen="False" AlwaysOpen="False">
             <NavigationView.PanelMaterial>
                 <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black"
                                              TintOpacity="1" MaterialOpacity="0.9" />
             </NavigationView.PanelMaterial>
-            <uc:NavigationViewItem IconValue="{StaticResource Profile}" Header="Profile" />
+            
+            <uc:NavigationViewItem Name="Profile" IconValue="{StaticResource Profile}" Header="Profile" />
         </NavigationView>
     </Panel>
 </Window>

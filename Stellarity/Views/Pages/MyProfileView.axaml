@@ -1,0 +1,17 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Stellarity.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="600"
+             x:Class="Stellarity.Views.Pages.MyProfileView"
+             x:DataType="vm:MyProfileViewModel" x:CompileBindings="True"
+             Background="Transparent" d:Background="{x:Static Brushes.DarkGray}">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding User.Nickname, StringFormat={}{0} profile}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Image Source="{Binding Avatar}"
+               Width="400" Height="400" Stretch="UniformToFill"
+               HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </DockPanel>
+</UserControl>

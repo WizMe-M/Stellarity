@@ -2,8 +2,12 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
+using Ninject;
 using ReactiveUI;
+using Stellarity.UserControls;
 using Stellarity.ViewModels;
+using Stellarity.ViewModels.Pages;
+using Stellarity.Views.Pages;
 
 namespace Stellarity.Views;
 
@@ -11,7 +15,12 @@ public partial class MainView : ReactiveWindow<MainViewModel>
 {
     public MainView()
     {
-        this.WhenActivated(d => { });
+        this.WhenActivated(d =>
+        {
+            var profile = this.GetControl<NavigationViewItem>(nameof(Profile));
+            profile.Content = new MyProfileView(App.Instance.DiContainer.Get<MyProfileViewModel>());
+        });
+
         InitializeComponent();
 #if DEBUG
         this.AttachDevTools();
