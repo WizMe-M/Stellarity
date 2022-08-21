@@ -9,8 +9,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="/UserControls/Styles and resources/HamburgerResources.axaml" />
-                <ResourceInclude Source="/Assets/MaterialDesignIcons.axaml" />
+                <ResourceInclude Source="/Assets/Resources/HamburgerResources.axaml" />
+                <ResourceInclude Source="/Assets/Resources/MaterialDesignIcons.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
@@ -18,9 +18,9 @@
     <Application.Styles>
         <FluentTheme Mode="Dark" />
         <StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml"/>
-        <StyleInclude Source="/UserControls/Styles and resources/HamburgerItemStyles.axaml" />
-        <StyleInclude Source="/UserControls/Styles and resources/HamburgerMenuStyles.axaml" />
-        <StyleInclude Source="/UserControls/Styles and resources/LineSeparatorStyles.axaml" />
-        <StyleInclude Source="/UserControls/Styles and resources/NavigationViewItem.axaml" />
+        <StyleInclude Source="/Styles/HamburgerItemStyles.axaml" />
+        <StyleInclude Source="/Styles/HamburgerMenuStyles.axaml" />
+        <StyleInclude Source="/Styles/LineSeparator.axaml" />
+        <StyleInclude Source="/Styles/NavigationViewItem.axaml" />
     </Application.Styles>
 </Application>

@@ -6,7 +6,7 @@
         <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
         <TrimMode>copyused</TrimMode>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-        <ApplicationIcon>Assets\stellaris-logo.ico</ApplicationIcon>
+        <ApplicationIcon>Assets\Images\stellaris-logo.ico</ApplicationIcon>
         <PackageIcon>stellaris-logo.ico</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
@@ -64,13 +64,21 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Assets\Locales\Resources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Assets\Locales\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
-      <AvaloniaResource Include="Assets\stellaris-logo.ico" />
+        <AdditionalFiles Include="Assets\Resources\HamburgerResources.axaml"/>
+        <AdditionalFiles Include="Assets\Resources\MaterialDesignIcons.axaml"/>
+        <AdditionalFiles Include="Styles\HamburgerItemStyles.axaml"/>
+        <AdditionalFiles Include="Styles\HamburgerMenuStyles.axaml"/>
+        <AdditionalFiles Include="Styles\LineSeparator.axaml"/>
+        <AdditionalFiles Include="Styles\NavigationViewItem.axaml"/>
+    </ItemGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\Images\stellaris-logo.ico"/>
     </ItemGroup>
 </Project>
