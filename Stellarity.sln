@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity", "Stellarity\Stellarity.csproj", "{B20D2C63-32CE-4198-B3E4-7F2591169586}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Tests", "Stellarity.Tests\Stellarity.Tests.csproj", "{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{B20D2C63-32CE-4198-B3E4-7F2591169586}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B20D2C63-32CE-4198-B3E4-7F2591169586}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B20D2C63-32CE-4198-B3E4-7F2591169586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
