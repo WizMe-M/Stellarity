@@ -1,15 +1,11 @@
-﻿using ReactiveUI;
-using Stellarity.UserControls;
+﻿using Stellarity.UserControls;
 
 namespace Stellarity.Basic;
 
-public abstract class PageViewModel : ValidatableViewModelBase, IRoutableViewModel
+/// <summary>
+/// Base VM class for pages
+/// <remarks>Should be used with <see cref="NavigationViewItem"/>s</remarks> 
+/// </summary>
+public abstract class PageViewModel : ValidatableViewModelBase
 {
-    protected PageViewModel(IScreen screen)
-    {
-        HostScreen = screen;
-    }
-
-    public IScreen HostScreen { get; }
-    public string? UrlPathSegment { get; }
 }
