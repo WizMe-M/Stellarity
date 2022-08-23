@@ -11,14 +11,14 @@ namespace Stellarity;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class App : Application
 {
-    public static App Instance => (App)Current!;
-
     public App()
     {
         DiContainer = new StandardKernel(new DialogServiceModule(),
-            new ViewModelModule());
+            new ServicesModule(), new ViewModelModule());
         DiContainer.Settings.AllowNullInjection = true;
     }
+
+    public static App Instance => (App)Current!;
 
     public StandardKernel DiContainer { get; }
 
