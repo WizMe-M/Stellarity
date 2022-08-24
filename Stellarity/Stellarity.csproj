@@ -10,14 +10,14 @@
         <PackageIcon>stellaris-logo.ico</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove=".gitignore" />
+        <None Remove=".gitignore"/>
     </ItemGroup>
     <ItemGroup>
         <!--This helps with theme dll-s trimming.
         If you will publish your application in self-contained mode with p:PublishTrimmed=true and it will use Fluent theme Default theme will be trimmed from the output and vice versa.
         https://github.com/AvaloniaUI/Avalonia/issues/5593 -->
-        <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
-        <TrimmableAssembly Include="Avalonia.Themes.Default" />
+        <TrimmableAssembly Include="Avalonia.Themes.Fluent"/>
+        <TrimmableAssembly Include="Avalonia.Themes.Default"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Aura.UI" Version="0.1.4.1"/>
@@ -39,6 +39,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
         <PackageReference Include="Ninject" Version="3.3.6"/>
         <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0"/>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5"/>
@@ -47,9 +48,6 @@
         <PackageReference Include="ReactiveUI.Fody" Version="16.2.6"/>
         <PackageReference Include="ReactiveValidation.Avalonia" Version="2.0.0-pre"/>
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4"/>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Services" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Update="Assets\Locales\Resources.resx">
