@@ -44,8 +44,8 @@
         <Border Name="DragBorder" Background="Transparent" 
                 Height="40" Margin="40 0 0 0" 
                 VerticalAlignment="Top" ZIndex="2" />
-        <NavigationView Background="Transparent" Header="Stellarity" IsFloatingHeader="True"
-                        IsOpen="False" AlwaysOpen="False">
+        <NavigationView Background="Transparent" Header="Stellarity" IsFloatingHeader="True" HideTitle="True"
+                        IsOpen="False" AlwaysOpen="False" DisplayMode="CompactOverlay" DynamicDisplayMode="False">
             <NavigationView.PanelMaterial>
                 <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black"
                                              TintOpacity="1" MaterialOpacity="0.9" />
