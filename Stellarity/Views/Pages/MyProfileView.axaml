@@ -3,6 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Stellarity.ViewModels.Pages"
+             xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:uc="clr-namespace:Stellarity.UserControls"
+             xmlns:converters="clr-namespace:Stellarity.Converters"
              mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="600"
              x:Class="Stellarity.Views.Pages.MyProfileView"
              x:DataType="vm:MyProfileViewModel" x:CompileBindings="True"
@@ -13,6 +16,9 @@
             <GradientStop Color="#98f59c" Offset="0" />
             <GradientStop Color="#f3be85" Offset="1" />
         </RadialGradientBrush>
+
+        <converters:CommentAlignmentConverter x:Key="AlignmentConverter" />
+        <converters:CommentCornerRadiusConverter x:Key="CornerRadiusConverter" />
     </UserControl.Resources>
 
     <Border Width="800" HorizontalAlignment="Center" Background="{StaticResource RadialGradientBackgroundBrush}"
@@ -42,25 +48,35 @@
 
                 <DockPanel Margin="20 30">
                     <TextBox DockPanel.Dock="Top" Text="{Binding CommentText}"
-                             Watermark="Содержимое комментария" Height="90" TextWrapping="Wrap"
-                             AcceptsReturn="True" />
+                             Watermark="Содержимое комментария" Height="90" TextWrapping="Wrap" AcceptsReturn="True" />
                     <Button Command="{Binding SendComment}" Content="Отправить" Margin="5"
-                            HorizontalAlignment="Right" />
+                            HorizontalAlignment="Right" HotKey="Ctrl+Enter" />
                 </DockPanel>
 
                 <ItemsControl Items="{Binding Comments}" Margin="20 0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ReversibleStackPanel ReverseOrder="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="10" BorderBrush="Black" BorderThickness="2" CornerRadius="10 0 10 0"
-                                    Width="400" HorizontalAlignment="Center" Background="LightGray">
-                                <StackPanel Spacing="5" Margin="5">
+                            <Border Margin="10" BorderBrush="Black" BorderThickness="2"
+                                    Width="600" Background="Transparent"
+                                    HorizontalAlignment="{Binding Converter={StaticResource AlignmentConverter}}"
+                                    CornerRadius="{Binding Converter={StaticResource CornerRadiusConverter}}">
+
+                                <DockPanel Margin="10 5">
+                                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding Body}"
+                                               TextWrapping="Wrap" FontWeight="Normal" Margin="5" />
+                                    <uc:LineSeparator DockPanel.Dock="Bottom" Color="Black" Margin="5" />
+                                    <i:Icon DockPanel.Dock="Left" Value="{StaticResource User}" Margin="5" />
                                     <TextBlock
-                                        Text="{Binding Author.Nickname, StringFormat={}{0} написал(-а):, 
-                                    FallbackValue='Кто-то написал:'}"
-                                        HorizontalAlignment="Left" Margin="40 0" FontWeight="DemiBold" />
-                                    <TextBlock Text="{Binding Body}" TextWrapping="Wrap"
-                                               HorizontalAlignment="Stretch" FontWeight="Normal" />
-                                </StackPanel>
+                                        Text="{Binding Author.Nickname, 
+                                        StringFormat={}{0} написал(-а):, FallbackValue='Кто-то написал:'}"
+                                        FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
