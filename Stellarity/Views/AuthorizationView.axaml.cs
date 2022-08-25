@@ -17,8 +17,8 @@ public partial class AuthorizationView : ReactiveWindow<AuthorizationViewModel>
 #if DEBUG
         this.AttachDevTools();
 #endif
-        var border = this.GetControl<Border>(nameof(DragBorder));
-        border.PointerPressed += (_, e) => BeginMoveDrag(e);
+        DragBorder = this.GetControl<Border>(nameof(DragBorder));
+        DragBorder.PointerPressed += (_, e) => BeginMoveDrag(e);
     }
 
     private void InitializeComponent()

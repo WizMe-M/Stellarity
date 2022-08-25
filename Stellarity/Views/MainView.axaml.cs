@@ -17,16 +17,16 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     {
         this.WhenActivated(d =>
         {
-            var profile = this.GetControl<NavigationViewItem>(nameof(Profile));
-            profile.Content = new MyProfileView(App.Instance.DiContainer.Get<MyProfileViewModel>());
+            Profile = this.GetControl<NavigationViewItem>(nameof(Profile));
+            Profile.Content = new MyProfileView(App.Instance.DiContainer.Get<MyProfileViewModel>());
         });
 
         InitializeComponent();
 #if DEBUG
         this.AttachDevTools();
 #endif
-        var border = this.GetControl<Border>(nameof(DragBorder));
-        border.PointerPressed += (_, e) => BeginMoveDrag(e);
+        DragBorder = this.GetControl<Border>(nameof(DragBorder));
+        DragBorder.PointerPressed += (_, e) => BeginMoveDrag(e);
     }
 
 
