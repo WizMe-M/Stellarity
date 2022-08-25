@@ -20,7 +20,7 @@ public class MyProfileViewModel : PageViewModel, IAsyncImageLoader
             s => !string.IsNullOrWhiteSpace(s));
         SendComment = ReactiveCommand.Create(() =>
         {
-            var comment = new Comment(User, User, CommentText);
+            var comment = Comment.Send(CommentText, User);
             Comments.Add(comment);
         }, canSendComment);
         GoEditProfile = ReactiveCommand.Create(() => { });

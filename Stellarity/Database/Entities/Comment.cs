@@ -28,4 +28,20 @@ public partial class Comment
     public virtual Account Profile { get; set; } = null!;
 
     public override bool Equals(object? obj) => obj is Comment comment && comment.Id == Id;
+
+    public static Comment Send(string text, Account profile, Account? sender = null)
+    {
+        sender ??= profile;
+        var comment = new Comment
+        {
+            Body = text,
+            Author = sender, AuthorId = sender.Id,
+            Profile = profile, ProfileId = profile.Id
+        };
+        // TODO: insert into db table
+        // context.Comments.Add(comment);
+        // var id = comment.Id;
+        // comment = context.Comments.First(c => c.Id == id);
+        return comment;
+    }
 }
