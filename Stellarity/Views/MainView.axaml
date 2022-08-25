@@ -51,7 +51,7 @@
                                              TintOpacity="1" MaterialOpacity="0.9" />
             </NavigationView.PanelMaterial>
             
-            <uc:NavigationViewItem Name="Profile" IconValue="{StaticResource Profile}" Header="Profile" />
+            <uc:NavigationViewItem Name="Profile" IconValue="{StaticResource MyProfile}" Header="Profile" />
         </NavigationView>
     </Panel>
 </Window>
