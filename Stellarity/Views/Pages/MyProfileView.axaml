@@ -14,11 +14,11 @@
             <GradientStop Color="#f3be85" Offset="1" />
         </RadialGradientBrush>
     </UserControl.Resources>
-    <Border Width="800" Height="{Binding $parent[NavigationView].Bounds.Height}" HorizontalAlignment="Center"
-            BorderBrush="Black" BorderThickness="2 2 2 0" CornerRadius="10 10 0 0"
-            Background="{StaticResource RadialGradientBackgroundBrush}">
+
+    <Border Width="800" HorizontalAlignment="Center" Background="{StaticResource RadialGradientBackgroundBrush}"
+            BorderBrush="Black" BorderThickness="2 2 2 0" CornerRadius="10 10 0 0">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
-            <ItemsControl Margin="10" Height="2000" VerticalAlignment="Top">
+            <StackPanel VerticalAlignment="Top" Spacing="10">
                 <DockPanel Margin="20">
                     <Border BorderBrush="Black" BorderThickness="1">
                         <Image DockPanel.Dock="Left" Source="{Binding Avatar}"
@@ -65,7 +65,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </ItemsControl>
+            </StackPanel>
         </ScrollViewer>
     </Border>
 </UserControl>
