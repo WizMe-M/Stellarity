@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using Ninject;
 using ReactiveUI;
+using Stellarity.Services.Accounting;
 using Stellarity.UserControls;
 using Stellarity.ViewModels;
 using Stellarity.ViewModels.Pages;
@@ -17,8 +18,9 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     {
         this.WhenActivated(d =>
         {
+            var accountingService = App.Instance.DiContainer.Get<AccountingService>();
             Profile = this.GetControl<NavigationViewItem>(nameof(Profile));
-            Profile.Content = new MyProfileView(App.Instance.DiContainer.Get<MyProfileViewModel>());
+            Profile.Content = new MyProfileView(new MyProfileViewModel(accountingService));
         });
 
         InitializeComponent();

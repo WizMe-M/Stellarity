@@ -2,7 +2,9 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Ninject;
+using Stellarity.Database.Entities;
 using Stellarity.Ninject;
+using Stellarity.Services.Accounting;
 using Stellarity.ViewModels;
 using Stellarity.Views;
 
@@ -34,9 +36,15 @@ public class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
 #if DEBUG
+            var service = DiContainer.Get<AccountingService>();
+            service.AuthorizedAccount = new Account("test@mail.ru", "P@ssw0rd")
+            {
+                Nickname = "WizMe",
+                About = "testing features..."
+            };
             desktop.MainWindow = new MainView
             {
-                ViewModel = DiContainer.Get<MainViewModel>()
+                ViewModel = new MainViewModel()
             };
 #else
             desktop.MainWindow = new AuthorizationView();

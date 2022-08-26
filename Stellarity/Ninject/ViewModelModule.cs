@@ -1,7 +1,5 @@
 ﻿using System;
-using Ninject.Extensions.Conventions;
 using Ninject.Modules;
-using Stellarity.Basic;
 
 namespace Stellarity.Ninject;
 
@@ -11,8 +9,9 @@ public class ViewModelModule : NinjectModule
     {
         if (Kernel is null) throw new InvalidOperationException("Kernel was null");
 
-        Kernel.Bind(c => c.FromThisAssembly()
-            .Select(typeof(IViewModelBase).IsAssignableFrom)
-            .BindToSelf());
+        // cannot DI ViewModels (because of it is runtime obj)
+        // Kernel.Bind(c => c.FromThisAssembly()
+        //     .Select(typeof(IViewModelBase).IsAssignableFrom)
+        //     .BindToSelf());
     }
 }
