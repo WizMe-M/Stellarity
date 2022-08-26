@@ -1,0 +1,31 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Stellarity.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Stellarity.Views.Pages.EditProfileView"
+             x:DataType="vm:EditProfileViewModel" x:CompileBindings="True"
+             Background="Transparent">
+    <ScrollViewer>
+        <ItemsControl Margin=" 10">
+            <DockPanel DockPanel.Dock="Top" Margin="20">
+                <Button DockPanel.Dock="Bottom" Command="{Binding SaveChanges}" 
+                        Content="Сохранить изменения" HorizontalAlignment="Right" />
+
+                <Button DockPanel.Dock="Left" Classes="avatar" Command="{Binding SetAvatar}">
+                    <Image Source="{Binding Avatar}" Stretch="UniformToFill" />
+                </Button>
+
+                <TextBox DockPanel.Dock="Bottom" Text="{Binding AboutSelf}" TextAlignment="Left" TextWrapping="Wrap"
+                         Watermark="Информация о себе..." Height="100" HorizontalAlignment="Stretch" />
+
+                <Button DockPanel.Dock="Right" Command="{Binding ChangePassword}" Content="Сменить пароль"
+                        HorizontalAlignment="Center" />
+
+                <TextBox Text="{Binding Nickname}" Watermark="Никнейм" FontWeight="DemiBold" />
+
+            </DockPanel>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>
