@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using ReactiveUI.Fody.Helpers;
 using Stellarity.Basic;
 using Stellarity.Database.Entities;
 using Stellarity.Extensions;
+using Stellarity.Services.Accounting;
 
 namespace Stellarity.ViewModels.Pages;
 
@@ -20,10 +22,20 @@ public class MyProfileViewModel : PageViewModel, IAsyncImageLoader
             s => !string.IsNullOrWhiteSpace(s));
         SendComment = ReactiveCommand.Create(() =>
         {
-            var comment = Comment.Send(CommentText, User);
+            // TODO: for testing only
+            // var r = new Random();
+            var same = true; //r.Next() % 2 == 0;
+            var comment = same
+                ? Comment.Send(CommentText, User)
+                : Comment.Send(CommentText, User, new Account("other@mail.ru", ""));
             Comments.Add(comment);
         }, canSendComment);
         GoEditProfile = ReactiveCommand.Create(() => { });
+    }
+
+    public MyProfileViewModel(AccountingService accountingService)
+        : this(accountingService.AuthorizedAccount!)
+    {
     }
 
     public Account User { get; }

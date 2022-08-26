@@ -74,7 +74,7 @@
                                     <i:Icon DockPanel.Dock="Left" Value="{StaticResource User}" Margin="5" />
                                     <TextBlock
                                         Text="{Binding Author.Nickname, 
-                                        StringFormat={}{0} написал(-а):, FallbackValue='Кто-то написал:'}"
+                                        StringFormat={}{0} написал(-а):, TargetNullValue='Кто-то написал:'}"
                                         FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 </DockPanel>
                             </Border>
