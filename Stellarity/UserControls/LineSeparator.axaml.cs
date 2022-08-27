@@ -1,10 +1,10 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 
 namespace Stellarity.UserControls;
 
-public class LineSeparator : UserControl
+public class LineSeparator : TemplatedControl
 {
     public static readonly StyledProperty<IBrush> ColorProperty =
         AvaloniaProperty.Register<LineSeparator, IBrush>(nameof(Color), Brushes.Black);
