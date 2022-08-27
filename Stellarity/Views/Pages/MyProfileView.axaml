@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="600"
              x:Class="Stellarity.Views.Pages.MyProfileView"
              x:DataType="vm:MyProfileViewModel" x:CompileBindings="True"
-             Background="Transparent" d:Background="{x:Static Brushes.DarkGray}">
+             Background="Transparent">
     <UserControl.Resources>
         <RadialGradientBrush x:Key="RadialGradientBackgroundBrush" Radius=".5" Opacity=".3"
                              GradientOrigin="50% 50%" Center="50% 50%">
