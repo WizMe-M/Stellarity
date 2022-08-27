@@ -52,6 +52,7 @@
             </NavigationView.PanelMaterial>
             
             <uc:NavigationViewItem Name="Profile" IconValue="{StaticResource MyProfile}" Header="Profile" />
+            <uc:NavigationViewItem Name="EditProfile" IconValue="{StaticResource MyProfile}" Header="Edit profile" />
         </NavigationView>
     </Panel>
 </Window>
