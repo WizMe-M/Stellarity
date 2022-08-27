@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Drawing;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Media.Imaging;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Stellarity.Basic;
@@ -52,10 +51,10 @@ public class MyProfileViewModel : PageViewModel, IAsyncImageLoader
 
     public ICommand SendComment { get; }
 
-    public Task<Bitmap?> LoadAsync()
+    public async Task<Bitmap?> LoadAsync()
     {
         var bm = User.Avatar?.Data.ToBitmap();
-        Avatar = bm ?? Avatar;
-        return Task.FromResult(bm);
+        Avatar = bm ?? await Image.OpenDefaultImageAsync();
+        return bm;
     }
 }

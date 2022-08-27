@@ -1,5 +1,6 @@
-﻿using System.Drawing;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
+
 
 namespace Stellarity.Basic;
 

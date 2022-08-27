@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Avalonia.Media.Imaging;
 
 namespace Stellarity.Extensions;
 
