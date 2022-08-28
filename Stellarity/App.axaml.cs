@@ -20,7 +20,7 @@ public class App : Application
         DiContainer.Settings.AllowNullInjection = true;
     }
 
-    public static App Instance => (App)Current!;
+    public new static App Current => (App)Application.Current!;
 
     public StandardKernel DiContainer { get; }
 

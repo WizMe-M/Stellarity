@@ -19,11 +19,11 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     {
         this.WhenActivated(d =>
         {
-            var accountingService = App.Instance.DiContainer.Get<AccountingService>();
+            var accountingService = App.Current.DiContainer.Get<AccountingService>();
             Profile = this.GetControl<NavigationViewItem>(nameof(Profile));
             Profile.Content = new MyProfileView(new MyProfileViewModel(accountingService));
 
-            var dialogService = App.Instance.DiContainer.Get<DialogService>();
+            var dialogService = App.Current.DiContainer.Get<DialogService>();
             EditProfile = this.GetControl<NavigationViewItem>(nameof(EditProfile));
             EditProfile.Content =
                 new EditProfileView(new EditProfileViewModel(dialogService, ViewModel!, accountingService.AuthorizedAccount!));

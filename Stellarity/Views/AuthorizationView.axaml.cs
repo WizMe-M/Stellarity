@@ -12,7 +12,7 @@ public partial class AuthorizationView : ReactiveWindow<AuthorizationViewModel>
 {
     public AuthorizationView()
     {
-        ViewModel = App.Instance.DiContainer.Get<AuthorizationViewModel>();
+        ViewModel = App.Current.DiContainer.Get<AuthorizationViewModel>();
         InitializeComponent();
 #if DEBUG
         this.AttachDevTools();
