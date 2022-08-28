@@ -17,15 +17,8 @@ public class AccountingService
 
     public bool UserRemembered { get; private set; }
 
-    public Account? AuthorizedAccount
-    {
-        get;
-#if DEBUG
-        set;
-#else
-        private set;
-#endif
-    }
+    // TODO: public setter for dev only
+    public Account? AuthorizedAccount { get; set; }
 
     /// <summary>
     /// Asynchronously initializes accounting service with cached data

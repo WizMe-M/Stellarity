@@ -1,8 +1,11 @@
 ﻿using System.Reactive;
 using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
+using Ninject;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Stellarity.Database.Entities;
+using Stellarity.Services.Accounting;
 
 namespace Stellarity.ViewModels;
 
@@ -17,6 +20,12 @@ public class AuthorizationViewModel : Basic.ReactiveViewModelBase
         LogIn = ReactiveCommand.CreateFromTask(async () =>
         {
             // TODO: authorization logic
+            var accountingService = App.Current.DiContainer.Get<AccountingService>();
+            accountingService.AuthorizedAccount = new Account("test@mail.ru", "P@ssw0rd")
+            {
+                Nickname = "WizMe",
+                About = "testing features..."
+            };
             await Task.Delay(1000);
 
             var vm = _windowService.CreateViewModel<MainViewModel>();
