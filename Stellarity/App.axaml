@@ -22,5 +22,6 @@
         <StyleInclude Source="/Styles/HamburgerMenuStyles.axaml" />
         <StyleInclude Source="/Styles/LineSeparator.axaml" />
         <StyleInclude Source="/Styles/NavigationViewItem.axaml" />
+        <StyleInclude Source="/UserControls/ImageButton.axaml" />
     </Application.Styles>
 </Application>
