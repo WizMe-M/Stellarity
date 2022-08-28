@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -51,6 +52,15 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     {
         _dialogService = dialogService;
         _windowOwner = windowOwner;
+    }
+
+    public string Password
+    {
+        get
+        {
+            var pattern = new Regex("."); // matches any symbol
+            return pattern.Replace(_user.Password, "*");
+        }
     }
 
     public bool HasChanges() => Avatar != null && Avatar != _user.Avatar?.Data.ToBitmap()

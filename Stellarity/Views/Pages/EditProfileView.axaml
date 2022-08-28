@@ -14,25 +14,24 @@
         </Style>
     </UserControl.Styles>
 
-    <ScrollViewer>
-        <ItemsControl Margin=" 10">
-            <DockPanel DockPanel.Dock="Top" Margin="20">
-                <Button DockPanel.Dock="Bottom" Command="{Binding SaveChangesCommand}"
-                        Content="Сохранить изменения" HorizontalAlignment="Right" />
+    <DockPanel Margin="20" VerticalAlignment="Top">
+        <Button DockPanel.Dock="Bottom" Command="{Binding SaveChangesCommand}"
+                Content="Сохранить изменения" HorizontalAlignment="Right" />
 
-                <uc:ImageButton ImageSource="{Binding Avatar}" Width="150" Height="150"
-                                Command="{Binding SetAvatarCommand}" />
+        <uc:ImageButton DockPanel.Dock="Left" ImageSource="{Binding Avatar}" Width="150" Height="150"
+                        Command="{Binding SetAvatarCommand}" />
 
-                <TextBox DockPanel.Dock="Bottom" Text="{Binding AboutSelf}" TextAlignment="Left"
-                         TextWrapping="Wrap" Watermark="Информация о себе..." Height="100"
-                         HorizontalAlignment="Stretch" />
+        <TextBox DockPanel.Dock="Bottom" Text="{Binding AboutSelf}" TextAlignment="Left"
+                 TextWrapping="Wrap" Watermark="Информация о себе..." Height="100"
+                 HorizontalAlignment="Stretch" />
 
-                <Button DockPanel.Dock="Right" Command="{Binding ChangePasswordCommand}"
-                        Content="Сменить пароль" HorizontalAlignment="Center" />
+        <Button DockPanel.Dock="Right" Command="{Binding ChangePasswordCommand}"
+                Content="Сменить пароль" HorizontalAlignment="Center" />
 
-                <TextBox Text="{Binding Nickname}" Watermark="Никнейм" FontWeight="DemiBold" />
+        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15 0 10 0"
+                   Text="{Binding Password, TargetNullValue='Пароль: ********', FallbackValue='Password here'}" />
 
-            </DockPanel>
-        </ItemsControl>
-    </ScrollViewer>
+        <TextBox Text="{Binding Nickname}" Watermark="Никнейм" FontWeight="DemiBold" />
+
+    </DockPanel>
 </UserControl>
