@@ -82,6 +82,12 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     [RelayCommand]
     public async Task ChangePasswordAsync()
     {
+        var vm = _dialogService.CreateViewModel<ChangePasswordViewModel>();
+        var passwordChanged = await _dialogService.ShowDialogAsync(_windowOwner, vm);
+        if (passwordChanged == true)
+        {
+            // _user.ChangePassword(vm.NewPassword);
+        }
     }
 
     [RelayCommand]
