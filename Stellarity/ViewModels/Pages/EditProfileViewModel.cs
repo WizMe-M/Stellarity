@@ -31,13 +31,13 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     /// </summary>
     private readonly Account _user;
 
-    [ObservableProperty]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private Bitmap? _avatar;
 
-    [ObservableProperty]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private string _nickname = string.Empty;
 
-    [ObservableProperty]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private string? _aboutSelf;
 
     public EditProfileViewModel(Account user)
@@ -53,13 +53,24 @@ public partial class EditProfileViewModel : IAsyncImageLoader
         _windowOwner = windowOwner;
     }
 
-    [RelayCommand]
-    public void SaveChanges()
+    public bool HasChanges() => Avatar != null && Avatar != _user.Avatar?.Data.ToBitmap()
+                                || !string.IsNullOrWhiteSpace(_nickname) && Nickname != _user.Nickname
+                                || AboutSelf != _user.About;
+
+    [RelayCommand(CanExecute = nameof(HasChanges))]
+    public async Task SaveChangesAsync()
     {
+        _user.Nickname = _nickname;
+        _user.About = AboutSelf;
+        Avatar = null;
+        await Task.Delay(2000);
+        // TODO: apply changes to user and to image
+        // await Image.SaveAsync();
+        // await _user.SaveChangesAsync();
     }
 
     [RelayCommand]
-    public async Task ChangePassword()
+    public async Task ChangePasswordAsync()
     {
     }
 
