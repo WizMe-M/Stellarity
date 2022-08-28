@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Stellarity.ViewModels.Pages"
+             xmlns:uc="clr-namespace:Stellarity.UserControls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Stellarity.Views.Pages.EditProfileView"
              x:DataType="vm:EditProfileViewModel" x:CompileBindings="True"
@@ -11,34 +12,23 @@
         <Style Selector="TextBox, Button">
             <Setter Property="Margin" Value="5" />
         </Style>
-        <Style Selector="Button.avatar">
-            <Setter Property="Height" Value="150" />
-            <Setter Property="Width" Value="150" />
-            <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Background" Value="Gray" />
-        </Style>
-
-        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="LightGray" />
-        </Style>
     </UserControl.Styles>
-    
+
     <ScrollViewer>
         <ItemsControl Margin=" 10">
             <DockPanel DockPanel.Dock="Top" Margin="20">
-                <Button DockPanel.Dock="Bottom" Command="{Binding SaveChanges}"
+                <Button DockPanel.Dock="Bottom" Command="{Binding SaveChangesCommand}"
                         Content="Сохранить изменения" HorizontalAlignment="Right" />
 
-                <Button DockPanel.Dock="Left" Classes="avatar" Command="{Binding SetAvatar}">
-                    <Image Source="{Binding Avatar}" Stretch="UniformToFill" />
-                </Button>
+                <uc:ImageButton ImageSource="{Binding Avatar}" Width="150" Height="150"
+                                Command="{Binding SetAvatarCommand}" />
 
-                <TextBox DockPanel.Dock="Bottom" Text="{Binding AboutSelf}" TextAlignment="Left" TextWrapping="Wrap"
-                         Watermark="Информация о себе..." Height="100" HorizontalAlignment="Stretch" />
+                <TextBox DockPanel.Dock="Bottom" Text="{Binding AboutSelf}" TextAlignment="Left"
+                         TextWrapping="Wrap" Watermark="Информация о себе..." Height="100"
+                         HorizontalAlignment="Stretch" />
 
-                <Button DockPanel.Dock="Right" Command="{Binding ChangePassword}" Content="Сменить пароль"
-                        HorizontalAlignment="Center" />
+                <Button DockPanel.Dock="Right" Command="{Binding ChangePasswordCommand}"
+                        Content="Сменить пароль" HorizontalAlignment="Center" />
 
                 <TextBox Text="{Binding Nickname}" Watermark="Никнейм" FontWeight="DemiBold" />
 
