@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using Microsoft.EntityFrameworkCore;
 
 namespace Stellarity.Database.Entities;
@@ -25,6 +26,8 @@ public partial class Account
 
     public int Id { get; set; }
     public string Email { get; set; } = null!;
+    
+    // TODO: make Nickname not null
     public string? Nickname { get; set; }
     public string Password { get; set; } = null!;
     public string? About { get; set; }
@@ -54,70 +57,94 @@ public partial class Account
     public virtual ICollection<Comment> CommentProfiles { get; set; }
     public virtual ICollection<Library> Library { get; set; }
 
+    public static bool Exists(string email)
+    {
+        using var context = new StellarisContext();
+        var user = context.Users.FirstOrDefault(u => u.Email == email);
+        return user is { };
+    }
+
     public static Account? Find(string email, string password)
     {
         using var context = new StellarisContext();
         return context.Users
             .Include(user => user.Role)
+            .Include(user => user.Avatar)
             .Include(user => user.Library)
             .FirstOrDefault(user => user.Email == email && user.Password == password);
     }
 
-    public static bool Find(string email)
+    public static Account? Find(string email)
     {
         using var context = new StellarisContext();
-        var user = context.Users.FirstOrDefault(u => u.Email == email);
-        return user != null;
+        return context.Users
+            .Include(user => user.Role)
+            .Include(user => user.Avatar)
+            .Include(user => user.Library)
+            .FirstOrDefault(user => user.Email == email);
     }
 
-    public static Account Register(string email, string password)
+    public static Account Register(string email, string password, Roles role)
     {
         using var context = new StellarisContext();
-        var user = new Account(email, password)
+        var gamer = new Account(email, password)
         {
-            RoleId = 1
+            RoleId = (int)role
         };
-        context.Users.Add(user);
+        context.Users.Add(gamer);
         context.SaveChanges();
-        context.Entry(user).Reference(u => u.Role).Load();
-        return user;
-    }
-
-    public void SaveChanges()
-    {
-        using var context = new StellarisContext();
-        var user = context.Users.First(u => u.Id == Id);
-        user.Nickname = Nickname;
-        user.Password = Password;
-        user.About = About;
-        user.Balance = Balance;
-        user.Deleted = Deleted;
-        user.RoleId = RoleId;
-        context.Users.Update(user);
-        context.SaveChanges();
+        context.Entry(gamer).Reference(u => u.Role).Load();
+        return gamer;
     }
 
     public async Task SaveChangesAsync()
     {
+        if (Nickname?.Trim().Length == 0) Nickname = null;
+        if (About?.Trim().Length == 0) About = null;
+
         await using var context = new StellarisContext();
-        var user = await context.Users.FirstAsync(u => u.Id == Id);
-        user.Nickname = Nickname;
-        user.Password = Password;
-        user.About = About;
-        user.Balance = Balance;
-        user.Deleted = Deleted;
-        user.RoleId = RoleId;
+        var user = context.Entry(this).Entity;
         context.Users.Update(user);
         await context.SaveChangesAsync();
     }
 
-    public void Deposit(decimal depositSum)
+    public async Task<byte[]> ChangeAvatarAsync(Bitmap avatar)
     {
+        // do smth idk
+        // anyway, it should check does user has avatar
+        // if he isn't, then create new Image entity firstly and attach it to user
+        // then just cache file with ImageCacheService, get bytes from file
+        // update <data> prop, save Image to db 
+        // return bytes
+        return Array.Empty<byte>();
+    }
+
+    public void ChangePassword(string password)
+    {
+        Password = password;
         using var context = new StellarisContext();
-        var user = context.Users.First(u => u.Id == Id);
-        user.Balance += depositSum;
+        var user = context.Entry(this).Entity;
         context.Users.Update(user);
         context.SaveChanges();
+    }
+
+    public void Deposit(decimal depositSum)
+    {
+        Balance += depositSum;
+        using var context = new StellarisContext();
+        var user = context.Entry(this).Entity;
+        context.Users.Update(user);
+        context.SaveChanges();
+    }
+
+    public void PurchaseGame(Game game)
+    {
+        if (Balance < game.Cost)
+            throw new InvalidOperationException(
+                "Cannot purchase a game that costs much more you have on your balance");
+
+        // confirm purchase
+        // update user game list (Library prop)
     }
 
 #if DEBUG
