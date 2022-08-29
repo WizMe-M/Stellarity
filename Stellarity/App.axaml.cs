@@ -37,11 +37,7 @@ public class App : Application
         {
 #if DEBUG
             var service = DiContainer.Get<AccountingService>();
-            service.AuthorizedAccount = new Account("test@mail.ru", "P@ssw0rd")
-            {
-                Nickname = "WizMe",
-                About = "testing features..."
-            };
+            service.AuthorizedAccount = Account.GetFirst();
             desktop.MainWindow = new MainView
             {
                 ViewModel = new MainViewModel()

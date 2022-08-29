@@ -119,4 +119,12 @@ public partial class Account
         context.Users.Update(user);
         context.SaveChanges();
     }
+
+#if DEBUG
+    public static Account GetFirst()
+    {
+        using var context = new StellarisContext();
+        return context.Users.First();
+    }
+#endif
 }

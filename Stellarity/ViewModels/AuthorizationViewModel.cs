@@ -21,11 +21,7 @@ public class AuthorizationViewModel : Basic.ReactiveViewModelBase
         {
             // TODO: authorization logic
             var accountingService = App.Current.DiContainer.Get<AccountingService>();
-            accountingService.AuthorizedAccount = new Account("test@mail.ru", "P@ssw0rd")
-            {
-                Nickname = "WizMe",
-                About = "testing features..."
-            };
+            accountingService.AuthorizedAccount = Account.GetFirst();
             await Task.Delay(1000);
 
             var vm = _windowService.CreateViewModel<MainViewModel>();
