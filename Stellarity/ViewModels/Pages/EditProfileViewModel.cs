@@ -17,6 +17,9 @@ namespace Stellarity.ViewModels.Pages;
 [ObservableObject]
 public partial class EditProfileViewModel : IAsyncImageLoader
 {
+    private string? _currentNickname;
+    private string? _currentAbout;
+
     /// <summary>
     /// Viewmodel to resolve view for <see cref="IDialogService"/>
     /// </summary>
@@ -35,23 +38,46 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private Bitmap? _avatar;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
-    private string _nickname = string.Empty;
-
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
-    private string? _aboutSelf;
-
     public EditProfileViewModel(Account user)
     {
         _user = user;
-        Nickname = _user.Nickname ?? _user.Email;
-        AboutSelf = _user.About;
+        _currentNickname = _user.Nickname ?? string.Empty;
+        _currentAbout = _user.About ?? string.Empty;
+        
+        Nickname ??= string.Empty;
+        AboutSelf ??= string.Empty;
     }
 
     public EditProfileViewModel(IDialogService dialogService, MainViewModel windowOwner, Account user) : this(user)
     {
         _dialogService = dialogService;
         _windowOwner = windowOwner;
+    }
+
+    public string? Nickname
+    {
+        get => _user.Nickname;
+        set
+        {
+            if (EqualityComparer<string?>.Default.Equals(_user.Nickname, value)) return;
+
+            SetProperty(_user.Nickname, value, _user,
+                (account, nickname) => account.Nickname = nickname);
+            SaveChangesCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    public string? AboutSelf
+    {
+        get => _user.About;
+        set
+        {
+            if (EqualityComparer<string?>.Default.Equals(_user.About, value)) return;
+
+            SetProperty(_user.About, value, _user,
+                (account, about) => account.About = about);
+            SaveChangesCommand.NotifyCanExecuteChanged();
+        }
     }
 
     public string Password
@@ -64,23 +90,26 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     }
 
     public bool HasChanges() => Avatar != null && Avatar != _user.Avatar?.Data.ToBitmap()
-                                || !string.IsNullOrWhiteSpace(_nickname) && Nickname != _user.Nickname
-                                || AboutSelf != _user.About;
+                                || Nickname != _currentNickname
+                                || AboutSelf != _currentAbout;
 
     [RelayCommand(CanExecute = nameof(HasChanges))]
-    public async Task SaveChangesAsync()
+    private async Task SaveChangesAsync()
     {
-        _user.Nickname = _nickname;
-        _user.About = AboutSelf;
-        Avatar = null;
+        await _user.SaveChangesAsync();
+        
+        // TODO: apply changed avatar to user
+        // TODO: make _currentAvatar field to handle changes
+        await _user.ChangeAvatarAsync(Avatar!);
+        
         await Task.Delay(2000);
-        // TODO: apply changes to user and to image
-        // await Image.SaveAsync();
-        // await _user.SaveChangesAsync();
+        _currentNickname = Nickname;
+        _currentAbout = AboutSelf;
+        Avatar = null;
     }
 
     [RelayCommand]
-    public async Task ChangePasswordAsync()
+    private async Task ChangePasswordAsync()
     {
         var vm = _dialogService.CreateViewModel<ChangePasswordViewModel>();
         var passwordChanged = await _dialogService.ShowDialogAsync(_windowOwner, vm);
