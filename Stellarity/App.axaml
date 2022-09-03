@@ -18,8 +18,6 @@
     <Application.Styles>
         <FluentTheme Mode="Dark" />
         <StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml"/>
-        <StyleInclude Source="/Styles/HamburgerItemStyles.axaml" />
-        <StyleInclude Source="/Styles/HamburgerMenuStyles.axaml" />
         <StyleInclude Source="/Styles/LineSeparator.axaml" />
         <StyleInclude Source="/Styles/NavigationViewItem.axaml" />
         <StyleInclude Source="/UserControls/ImageButton.axaml" />
