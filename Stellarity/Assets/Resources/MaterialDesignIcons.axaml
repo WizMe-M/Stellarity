@@ -3,4 +3,5 @@
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <system:String x:Key="MyProfile">mdi-account-circle</system:String> 
     <system:String x:Key="User">mdi-account</system:String> 
+    <system:String x:Key="Shop">mdi-cart-outline</system:String> 
 </ResourceDictionary>
