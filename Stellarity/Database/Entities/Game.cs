@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Ninject;
+using Stellarity.Services;
 
 namespace Stellarity.Database.Entities;
 
@@ -61,5 +63,22 @@ public partial class Game
 
         game = await context.Games.FirstAsync(g => g.Name == game.Name);
         await Image.SaveAsync(coverPath, game);
+    }
+
+    public async Task<byte[]?> GetCoverAsync()
+    {
+        var cacheService = App.Current.DiContainer.Get<ImageCacheService>();
+        var bytes = await cacheService.LoadAvatarAsync(CoverGuid);
+        if (CoverGuid is { } && bytes is null)
+        {
+            await using var context = new StellarisContext();
+            var game = context.Entry(this).Entity;
+            context.Games.Attach(game);
+            await context.Entry(game).Reference(g => g.Cover).LoadAsync();
+            bytes = Cover!.Data;
+            await cacheService.SaveAvatarAsync(Cover);
+        }
+
+        return bytes;
     }
 }

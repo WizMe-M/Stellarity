@@ -145,7 +145,7 @@ public partial class Image
 
     public static Task<Bitmap> OpenDefaultImageAsync()
     {
-        var uri = new Uri("avares://Stellarity/Assets/placeholder.png");
+        var uri = new Uri("avares://Stellarity/Assets/Images/placeholder.png");
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
         var asset = assets.Open(uri);
 
@@ -154,7 +154,7 @@ public partial class Image
 
     public static Bitmap OpenDefaultImage()
     {
-        var uri = new Uri("avares://Stellarity/Assets/placeholder.png");
+        var uri = new Uri("avares://Stellarity/Assets/Images/placeholder.png");
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
         var asset = assets.Open(uri);
 
