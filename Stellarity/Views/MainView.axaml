@@ -44,6 +44,7 @@
         <Border Name="DragBorder" Background="Transparent" 
                 Height="40" Margin="40 0 0 0" 
                 VerticalAlignment="Top" ZIndex="2" />
+        <!-- TODO: make own NavigationView (again), implement stack of views and handle bubbling event of changing current view -->
         <NavigationView Background="Transparent" Header="Stellarity" IsFloatingHeader="True" HideTitle="True"
                         IsOpen="False" AlwaysOpen="False" DisplayMode="CompactOverlay" DynamicDisplayMode="False">
             <NavigationView.PanelMaterial>
