@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Stellarity.Extensions;
 
-namespace Stellarity.Services;
+namespace Stellarity.Services.Cache;
 
 public class CachingService
 {
@@ -34,10 +34,9 @@ public class CachingService
     /// <param name="fileName">Name of the cache file</param>
     /// <returns>Represents task of reading an object from cache operation</returns>
     public Task<T?> LoadFromBinaryCache<T>(string fileName)
-        where T : class
     {
         var path = Path.Combine(_cacheRootFolder, fileName);
-        if (!File.Exists(path)) return Task.FromResult<T?>(null);
+        if (!File.Exists(path)) return Task.FromResult<>(null);
         var bytes = File.ReadAllBytes(path);
         var data = bytes.FromBytes<T>();
         return Task.FromResult(data)!;
@@ -51,7 +50,6 @@ public class CachingService
     /// <param name="data">Data to cache</param>
     /// <returns>Represents task of caching operation</returns>
     public Task SaveToJsonCacheAsync<T>(string fileName, string subfolder, T data)
-        where T : class
     {
         var dir = Path.Combine(_cacheRootFolder, subfolder);
         Directory.CreateDirectory(dir);
@@ -67,10 +65,9 @@ public class CachingService
     /// <param name="subfolder">Subfolder name in Cache folder</param>
     /// <returns>Represents task of reading an object from cache operation</returns>
     public Task<T?> LoadFromJsonCacheAsync<T>(string fileName, string subfolder)
-        where T : class
     {
         var path = Path.Combine(_cacheRootFolder, subfolder, fileName);
-        if (!File.Exists(path)) return Task.FromResult<T?>(null);
+        if (!File.Exists(path)) return Task.FromResult<>(null);
         var json = File.ReadAllText(path);
         var data = JsonConvert.DeserializeObject<T>(json);
         return Task.FromResult(data);

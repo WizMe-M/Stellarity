@@ -9,8 +9,8 @@ public class AccountingService : CachingBase<AuthorizationInfo>
 {
     private readonly string _cacheFileName;
 
-    public AccountingService(CachingService cachingService, string cacheSubfolder = "Accounting/",
-        string cacheFileName = "auth.info") : base(cachingService, cacheSubfolder)
+    public AccountingService(CachingService cachingService, string cacheFileName = "auth.info")
+        : base(cachingService, "Accounting/", CachingType.Json)
     {
         _cacheFileName = cacheFileName;
     }
@@ -75,14 +75,6 @@ public class AccountingService : CachingBase<AuthorizationInfo>
             throw new InvalidOperationException($"Can't save nothing to cache. {nameof(AuthorizedAccount)} was null");
 
         var accountInfo = new AuthorizationInfo(AuthorizedAccount, UserRemembered);
-        await SaveAsync(accountInfo);
-    }
-
-    protected override Task SaveAsync(AuthorizationInfo data) =>
-        CachingService.SaveToJsonCacheAsync(_cacheFileName, CacheSubfolder, data);
-
-    protected override Task<AuthorizationInfo> LoadAsync(string file)
-    {
-        return CachingService.LoadFromJsonCacheAsync<AuthorizationInfo>(_cacheFileName, CacheSubfolder)!;
+        await SaveAsync(accountInfo, _cacheFileName);
     }
 }

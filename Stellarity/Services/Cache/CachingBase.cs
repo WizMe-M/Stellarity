@@ -1,22 +1,40 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Stellarity.Services.Cache;
 
 public abstract class CachingBase<TCacheDataType>
-    where TCacheDataType : class
 {
-    protected readonly CachingService CachingService;
-    protected readonly string CacheSubfolder;
+    private readonly CachingService _cachingService;
+    private readonly string _cacheSubfolder;
+    private readonly CachingType _settings;
 
-    protected CachingBase(CachingService cachingService, string cacheSubfolder)
+    protected CachingBase(CachingService cachingService, string cacheSubfolder, CachingType settings)
     {
-        CachingService = cachingService;
-        CacheSubfolder = cacheSubfolder;
+        _cachingService = cachingService;
+        _cacheSubfolder = cacheSubfolder;
+        _settings = settings;
     }
 
-    protected abstract Task SaveAsync(TCacheDataType data);
+    protected Task SaveAsync(TCacheDataType data, string fileName)
+    {
+        return _settings switch
+        {
+            CachingType.Binary => _cachingService.SaveToBinaryCache(fileName, data),
+            CachingType.Json => _cachingService.SaveToJsonCacheAsync(fileName, _cacheSubfolder, data),
+            _ => throw new InvalidOperationException("Only binary and json caching allowed")
+        };
+    }
 
-    protected abstract Task<TCacheDataType> LoadAsync(string file);
+    protected Task<TCacheDataType?> LoadAsync(string file)
+    {
+        return _settings switch
+        {
+            CachingType.Binary => _cachingService.LoadFromJsonCacheAsync<TCacheDataType>(file, _cacheSubfolder),
+            CachingType.Json => _cachingService.LoadFromJsonCacheAsync<TCacheDataType>(file, _cacheSubfolder),
+            _ => throw new InvalidOperationException("Only binary and json caching allowed")
+        };
+    }
 
-    public void ClearCache() => CachingService.ClearFolder(CacheSubfolder);
+    protected void ClearCache() => _cachingService.ClearFolder(_cacheSubfolder);
 }
