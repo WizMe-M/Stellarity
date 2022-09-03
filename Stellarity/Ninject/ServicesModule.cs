@@ -1,7 +1,7 @@
 using System;
 using Ninject.Modules;
-using Stellarity.Services;
 using Stellarity.Services.Accounting;
+using Stellarity.Services.Cache;
 
 namespace Stellarity.Ninject;
 

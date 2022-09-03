@@ -27,6 +27,15 @@ public class ImageCacheService : CachingBase<byte[]>
 
         var guidStr = avatarGuid.Value.ToString();
         var hashedFileName = guidStr.CreateMD5();
-        return await LoadAsync(hashedFileName);
+        byte[]? result;
+        try
+        {
+            result = await LoadAsync(hashedFileName);
+        }
+        catch (NullReferenceException)
+        {
+            result = null;
+        }
+        return result;
     }
 }

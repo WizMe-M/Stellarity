@@ -37,9 +37,10 @@ public class CachingService
     /// <param name="fileName">Name of the cache file</param>
     /// <returns>Represents task of reading an object from cache operation</returns>
     public Task<T?> LoadFromBinaryCache<T>(string subfolder, string fileName)
+        where T : class
     {
         var path = Path.Combine(_rootFolder, subfolder, fileName);
-        if (!File.Exists(path)) return Task.FromResult<>(null);
+        if (!File.Exists(path)) return Task.FromResult<T?>(null);
         var bytes = File.ReadAllBytes(path);
         var data = bytes.FromBytes<T>();
         return Task.FromResult(data)!;
@@ -68,9 +69,10 @@ public class CachingService
     /// <param name="fileName">Name of the cache file</param>
     /// <returns>Represents task of reading an object from cache operation</returns>
     public Task<T?> LoadFromJsonCacheAsync<T>(string subfolder, string fileName)
+        where T : class
     {
         var path = Path.Combine(_rootFolder, subfolder, fileName);
-        if (!File.Exists(path)) return Task.FromResult<>(null);
+        if (!File.Exists(path)) return Task.FromResult<T?>(null);
         var json = File.ReadAllText(path);
         var data = JsonConvert.DeserializeObject<T>(json);
         return Task.FromResult(data);
