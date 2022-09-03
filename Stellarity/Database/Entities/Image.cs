@@ -14,7 +14,7 @@ public partial class Image
 {
     public Image()
     {
-        Guid = Guid.NewGuid();
+        // Guid = Guid.NewGuid();
         Games = new HashSet<Game>();
         Users = new HashSet<Account>();
     }

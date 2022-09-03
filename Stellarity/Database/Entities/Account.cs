@@ -28,7 +28,7 @@ public partial class Account
 
     public int Id { get; set; }
     public string Email { get; set; } = null!;
-    
+
     // TODO: make Nickname not null
     public string? Nickname { get; set; }
     public string Password { get; set; } = null!;
@@ -110,15 +110,30 @@ public partial class Account
         await context.SaveChangesAsync();
     }
 
-    public async Task<byte[]> ChangeAvatarAsync(Bitmap avatar)
+    public async Task ChangeAvatarAsync(byte[]? avatarData)
     {
-        // do smth idk
-        // anyway, it should check does user has avatar
-        // if he isn't, then create new Image entity firstly and attach it to user
-        // then just cache file with ImageCacheService, get bytes from file
-        // update <data> prop, save Image to db 
-        // return bytes
-        return Array.Empty<byte>();
+        if (avatarData is null) return;
+
+        await using var context = new StellarisContext();
+        var user = context.Entry(this).Entity;
+        context.Users.Attach(user);
+        if (user.AvatarGuid is null)
+        {
+            var avatar = new Image(user.Email) { Data = avatarData };
+            user.Avatar = avatar;
+            context.Users.Update(user);
+        }
+        else
+        {
+            if (user.Avatar is null)
+                await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
+            user.Avatar!.Data = avatarData;
+            context.Images.Update(user.Avatar!);
+        }
+
+        await context.SaveChangesAsync();
+        var cacheService = App.Current.DiContainer.Get<ImageCacheService>();
+        await cacheService.SaveAvatarAsync(Avatar!);
     }
 
     public void ChangePassword(string password)
@@ -171,6 +186,7 @@ public partial class Account
             bytes = Avatar!.Data;
             await cacheService.SaveAvatarAsync(Avatar);
         }
+
         return bytes;
     }
 }

@@ -17,8 +17,10 @@ namespace Stellarity.ViewModels.Pages;
 [ObservableObject]
 public partial class EditProfileViewModel : IAsyncImageLoader
 {
-    private string? _currentNickname;
-    private string? _currentAbout;
+    private byte[]? _previousAvatarData;
+    private byte[]? _currentAvatarData;
+    private string? _previousNickname;
+    private string? _previousAbout;
 
     /// <summary>
     /// Viewmodel to resolve view for <see cref="IDialogService"/>
@@ -35,15 +37,14 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     /// </summary>
     private readonly Account _user;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
-    private Bitmap? _avatar;
-
     public EditProfileViewModel(Account user)
     {
         _user = user;
-        _currentNickname = _user.Nickname ?? string.Empty;
-        _currentAbout = _user.About ?? string.Empty;
-        
+        _previousAvatarData = _user.Avatar?.Data;
+        _currentAvatarData = _user.Avatar?.Data;
+        _previousNickname = _user.Nickname ?? string.Empty;
+        _previousAbout = _user.About ?? string.Empty;
+
         Nickname ??= string.Empty;
         AboutSelf ??= string.Empty;
     }
@@ -52,6 +53,19 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     {
         _dialogService = dialogService;
         _windowOwner = windowOwner;
+    }
+
+    public Bitmap? Avatar
+    {
+        get => _currentAvatarData.ToBitmap();
+        set
+        {
+            var data = value.FromBitmap();
+            if (EqualityComparer<byte[]?>.Default.Equals(_currentAvatarData, data)) return;
+
+            SetProperty(ref _currentAvatarData, data);
+            SaveChangesCommand.NotifyCanExecuteChanged();
+        }
     }
 
     public string? Nickname
@@ -89,34 +103,15 @@ public partial class EditProfileViewModel : IAsyncImageLoader
         }
     }
 
-    public bool HasChanges() => Avatar != null && Avatar != _user.Avatar?.Data.ToBitmap()
-                                || Nickname != _currentNickname
-                                || AboutSelf != _currentAbout;
+    public bool HasChanges() => _currentAvatarData != null && _previousAvatarData != _currentAvatarData
+                                || Nickname != _previousNickname || AboutSelf != _previousAbout;
 
-    [RelayCommand(CanExecute = nameof(HasChanges))]
-    private async Task SaveChangesAsync()
+    public async Task<Bitmap?> LoadAsync()
     {
-        await _user.SaveChangesAsync();
-        
-        // TODO: apply changed avatar to user
-        // TODO: make _currentAvatar field to handle changes
-        await _user.ChangeAvatarAsync(Avatar!);
-        
-        await Task.Delay(2000);
-        _currentNickname = Nickname;
-        _currentAbout = AboutSelf;
-        Avatar = null;
-    }
-
-    [RelayCommand]
-    private async Task ChangePasswordAsync()
-    {
-        var vm = _dialogService.CreateViewModel<ChangePasswordViewModel>();
-        var passwordChanged = await _dialogService.ShowDialogAsync(_windowOwner, vm);
-        if (passwordChanged == true)
-        {
-            // _user.ChangePassword(vm.NewPassword);
-        }
+        var bytes = await _user.GetAvatarAsync();
+        var bm = bytes.ToBitmap();
+        Avatar = bm ?? Avatar;
+        return bm;
     }
 
     [RelayCommand]
@@ -139,10 +134,25 @@ public partial class EditProfileViewModel : IAsyncImageLoader
         }
     }
 
-    public async Task<Bitmap?> LoadAsync()
+    [RelayCommand]
+    private async Task ChangePasswordAsync()
     {
-        var bm = _user.Avatar?.Data.ToBitmap();
-        Avatar = bm ?? Avatar;
-        return Task.FromResult(bm);
+        var vm = _dialogService.CreateViewModel<ChangePasswordViewModel>();
+        var passwordChanged = await _dialogService.ShowDialogAsync(_windowOwner, vm);
+        if (passwordChanged == true)
+        {
+            // _user.ChangePassword(vm.NewPassword);
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(HasChanges))]
+    private async Task SaveChangesAsync()
+    {
+        await _user.SaveChangesAsync();
+        await _user.ChangeAvatarAsync(_currentAvatarData);
+        
+        _previousAvatarData = _currentAvatarData;
+        _previousNickname = Nickname;
+        _previousAbout = AboutSelf;
     }
 }
