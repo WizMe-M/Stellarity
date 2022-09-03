@@ -16,12 +16,12 @@ public abstract class CachingBase<TCacheDataType>
         _settings = settings;
     }
 
-    protected Task SaveAsync(TCacheDataType data, string fileName)
+    protected Task SaveAsync(string fileName, TCacheDataType data)
     {
         return _settings switch
         {
-            CachingType.Binary => _cachingService.SaveToBinaryCache(fileName, data),
-            CachingType.Json => _cachingService.SaveToJsonCacheAsync(fileName, _cacheSubfolder, data),
+            CachingType.Binary => _cachingService.SaveToBinaryCache(_cacheSubfolder, fileName, data),
+            CachingType.Json => _cachingService.SaveToJsonCacheAsync(_cacheSubfolder, fileName, data),
             _ => throw new InvalidOperationException("Only binary and json caching allowed")
         };
     }
@@ -30,8 +30,8 @@ public abstract class CachingBase<TCacheDataType>
     {
         return _settings switch
         {
-            CachingType.Binary => _cachingService.LoadFromJsonCacheAsync<TCacheDataType>(file, _cacheSubfolder),
-            CachingType.Json => _cachingService.LoadFromJsonCacheAsync<TCacheDataType>(file, _cacheSubfolder),
+            CachingType.Binary => _cachingService.LoadFromBinaryCache<TCacheDataType>(_cacheSubfolder, file),
+            CachingType.Json => _cachingService.LoadFromJsonCacheAsync<TCacheDataType>(_cacheSubfolder, file),
             _ => throw new InvalidOperationException("Only binary and json caching allowed")
         };
     }

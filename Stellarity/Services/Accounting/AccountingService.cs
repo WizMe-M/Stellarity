@@ -75,6 +75,6 @@ public class AccountingService : CachingBase<AuthorizationInfo>
             throw new InvalidOperationException($"Can't save nothing to cache. {nameof(AuthorizedAccount)} was null");
 
         var accountInfo = new AuthorizationInfo(AuthorizedAccount, UserRemembered);
-        await SaveAsync(accountInfo, _cacheFileName);
+        await SaveAsync(_cacheFileName, accountInfo);
     }
 }
