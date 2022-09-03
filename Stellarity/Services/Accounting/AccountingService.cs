@@ -1,17 +1,17 @@
 using System;
 using System.Threading.Tasks;
 using Stellarity.Database.Entities;
+using Stellarity.Services.Cache;
 
 namespace Stellarity.Services.Accounting;
 
-public class AccountingService
+public class AccountingService : CachingBase<AuthorizationInfo>
 {
     private readonly string _cacheFileName;
-    private readonly CachingService _cacher;
 
-    public AccountingService(CachingService cacher, string cacheFileName = "auth.info")
+    public AccountingService(CachingService cachingService, string cacheSubfolder = "Accounting/",
+        string cacheFileName = "auth.info") : base(cachingService, cacheSubfolder)
     {
-        _cacher = cacher;
         _cacheFileName = cacheFileName;
     }
 
@@ -34,7 +34,7 @@ public class AccountingService
         {
             UserRemembered = false;
             AuthorizedAccount = null;
-            ClearAuthorizationCache();
+            ClearCache();
         }
     }
 
@@ -67,11 +67,7 @@ public class AccountingService
         return Task.FromResult(authenticated);
     }
 
-    private async Task<AuthorizationInfo?> LoadAuthorizationInfoAsync()
-    {
-        var accountInfo = await _cacher.LoadFromJsonCacheAsync<AuthorizationInfo>(_cacheFileName);
-        return accountInfo;
-    }
+    private async Task<AuthorizationInfo?> LoadAuthorizationInfoAsync() => await LoadAsync(_cacheFileName);
 
     private async void SaveAuthorizationInfoAsync()
     {
@@ -79,8 +75,14 @@ public class AccountingService
             throw new InvalidOperationException($"Can't save nothing to cache. {nameof(AuthorizedAccount)} was null");
 
         var accountInfo = new AuthorizationInfo(AuthorizedAccount, UserRemembered);
-        await _cacher.SaveToJsonCacheAsync(_cacheFileName, accountInfo);
+        await SaveAsync(accountInfo);
     }
 
-    private void ClearAuthorizationCache() => _cacher.Clear(_cacheFileName);
+    protected override Task SaveAsync(AuthorizationInfo data) =>
+        CachingService.SaveToJsonCacheAsync(_cacheFileName, CacheSubfolder, data);
+
+    protected override Task<AuthorizationInfo> LoadAsync(string file)
+    {
+        return CachingService.LoadFromJsonCacheAsync<AuthorizationInfo>(_cacheFileName, CacheSubfolder)!;
+    }
 }

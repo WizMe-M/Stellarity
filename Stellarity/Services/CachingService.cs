@@ -47,12 +47,14 @@ public class CachingService
     /// Caches <paramref name="data"/> into the file with <paramref name="fileName"/> on the disk folder 
     /// </summary>
     /// <param name="fileName">Final name of the file</param>
+    /// <param name="subfolder">Subfolder name in Cache folder</param>
     /// <param name="data">Data to cache</param>
     /// <returns>Represents task of caching operation</returns>
-    public Task SaveToJsonCacheAsync<T>(string fileName, T data)
+    public Task SaveToJsonCacheAsync<T>(string fileName, string subfolder, T data)
         where T : class
     {
-        Directory.CreateDirectory(_cacheRootFolder);
+        var dir = Path.Combine(_cacheRootFolder, subfolder);
+        Directory.CreateDirectory(dir);
         var path = Path.Combine(_cacheRootFolder, fileName);
         var json = JsonConvert.SerializeObject(data);
         return File.WriteAllTextAsync(path, json);
@@ -62,11 +64,12 @@ public class CachingService
     /// Gets an object from specified cached file with <paramref name="fileName"/>
     /// </summary>
     /// <param name="fileName">Name of the cache file</param>
+    /// <param name="subfolder">Subfolder name in Cache folder</param>
     /// <returns>Represents task of reading an object from cache operation</returns>
-    public Task<T?> LoadFromJsonCacheAsync<T>(string fileName)
+    public Task<T?> LoadFromJsonCacheAsync<T>(string fileName, string subfolder)
         where T : class
     {
-        var path = Path.Combine(_cacheRootFolder, fileName);
+        var path = Path.Combine(_cacheRootFolder, subfolder, fileName);
         if (!File.Exists(path)) return Task.FromResult<T?>(null);
         var json = File.ReadAllText(path);
         var data = JsonConvert.DeserializeObject<T>(json);
@@ -74,24 +77,42 @@ public class CachingService
     }
 
     /// <summary>
-    /// Clears all cache from cache-folder
+    /// Clears all cache from root cache-folder
     /// </summary>
     public void Clear()
     {
-        var directory = new DirectoryInfo(_cacheRootFolder);
-        var files = directory.GetFiles();
-        foreach (var file in files)
-            Clear(file.Name);
+        var root = new DirectoryInfo(_cacheRootFolder);
+        foreach (var file in root.EnumerateFiles()) Clear(file);
+        foreach (var directory in root.EnumerateDirectories()) Clear(directory);
     }
 
     /// <summary>
+    /// Clears cache from files only in specified directory
+    /// </summary>
+    /// <param name="directory">Target directory info</param>
+    public void Clear(DirectoryInfo directory)
+    {
+        foreach (var file in directory.EnumerateFiles()) Clear(file);
+    }
+
+    /// <summary>
+    /// Clears cache from files only in specified directory
+    /// </summary>
+    /// <param name="folder">Target folder name in cache root</param>
+    public void ClearFolder(string folder)
+    {
+        var path = Path.Combine(_cacheRootFolder, folder);
+        var dir = new DirectoryInfo(path);
+        foreach (var file in dir.EnumerateFiles()) Clear(file);
+    }
+    
+    /// <summary>
     /// Clears specified cache-file
     /// </summary>
-    /// <param name="fileName">Name of the cache-file</param>
-    public void Clear(string fileName)
+    /// <param name="file">Target file info</param>
+    public void Clear(FileInfo file)
     {
-        var path = Path.Combine(_cacheRootFolder, fileName);
-        if (!File.Exists(path)) return;
-        File.Delete(path);
+        if (!File.Exists(file.FullName)) return;
+        File.Delete(file.FullName);
     }
 }
