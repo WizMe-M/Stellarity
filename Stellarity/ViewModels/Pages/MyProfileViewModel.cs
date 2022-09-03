@@ -51,10 +51,9 @@ public class MyProfileViewModel : PageViewModel, IAsyncImageLoader
 
     public ICommand SendComment { get; }
 
-    public async Task<Bitmap?> LoadAsync()
+    public async Task LoadAsync()
     {
         var bm = User.Avatar?.Data.ToBitmap();
         Avatar = bm ?? await Image.OpenDefaultImageAsync();
-        return bm;
     }
 }

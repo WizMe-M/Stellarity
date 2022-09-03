@@ -106,12 +106,11 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     public bool HasChanges() => _currentAvatarData != null && _previousAvatarData != _currentAvatarData
                                 || Nickname != _previousNickname || AboutSelf != _previousAbout;
 
-    public async Task<Bitmap?> LoadAsync()
+    public async Task LoadAsync()
     {
         var bytes = await _user.GetAvatarAsync();
         var bm = bytes.ToBitmap();
         Avatar = bm ?? Avatar;
-        return bm;
     }
 
     [RelayCommand]

@@ -9,5 +9,5 @@ namespace Stellarity.Basic;
 /// </summary>
 public interface IAsyncImageLoader
 {
-    Task<Bitmap?> LoadAsync();
+    Task LoadAsync();
 }
