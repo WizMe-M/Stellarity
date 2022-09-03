@@ -17,7 +17,7 @@ public partial class EditProfileView : ReactiveUserControl<EditProfileViewModel>
         ViewModel = viewModel;
         this.WhenActivated(async d =>
         {
-            // await ViewModel!.LoadAsync();
+            await ViewModel!.LoadAsync();
         });
     }
 }

@@ -139,7 +139,7 @@ public partial class EditProfileViewModel : IAsyncImageLoader
         }
     }
 
-    public Task<Bitmap?> LoadAsync()
+    public async Task<Bitmap?> LoadAsync()
     {
         var bm = _user.Avatar?.Data.ToBitmap();
         Avatar = bm ?? Avatar;

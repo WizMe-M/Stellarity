@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Microsoft.EntityFrameworkCore;
+using Ninject;
+using Stellarity.Services;
 
 namespace Stellarity.Database.Entities;
 
@@ -154,4 +156,21 @@ public partial class Account
         return context.Users.First();
     }
 #endif
+    public async Task<byte[]?> GetAvatarAsync()
+    {
+        // get image from cache or db by guid
+        // return its data
+        var cacheService = App.Current.DiContainer.Get<ImageCacheService>();
+        var bytes = await cacheService.LoadAvatarAsync(AvatarGuid);
+        if (AvatarGuid is { } && bytes is null)
+        {
+            await using var context = new StellarisContext();
+            var user = context.Entry(this).Entity;
+            context.Users.Attach(user);
+            await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
+            bytes = Avatar!.Data;
+            await cacheService.SaveAvatarAsync(Avatar);
+        }
+        return bytes;
+    }
 }

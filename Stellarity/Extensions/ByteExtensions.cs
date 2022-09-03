@@ -20,6 +20,15 @@ public static class ByteExtensions
         return new Bitmap(ms);
     }
 
+    public static byte[]? FromBitmap(this Bitmap? img)
+    {
+        if (img is null) return null;
+
+        using var ms = new MemoryStream();
+        img.Save(ms);
+        return ms.ToArray();
+    }
+
     public static byte[] ToBytes<T>(this T obj)
     {
         if (obj is null) throw new InvalidOperationException("Convertable object was null");
