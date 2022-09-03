@@ -14,16 +14,21 @@ public partial class Image
 {
     public Image()
     {
+        Guid = Guid.NewGuid();
         Games = new HashSet<Game>();
         Users = new HashSet<Account>();
     }
 
-    public Image(Guid guid, string name, string alter, byte[] data) : this()
+    public Image(Guid guid, string name, byte[] data) : this()
     {
         Guid = guid;
         Data = data;
         Name = name;
-        Alter = alter;
+    }
+
+    public Image(string name) : this()
+    {
+        Name = name;
     }
 
     /// <summary>
@@ -33,7 +38,6 @@ public partial class Image
 
     public byte[] Data { get; set; } = null!;
     public string Name { get; set; } = null!;
-    public string Alter { get; set; } = null!;
 
     public virtual ICollection<Game> Games { get; set; }
     public virtual ICollection<Account> Users { get; set; }
@@ -53,8 +57,7 @@ public partial class Image
         {
             var guid = Guid.NewGuid();
             var name = $"{account.Email}";
-            var alter = $"{account.Email} avatar";
-            image = new Image(guid, name, alter, data);
+            image = new Image(guid, name, data);
             context.Images.Add(image);
         }
         else
@@ -79,8 +82,7 @@ public partial class Image
         {
             var guid = Guid.NewGuid();
             var name = $"{game.Name}";
-            var alter = $"{game.Name} cover";
-            image = new Image(guid, name, alter, data);
+            image = new Image(guid, name, data);
             context.Images.Add(image);
         }
         else

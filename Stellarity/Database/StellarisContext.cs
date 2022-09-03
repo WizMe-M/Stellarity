@@ -119,10 +119,6 @@ public sealed class StellarisContext : DbContext
                 .HasColumnName("guid")
                 .HasDefaultValueSql("gen_random_uuid()");
 
-            entity.Property(e => e.Alter)
-                .HasMaxLength(100)
-                .HasColumnName("alter");
-
             entity.Property(e => e.Data)
                 .HasColumnName("data");
 
