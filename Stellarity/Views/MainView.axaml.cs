@@ -20,13 +20,13 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         this.WhenActivated(d =>
         {
             var accountingService = App.Current.DiContainer.Get<AccountingService>();
-            Profile = this.GetControl<NavigationViewItem>(nameof(Profile));
             Profile.Content = new MyProfileView(new MyProfileViewModel(accountingService));
 
             var dialogService = App.Current.DiContainer.Get<IDialogService>();
-            EditProfile = this.GetControl<NavigationViewItem>(nameof(EditProfile));
             EditProfile.Content =
                 new EditProfileView(new EditProfileViewModel(dialogService, ViewModel!, accountingService.AuthorizedAccount!));
+
+            Shop.Content = new GameShopView(new GameShopViewModel());
         });
 
         InitializeComponent();
@@ -35,6 +35,10 @@ public partial class MainView : ReactiveWindow<MainViewModel>
 #endif
         DragBorder = this.GetControl<Border>(nameof(DragBorder));
         DragBorder.PointerPressed += (_, e) => BeginMoveDrag(e);
+
+        Profile = this.GetControl<NavigationViewItem>(nameof(Profile));
+        EditProfile = this.GetControl<NavigationViewItem>(nameof(EditProfile));
+        Shop = this.GetControl<NavigationViewItem>(nameof(Shop));
     }
 
 
