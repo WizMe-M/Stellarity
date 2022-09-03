@@ -40,6 +40,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="MikD1.AvaloniaFixedWrapPanel" Version="0.0.2"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
         <PackageReference Include="Ninject" Version="3.3.6"/>
         <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0"/>
