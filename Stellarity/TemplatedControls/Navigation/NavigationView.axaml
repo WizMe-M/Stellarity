@@ -3,7 +3,7 @@
         xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
         xmlns:navigation="clr-namespace:Stellarity.TemplatedControls.Navigation">
     <Design.PreviewWith>
-        <navigation:NavigationView Width="400" Height="300">
+        <navigation:NavigationView Width="400" Height="300" Header="Stellarity">
             <navigation:NavigationViewItem Header="Item 1" IconValue="mdi-account" />
             <navigation:NavigationViewItem Header="Item 2" IconValue="mdi-account" />
         </navigation:NavigationView>
@@ -56,7 +56,7 @@
                                               HorizontalAlignment="Left" VerticalAlignment="Center"
                                               HorizontalContentAlignment="Center"
                                               IsChecked="{Binding #PART_SplitView.IsPaneOpen, Mode=TwoWay}"
-                                              CornerRadius="4" i:Attached.Icon="mdi-menu" />
+                                              CornerRadius="0" i:Attached.Icon="mdi-menu" />
 
                                 <ItemsPresenter Name="PART_ItemsPresenter" Margin="0"
                                                 Items="{TemplateBinding Items}"
@@ -67,7 +67,8 @@
                         </SplitView.Pane>
 
                         <SplitView.Content>
-                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            <Border Margin="0 45"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="{TemplateBinding CornerRadius}"
                                     Background="{TemplateBinding Background}"
@@ -82,6 +83,12 @@
                             </Border>
                         </SplitView.Content>
                     </SplitView>
+
+                    <ContentPresenter Grid.Column="1" Name="PART_ContentPresenter" Content="{TemplateBinding Header}"
+                                      TextBlock.FontSize="14" TextBlock.FontFamily="Segoe UI"
+                                      TextBlock.Foreground="{DynamicResource SystemBaseHighColor}"
+                                      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 10"
+                                      ClipToBounds="True" />
                 </Grid>
             </ControlTemplate>
         </Setter>

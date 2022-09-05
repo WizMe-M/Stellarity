@@ -13,10 +13,18 @@ namespace Stellarity.TemplatedControls.Navigation;
 public class NavigationView : TabControl
 {
     private readonly Stack<IContentPage> _pagesStack = new();
-    private SplitView _rootSplitView = null!;
 
     public static readonly StyledProperty<double> CompactPaneLengthProperty =
         AvaloniaProperty.Register<NavigationView, double>(nameof(CompactPaneLength));
+
+    public static readonly StyledProperty<string> HeaderProperty = AvaloniaProperty.Register<NavigationView, string>(
+        nameof(Header));
+
+    public string Header
+    {
+        get => GetValue(HeaderProperty);
+        set => SetValue(HeaderProperty, value);
+    }
 
     public double CompactPaneLength
     {
@@ -71,10 +79,5 @@ public class NavigationView : TabControl
             default:
                 throw new InvalidOperationException($"{nameof(e.ChangeContentStrategy)} was outside bounds");
         }
-    }
-
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-    {
-        _rootSplitView = e.NameScope.Get<SplitView>("PART_SplitView");
     }
 }

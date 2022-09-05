@@ -44,13 +44,8 @@
         <Border Name="DragBorder" Background="Transparent"
                 Height="40" Margin="40 0 0 0"
                 VerticalAlignment="Top" ZIndex="2" />
-        <!-- TODO: make own NavigationView (again), implement stack of views and handle bubbling event of changing current view -->
 
-        <nav:NavigationView Background="Transparent">
-            <!-- <NavigationView.PanelMaterial> -->
-            <!--     <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" -->
-            <!--                                  TintOpacity="1" MaterialOpacity="0.9" /> -->
-            <!-- </NavigationView.PanelMaterial> -->
+        <nav:NavigationView Background="Transparent" Header="Stellarity">
             <nav:NavigationViewItem Name="MyProfile" IconValue="{StaticResource MyProfile}" Header="My profile" />
             <nav:NavigationViewItem Name="EditProfile" IconValue="{StaticResource User}" Header="Edit profile" />
             <nav:NavigationViewItem Name="Shop" IconValue="{StaticResource Shop}" Header="Shop" />
