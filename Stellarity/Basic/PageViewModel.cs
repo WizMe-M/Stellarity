@@ -1,6 +1,4 @@
-﻿using Stellarity.UserControls;
-
-namespace Stellarity.Basic;
+﻿namespace Stellarity.Basic;
 
 /// <summary>
 /// Base VM class for pages

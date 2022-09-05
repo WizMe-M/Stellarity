@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 
-namespace Stellarity.UserControls;
+namespace Stellarity.TemplatedControls;
 
 public class ImageButton : Button
 {

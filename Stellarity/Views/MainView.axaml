@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Stellarity.ViewModels"
-        xmlns:uc="clr-namespace:Stellarity.UserControls"
+        xmlns:nav="clr-namespace:Stellarity.TemplatedControls.Navigation"
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
         x:Class="Stellarity.Views.MainView" x:DataType="vm:MainViewModel"
         x:CompileBindings="True"
@@ -41,20 +41,19 @@
                                              TintOpacity="1" MaterialOpacity="0.75" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        <Border Name="DragBorder" Background="Transparent" 
-                Height="40" Margin="40 0 0 0" 
+        <Border Name="DragBorder" Background="Transparent"
+                Height="40" Margin="40 0 0 0"
                 VerticalAlignment="Top" ZIndex="2" />
         <!-- TODO: make own NavigationView (again), implement stack of views and handle bubbling event of changing current view -->
-        <NavigationView Background="Transparent" Header="Stellarity" IsFloatingHeader="True" HideTitle="True"
-                        IsOpen="False" AlwaysOpen="False" DisplayMode="CompactOverlay" DynamicDisplayMode="False">
-            <NavigationView.PanelMaterial>
-                <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black"
-                                             TintOpacity="1" MaterialOpacity="0.9" />
-            </NavigationView.PanelMaterial>
-            
-            <uc:NavigationViewItem Name="Profile" IconValue="{StaticResource MyProfile}" Header="Profile" />
-            <uc:NavigationViewItem Name="EditProfile" IconValue="{StaticResource User}" Header="Edit profile" />
-            <uc:NavigationViewItem Name="Shop" IconValue="{StaticResource Shop}" Header="Shop" />
-        </NavigationView>
+
+        <nav:NavigationView Background="Transparent">
+            <!-- <NavigationView.PanelMaterial> -->
+            <!--     <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" -->
+            <!--                                  TintOpacity="1" MaterialOpacity="0.9" /> -->
+            <!-- </NavigationView.PanelMaterial> -->
+            <nav:NavigationViewItem Name="MyProfile" IconValue="{StaticResource MyProfile}" Header="My profile" />
+            <nav:NavigationViewItem Name="EditProfile" IconValue="{StaticResource User}" Header="Edit profile" />
+            <nav:NavigationViewItem Name="Shop" IconValue="{StaticResource Shop}" Header="Shop" />
+        </nav:NavigationView>
     </Panel>
 </Window>

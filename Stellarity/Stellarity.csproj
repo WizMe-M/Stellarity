@@ -10,27 +10,27 @@
         <PackageIcon>stellaris-logo.ico</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove=".gitignore"/>
+        <None Remove=".gitignore" />
     </ItemGroup>
     <ItemGroup>
         <!--This helps with theme dll-s trimming.
         If you will publish your application in self-contained mode with p:PublishTrimmed=true and it will use Fluent theme Default theme will be trimmed from the output and vice versa.
         https://github.com/AvaloniaUI/Avalonia/issues/5593 -->
-        <TrimmableAssembly Include="Avalonia.Themes.Fluent"/>
-        <TrimmableAssembly Include="Avalonia.Themes.Default"/>
+        <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
+        <TrimmableAssembly Include="Avalonia.Themes.Default" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Aura.UI" Version="0.1.4.1"/>
-        <PackageReference Include="Aura.UI.FluentTheme" Version="0.1.4"/>
-        <PackageReference Include="Avalonia" Version="0.10.18"/>
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.17"/>
+        <PackageReference Include="Aura.UI" Version="0.1.4.1" />
+        <PackageReference Include="Aura.UI.FluentTheme" Version="0.1.4" />
+        <PackageReference Include="Avalonia" Version="0.10.18" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.17" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.17"/>
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.17"/>
-        <PackageReference Include="AvaloniaSpacedGrid" Version="0.10.4"/>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0"/>
-        <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia" Version="1.3.1"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.17" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.17" />
+        <PackageReference Include="AvaloniaSpacedGrid" Version="0.10.4" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+        <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia" Version="1.3.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -39,17 +39,17 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
-        <PackageReference Include="MikD1.AvaloniaFixedWrapPanel" Version="0.0.2"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
-        <PackageReference Include="Ninject" Version="3.3.6"/>
-        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5"/>
-        <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="5.3.0"/>
-        <PackageReference Include="ReactiveUI" Version="16.2.6"/>
-        <PackageReference Include="ReactiveUI.Fody" Version="16.2.6"/>
-        <PackageReference Include="ReactiveValidation.Avalonia" Version="2.0.1"/>
-        <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="MikD1.AvaloniaFixedWrapPanel" Version="0.0.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Ninject" Version="3.3.6" />
+        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
+        <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="5.3.0" />
+        <PackageReference Include="ReactiveUI" Version="16.2.6" />
+        <PackageReference Include="ReactiveUI.Fody" Version="16.2.6" />
+        <PackageReference Include="ReactiveValidation.Avalonia" Version="2.0.1" />
+        <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Update="Assets\Locales\Resources.resx">
@@ -69,17 +69,26 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
+        <Compile Update="TemplatedControls\Navigation\NavigationViewItem.cs">
+          <DependentUpon>NavigationViewItem.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="TemplatedControls\Navigation\NavigationView.cs">
+          <DependentUpon>NavigationView.axaml</DependentUpon>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
-        <AdditionalFiles Include="Assets\Resources\HamburgerResources.axaml"/>
-        <AdditionalFiles Include="Assets\Resources\MaterialDesignIcons.axaml"/>
-        <AdditionalFiles Include="Styles\HamburgerItemStyles.axaml"/>
-        <AdditionalFiles Include="Styles\HamburgerMenuStyles.axaml"/>
-        <AdditionalFiles Include="Styles\LineSeparator.axaml"/>
-        <AdditionalFiles Include="Styles\NavigationViewItem.axaml"/>
+        <AdditionalFiles Include="Assets\Resources\HamburgerResources.axaml" />
+        <AdditionalFiles Include="Assets\Resources\MaterialDesignIcons.axaml" />
+        <AdditionalFiles Include="TemplatedControls\LineSeparator.axaml" />
+        <AdditionalFiles Include="TemplatedControls\ImageButton.axaml" />
+        <AdditionalFiles Include="TemplatedControls\Navigation\NavigationView.axaml" />
+        <AdditionalFiles Include="TemplatedControls\Navigation\NavigationViewItem.axaml" />
     </ItemGroup>
     <ItemGroup>
-        <AvaloniaResource Include="Assets\Images\stellaris-logo.ico"/>
-        <AvaloniaResource Include="Assets\Images\placeholder.png"/>
+        <AvaloniaResource Include="Assets\Images\stellaris-logo.ico" />
+        <AvaloniaResource Include="Assets\Images\placeholder.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Styles" />
     </ItemGroup>
 </Project>

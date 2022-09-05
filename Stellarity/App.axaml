@@ -17,9 +17,9 @@
 
     <Application.Styles>
         <FluentTheme Mode="Dark" />
-        <StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml"/>
-        <StyleInclude Source="/Styles/LineSeparator.axaml" />
-        <StyleInclude Source="/Styles/NavigationViewItem.axaml" />
-        <StyleInclude Source="/UserControls/ImageButton.axaml" />
+        <StyleInclude Source="/TemplatedControls/LineSeparator.axaml" />
+        <StyleInclude Source="/TemplatedControls/ImageButton.axaml" />
+        <StyleInclude Source="/TemplatedControls/Navigation/NavigationView.axaml" />
+        <StyleInclude Source="/TemplatedControls/Navigation/NavigationViewItem.axaml" />
     </Application.Styles>
 </Application>

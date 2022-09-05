@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Stellarity.ViewModels.Pages"
              xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
-             xmlns:uc="clr-namespace:Stellarity.UserControls"
              xmlns:converters="clr-namespace:Stellarity.Converters"
+             xmlns:templatedControls="clr-namespace:Stellarity.TemplatedControls"
              mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="600"
              x:Class="Stellarity.Views.Pages.MyProfileView"
              x:DataType="vm:MyProfileViewModel" x:CompileBindings="True"
@@ -70,7 +70,7 @@
                                 <DockPanel Margin="10 5">
                                     <TextBlock DockPanel.Dock="Bottom" Text="{Binding Body}"
                                                TextWrapping="Wrap" FontWeight="Normal" Margin="5" />
-                                    <uc:LineSeparator DockPanel.Dock="Bottom" Color="Black" Margin="5" />
+                                    <templatedControls:LineSeparator DockPanel.Dock="Bottom" Color="Black" Margin="5" />
                                     <i:Icon DockPanel.Dock="Left" Value="{StaticResource User}" Margin="5" />
                                     <TextBlock
                                         Text="{Binding Author.Nickname, 

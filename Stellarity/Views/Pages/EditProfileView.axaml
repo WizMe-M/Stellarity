@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Stellarity.ViewModels.Pages"
-             xmlns:uc="clr-namespace:Stellarity.UserControls"
+             xmlns:templatedControls="clr-namespace:Stellarity.TemplatedControls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Stellarity.Views.Pages.EditProfileView"
              x:DataType="vm:EditProfileViewModel" x:CompileBindings="True"
@@ -18,7 +18,7 @@
         <Button DockPanel.Dock="Bottom" Command="{Binding SaveChangesCommand}"
                 Content="Сохранить изменения" HorizontalAlignment="Right" />
 
-        <uc:ImageButton DockPanel.Dock="Left" ImageSource="{Binding Avatar}"
+        <templatedControls:ImageButton DockPanel.Dock="Left" ImageSource="{Binding Avatar}"
                         Command="{Binding SetAvatarCommand}" Width="250" Height="250" />
 
         <DockPanel DockPanel.Dock="Top">

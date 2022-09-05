@@ -6,7 +6,7 @@ using HanumanInstitute.MvvmDialogs;
 using Ninject;
 using ReactiveUI;
 using Stellarity.Services.Accounting;
-using Stellarity.UserControls;
+using Stellarity.TemplatedControls.Navigation;
 using Stellarity.ViewModels;
 using Stellarity.ViewModels.Pages;
 using Stellarity.Views.Pages;
@@ -20,7 +20,7 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         this.WhenActivated(d =>
         {
             var accountingService = App.Current.DiContainer.Get<AccountingService>();
-            Profile.Content = new MyProfileView(new MyProfileViewModel(accountingService));
+            MyProfile.Content = new MyProfileView(new MyProfileViewModel(accountingService));
 
             var dialogService = App.Current.DiContainer.Get<IDialogService>();
             EditProfile.Content =
@@ -36,7 +36,7 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         DragBorder = this.GetControl<Border>(nameof(DragBorder));
         DragBorder.PointerPressed += (_, e) => BeginMoveDrag(e);
 
-        Profile = this.GetControl<NavigationViewItem>(nameof(Profile));
+        MyProfile = this.GetControl<NavigationViewItem>(nameof(MyProfile));
         EditProfile = this.GetControl<NavigationViewItem>(nameof(EditProfile));
         Shop = this.GetControl<NavigationViewItem>(nameof(Shop));
     }

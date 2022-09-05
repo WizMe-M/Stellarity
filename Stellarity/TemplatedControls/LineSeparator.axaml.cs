@@ -2,7 +2,7 @@
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 
-namespace Stellarity.UserControls;
+namespace Stellarity.TemplatedControls;
 
 public class LineSeparator : TemplatedControl
 {

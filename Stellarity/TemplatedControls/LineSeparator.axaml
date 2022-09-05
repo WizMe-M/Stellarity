@@ -1,13 +1,13 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:uc="clr-namespace:Stellarity.UserControls">
+        xmlns:c="clr-namespace:Stellarity.TemplatedControls">
     <Design.PreviewWith>
         <Border Padding="20">
-            <uc:LineSeparator Width="200" Margin="5" Color="Gray" Thickness="1" />
+            <c:LineSeparator Width="200" Margin="5" Color="Gray" Thickness="1" />
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="uc|LineSeparator">
+    <Style Selector="c|LineSeparator">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <ControlTemplate>

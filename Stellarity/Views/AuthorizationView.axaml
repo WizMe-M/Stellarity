@@ -3,9 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
-        xmlns:uc="clr-namespace:Stellarity.UserControls"
         xmlns:locales="clr-namespace:Stellarity.Assets.Locales"
         xmlns:vm="clr-namespace:Stellarity.ViewModels"
+        xmlns:templatedControls="clr-namespace:Stellarity.TemplatedControls"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
         x:Class="Stellarity.Views.AuthorizationView"
         x:DataType="vm:AuthorizationViewModel" 
@@ -122,7 +122,7 @@
                         FontSize="14" Padding="50 5" Margin="0 0 0 10" HorizontalAlignment="Center" />
             </sg:SpacedGrid>
 
-            <uc:LineSeparator Width="270" Margin="10" DockPanel.Dock="Top" />
+            <templatedControls:LineSeparator Width="270" Margin="10" DockPanel.Dock="Top" />
 
             <sg:SpacedGrid ColumnSpacing="5" RowSpacing="0" ColumnDefinitions="* 2.5*" RowDefinitions="* *">
                 <TextBlock Grid.Column="0" Grid.Row="0" Classes="right question" Text="{x:Static locales:Resources.forgot_password_q}" />
