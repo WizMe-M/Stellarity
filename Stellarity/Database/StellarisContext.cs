@@ -43,6 +43,17 @@ public sealed class StellarisContext : DbContext
                 Password = "password"
             };
         }
+        catch (DirectoryNotFoundException)
+        {
+            config = new DatabaseXmlReader.DatabaseConfiguration()
+            {
+                Host = "localhost",
+                Port = "5432",
+                Database = "Stellaris",
+                UserId = "postgres",
+                Password = "password"
+            };
+        }
 
         optionsBuilder.UseNpgsql(config.ToString());
     }
