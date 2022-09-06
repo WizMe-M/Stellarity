@@ -16,7 +16,7 @@ public partial class MyProfileViewModel : IAsyncImageLoader
     public MyProfileViewModel(Account user)
     {
         User = user;
-        _avatar = Image.OpenDefaultImage();
+        Avatar = Image.OpenDefaultImage();
     }
 
     public MyProfileViewModel(AccountingService accountingService) : this(accountingService.AuthorizedAccount!)
