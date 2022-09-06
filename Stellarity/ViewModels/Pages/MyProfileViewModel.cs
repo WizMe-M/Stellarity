@@ -16,6 +16,7 @@ public class MyProfileViewModel : PageViewModel, IAsyncImageLoader
     public MyProfileViewModel(Account user)
     {
         User = user;
+        Avatar = Image.OpenDefaultImage();
 
         var canSendComment = this.WhenAnyValue(model => model.CommentText,
             s => !string.IsNullOrWhiteSpace(s));
@@ -39,11 +40,9 @@ public class MyProfileViewModel : PageViewModel, IAsyncImageLoader
 
     public Account User { get; }
 
-    [Reactive]
-    public Bitmap? Avatar { get; private set; }
+    [Reactive] public Bitmap? Avatar { get; private set; }
 
-    [Reactive]
-    public string CommentText { get; set; } = string.Empty;
+    [Reactive] public string CommentText { get; set; } = string.Empty;
 
     public ObservableCollection<Comment> Comments { get; } = new();
 
@@ -53,7 +52,8 @@ public class MyProfileViewModel : PageViewModel, IAsyncImageLoader
 
     public async Task LoadAsync()
     {
-        var bm = User.Avatar?.Data.ToBitmap();
-        Avatar = bm ?? await Image.OpenDefaultImageAsync();
+        var bytes = await User.GetAvatarAsync();
+        var bm = bytes.ToBitmap();
+        Avatar = bm ?? Avatar;
     }
 }

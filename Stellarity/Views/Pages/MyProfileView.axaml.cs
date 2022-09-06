@@ -15,9 +15,6 @@ public partial class MyProfileView : ReactiveUserControl<MyProfileViewModel>
     public MyProfileView(MyProfileViewModel viewModel) : this()
     {
         ViewModel = viewModel;
-        this.WhenActivated(async d =>
-        {
-            // var bm = await ViewModel!.LoadAsync();
-        });
+        this.WhenActivated(async d => { await ViewModel!.LoadAsync(); });
     }
 }
