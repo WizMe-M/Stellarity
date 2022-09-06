@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Stellarity.Database.Entities;
 
@@ -26,8 +27,23 @@ public sealed class StellarisContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (optionsBuilder.IsConfigured) return;
+        DatabaseXmlReader.DatabaseConfiguration config;
+        try
+        {
+            config = DatabaseXmlReader.ParseXmlFile("B:\\database_config.xml");
+        }
+        catch (FileNotFoundException)
+        {
+            config = new DatabaseXmlReader.DatabaseConfiguration()
+            {
+                Host = "localhost",
+                Port = "5432",
+                Database = "Stellaris",
+                UserId = "postgres",
+                Password = "password"
+            };
+        }
 
-        var config = DatabaseXmlReader.ParseXmlFile("B:\\database_config.xml");
         optionsBuilder.UseNpgsql(config.ToString());
     }
 
