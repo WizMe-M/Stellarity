@@ -36,7 +36,7 @@
                         <TextBlock Text="{Binding User.Nickname, TargetNullValue='Никнейм не указан'}"
                                    FontWeight="Light" />
                         <TextBlock Text="{Binding User.RegistrationDate, StringFormat={}Дата регистрации: {0:d}}" />
-                        <Button Command="{Binding GoEditProfile}" Content="Редактировать профиль"
+                        <Button Command="{Binding GoEditProfileCommand}" Content="Редактировать профиль"
                                 HorizontalAlignment="Center" Margin="0 30 0 0" />
                     </StackPanel>
                 </DockPanel>
@@ -49,7 +49,7 @@
                 <DockPanel Margin="20 30">
                     <TextBox DockPanel.Dock="Top" Text="{Binding CommentText}"
                              Watermark="Содержимое комментария" Height="90" TextWrapping="Wrap" AcceptsReturn="True" />
-                    <Button Command="{Binding SendComment}" Content="Отправить" Margin="5"
+                    <Button Command="{Binding SendCommentCommand}" Content="Отправить" Margin="5"
                             HorizontalAlignment="Right" HotKey="Ctrl+Enter" />
                 </DockPanel>
 

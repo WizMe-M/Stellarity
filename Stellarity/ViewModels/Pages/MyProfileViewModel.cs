@@ -1,9 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Avalonia.Media.Imaging;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Stellarity.Basic;
 using Stellarity.Database.Entities;
 using Stellarity.Extensions;
@@ -11,44 +10,41 @@ using Stellarity.Services.Accounting;
 
 namespace Stellarity.ViewModels.Pages;
 
-public class MyProfileViewModel : PageViewModel, IAsyncImageLoader
+[ObservableObject]
+public partial class MyProfileViewModel : IAsyncImageLoader
 {
     public MyProfileViewModel(Account user)
     {
         User = user;
-        Avatar = Image.OpenDefaultImage();
-
-        var canSendComment = this.WhenAnyValue(model => model.CommentText,
-            s => !string.IsNullOrWhiteSpace(s));
-        SendComment = ReactiveCommand.Create(() =>
-        {
-            // TODO: for testing only
-            // var r = new Random();
-            var same = true; //r.Next() % 2 == 0;
-            var comment = same
-                ? Comment.Send(CommentText, User)
-                : Comment.Send(CommentText, User, new Account("other@mail.ru", ""));
-            Comments.Add(comment);
-        }, canSendComment);
-        GoEditProfile = ReactiveCommand.Create(() => { });
+        _avatar = Image.OpenDefaultImage();
     }
 
-    public MyProfileViewModel(AccountingService accountingService)
-        : this(accountingService.AuthorizedAccount!)
+    public MyProfileViewModel(AccountingService accountingService) : this(accountingService.AuthorizedAccount!)
     {
     }
 
+    public ObservableCollection<Comment> Comments { get; } = new();
     public Account User { get; }
 
-    [Reactive] public Bitmap? Avatar { get; private set; }
+    [ObservableProperty] private Bitmap? _avatar;
 
-    [Reactive] public string CommentText { get; set; } = string.Empty;
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommentCommand))]
+    private string _commentText = string.Empty;
 
-    public ObservableCollection<Comment> Comments { get; } = new();
+    public bool CanComment => !string.IsNullOrWhiteSpace(_commentText);
 
-    public ICommand GoEditProfile { get; }
+    [RelayCommand]
+    private void GoEditProfile()
+    {
+    }
 
-    public ICommand SendComment { get; }
+    [RelayCommand(CanExecute = nameof(CanComment))]
+    private void SendComment()
+    {
+        var comment = Comment.Send(_commentText, User);
+        Comments.Add(comment);
+    }
+
 
     public async Task LoadAsync()
     {
