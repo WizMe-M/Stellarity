@@ -11,6 +11,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Stellarity.Basic;
 using Stellarity.Database.Entities;
 using Stellarity.Extensions;
+using Stellarity.Services.Accounting;
 
 namespace Stellarity.ViewModels.Pages;
 
@@ -37,7 +38,7 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     /// </summary>
     private readonly Account _user;
 
-    public EditProfileViewModel(Account user)
+    private EditProfileViewModel(Account user)
     {
         _user = user;
         _previousAvatarData = _user.Avatar?.Data;
@@ -49,7 +50,8 @@ public partial class EditProfileViewModel : IAsyncImageLoader
         AboutSelf ??= string.Empty;
     }
 
-    public EditProfileViewModel(IDialogService dialogService, MainViewModel windowOwner, Account user) : this(user)
+    public EditProfileViewModel(IDialogService dialogService, AccountingService accounting, MainViewModel windowOwner) :
+        this(accounting.AuthorizedAccount!)
     {
         _dialogService = dialogService;
         _windowOwner = windowOwner;
@@ -149,7 +151,7 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     {
         await _user.SaveChangesAsync();
         await _user.ChangeAvatarAsync(_currentAvatarData);
-        
+
         _previousAvatarData = _currentAvatarData;
         _previousNickname = Nickname;
         _previousAbout = AboutSelf;

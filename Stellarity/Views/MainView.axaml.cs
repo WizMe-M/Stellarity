@@ -2,10 +2,9 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using HanumanInstitute.MvvmDialogs;
 using Ninject;
+using Ninject.Parameters;
 using ReactiveUI;
-using Stellarity.Services.Accounting;
 using Stellarity.ViewModels;
 using Stellarity.ViewModels.Pages;
 using Stellarity.Views.Pages;
@@ -18,12 +17,12 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     {
         this.WhenActivated(async d =>
         {
-            var accountingService = App.Current.DiContainer.Get<AccountingService>();
-            await MyProfile.InitializeViewModelAsync(new MyProfileViewModel(accountingService));
+            var myProfileViewModel = App.Current.DiContainer.Get<MyProfileViewModel>();
+            await MyProfile.InitializeViewModelAsync(myProfileViewModel);
 
-            var dialogService = App.Current.DiContainer.Get<IDialogService>();
-            await EditProfile.InitializeViewModelAsync(new EditProfileViewModel(dialogService, ViewModel!,
-                accountingService.AuthorizedAccount!));
+            var editProfileViewModel = App.Current.DiContainer.Get<EditProfileViewModel>(
+                new Parameter("windowOwner", ViewModel, false));
+            await EditProfile.InitializeViewModelAsync(editProfileViewModel);
 
             await Shop.InitializeViewModelAsync(new GameShopViewModel());
         });
