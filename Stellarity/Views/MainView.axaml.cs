@@ -6,7 +6,6 @@ using HanumanInstitute.MvvmDialogs;
 using Ninject;
 using ReactiveUI;
 using Stellarity.Services.Accounting;
-using Stellarity.TemplatedControls.Navigation;
 using Stellarity.ViewModels;
 using Stellarity.ViewModels.Pages;
 using Stellarity.Views.Pages;
@@ -23,10 +22,10 @@ public partial class MainView : ReactiveWindow<MainViewModel>
             await MyProfile.InitializeViewModelAsync(new MyProfileViewModel(accountingService));
 
             var dialogService = App.Current.DiContainer.Get<IDialogService>();
-            EditProfile.Content =
-                new EditProfileView(new EditProfileViewModel(dialogService, ViewModel!, accountingService.AuthorizedAccount!));
+            await EditProfile.InitializeViewModelAsync(new EditProfileViewModel(dialogService, ViewModel!,
+                accountingService.AuthorizedAccount!));
 
-            Shop.Content = new GameShopView(new GameShopViewModel());
+            await Shop.InitializeViewModelAsync(new GameShopViewModel());
         });
 
         InitializeComponent();
@@ -37,8 +36,8 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         DragBorder.PointerPressed += (_, e) => BeginMoveDrag(e);
 
         MyProfile = this.GetControl<MyProfileView>(nameof(MyProfile));
-        EditProfile = this.GetControl<NavigationViewItem>(nameof(EditProfile));
-        Shop = this.GetControl<NavigationViewItem>(nameof(Shop));
+        EditProfile = this.GetControl<EditProfileView>(nameof(EditProfile));
+        Shop = this.GetControl<GameShopView>(nameof(Shop));
     }
 
 

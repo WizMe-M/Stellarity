@@ -1,21 +1,21 @@
-﻿using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
-using ReactiveUI;
+﻿using System.Threading.Tasks;
+using Avalonia.Markup.Xaml;
+using Stellarity.Basic;
 using Stellarity.ViewModels.Pages;
 
 namespace Stellarity.Views.Pages;
 
-public partial class GameShopView : ReactiveUserControl<GameShopViewModel>
+public partial class GameShopView : ExtUserControl<GameShopViewModel>
 {
-    public GameShopView() => AvaloniaXamlLoader.Load(this);
-
-    public GameShopView(GameShopViewModel gameShopViewModel) : this()
+    public GameShopView()
     {
-        ViewModel = gameShopViewModel;
+        DataContext = null;
+        AvaloniaXamlLoader.Load(this);
+    }
 
-        this.WhenActivated(async d =>
-        {
-            await ViewModel.LoadAsync();
-        });
+    public override async Task InitializeViewModelAsync(GameShopViewModel viewModel)
+    {
+        await base.InitializeViewModelAsync(viewModel);
+        // load images
     }
 }

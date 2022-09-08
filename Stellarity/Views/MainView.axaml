@@ -50,8 +50,14 @@
             <nav:NavigationViewItem Header="My profile" IconValue="{StaticResource MyProfile}">
                 <p:MyProfileView Name="MyProfile" />
             </nav:NavigationViewItem>
-            <nav:NavigationViewItem Name="EditProfile" IconValue="{StaticResource User}" Header="Edit profile" />
-            <nav:NavigationViewItem Name="Shop" IconValue="{StaticResource Shop}" Header="Shop" />
+
+            <nav:NavigationViewItem IconValue="{StaticResource User}" Header="Edit profile">
+                <p:EditProfileView Name="EditProfile" />
+            </nav:NavigationViewItem>
+
+            <nav:NavigationViewItem IconValue="{StaticResource Shop}" Header="Shop">
+                <p:GameShopView Name="Shop" />
+            </nav:NavigationViewItem>
         </nav:NavigationView>
     </Panel>
 </Window>
