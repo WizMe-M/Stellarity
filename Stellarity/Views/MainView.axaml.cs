@@ -17,10 +17,10 @@ public partial class MainView : ReactiveWindow<MainViewModel>
 {
     public MainView()
     {
-        this.WhenActivated(d =>
+        this.WhenActivated(async d =>
         {
             var accountingService = App.Current.DiContainer.Get<AccountingService>();
-            MyProfile.Content = new MyProfileView(new MyProfileViewModel(accountingService));
+            await MyProfile.InitializeViewModelAsync(new MyProfileViewModel(accountingService));
 
             var dialogService = App.Current.DiContainer.Get<IDialogService>();
             EditProfile.Content =
@@ -36,7 +36,7 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         DragBorder = this.GetControl<Border>(nameof(DragBorder));
         DragBorder.PointerPressed += (_, e) => BeginMoveDrag(e);
 
-        MyProfile = this.GetControl<NavigationViewItem>(nameof(MyProfile));
+        MyProfile = this.GetControl<MyProfileView>(nameof(MyProfile));
         EditProfile = this.GetControl<NavigationViewItem>(nameof(EditProfile));
         Shop = this.GetControl<NavigationViewItem>(nameof(Shop));
     }
