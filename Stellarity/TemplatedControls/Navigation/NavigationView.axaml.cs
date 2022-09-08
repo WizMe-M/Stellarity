@@ -5,7 +5,6 @@ using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
-using Avalonia.Controls.Primitives;
 
 namespace Stellarity.TemplatedControls.Navigation;
 
@@ -14,24 +13,14 @@ public class NavigationView : TabControl
 {
     private readonly Stack<IContentPage> _pagesStack = new();
 
-    public static readonly StyledProperty<double> CompactPaneLengthProperty =
-        AvaloniaProperty.Register<NavigationView, double>(nameof(CompactPaneLength));
-
-    public static readonly StyledProperty<string> HeaderProperty = AvaloniaProperty.Register<NavigationView, string>(
-        nameof(Header));
+    public static readonly StyledProperty<string> HeaderProperty =
+        AvaloniaProperty.Register<NavigationView, string>(nameof(Header));
 
     public string Header
     {
         get => GetValue(HeaderProperty);
         set => SetValue(HeaderProperty, value);
     }
-
-    public double CompactPaneLength
-    {
-        get => GetValue(CompactPaneLengthProperty);
-        set => SetValue(CompactPaneLengthProperty, value);
-    }
-
 
     protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
@@ -40,20 +29,20 @@ public class NavigationView : TabControl
             foreach (var item in e.NewItems)
             {
                 if (item is not NavigationViewItem navItem) continue;
-                navItem.ChangeContentRequestReceived += OnContentChange;
+                navItem.ChangeContentRequestReceived += OnContentRequestChange;
             }
 
         if (e.OldItems is { })
             foreach (var item in e.OldItems)
             {
                 if (item is not NavigationViewItem navItem) continue;
-                navItem.ChangeContentRequestReceived -= OnContentChange;
+                navItem.ChangeContentRequestReceived -= OnContentRequestChange;
             }
 
         Debug.WriteLine("Subscriptions were done");
     }
 
-    private void OnContentChange(object? sender, ChangeContentRequestReceivedEventArgs e)
+    private void OnContentRequestChange(object? sender, ChangeContentRequestReceivedEventArgs e)
     {
         switch (e.ChangeContentStrategy)
         {

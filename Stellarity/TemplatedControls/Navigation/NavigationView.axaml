@@ -36,7 +36,6 @@
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="{DynamicResource TabItemMargin}" />
         <Setter Property="Background" Value="{DynamicResource TabControlBackground}" />
-        <Setter Property="CompactPaneLength" Value="{DynamicResource NavigationViewCompactPaneLength}" />
         <Setter Property="ItemsPanel">
             <ItemsPanelTemplate>
                 <StackPanel />
