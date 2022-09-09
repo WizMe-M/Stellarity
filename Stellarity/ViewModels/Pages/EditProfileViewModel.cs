@@ -41,8 +41,8 @@ public partial class EditProfileViewModel : IAsyncImageLoader
     private EditProfileViewModel(Account user)
     {
         _user = user;
-        _previousAvatarData = _user.Avatar?.Data;
-        _currentAvatarData = _user.Avatar?.Data;
+        _previousAvatarData = Image.OpenDefaultImage().FromBitmap();
+        _currentAvatarData = _previousAvatarData;
         _previousNickname = _user.Nickname ?? string.Empty;
         _previousAbout = _user.About ?? string.Empty;
 
