@@ -17,6 +17,7 @@ public class GameShopViewModel : IAsyncImageLoader
     }
 
     public ObservableCollection<GameViewModel> AllGames { get; } = new();
+
     public async Task LoadAsync()
     {
         foreach (var game in AllGames) await game.LoadAsync();

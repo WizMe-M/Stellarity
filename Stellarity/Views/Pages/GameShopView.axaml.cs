@@ -16,6 +16,6 @@ public partial class GameShopView : ExtUserControl<GameShopViewModel>
     public override async Task InitializeViewModelAsync(GameShopViewModel viewModel)
     {
         await base.InitializeViewModelAsync(viewModel);
-        // load images
+        await viewModel.LoadAsync();
     }
 }
