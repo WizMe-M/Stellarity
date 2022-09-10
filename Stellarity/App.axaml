@@ -17,6 +17,7 @@
 
     <Application.Styles>
         <FluentTheme Mode="Dark" />
+        <StyleInclude Source="/Styles/ExtendedUserControlStyles.axaml" />
         <StyleInclude Source="/TemplatedControls/LineSeparator.axaml" />
         <StyleInclude Source="/TemplatedControls/ImageButton.axaml" />
         <StyleInclude Source="/TemplatedControls/Navigation/NavigationView.axaml" />

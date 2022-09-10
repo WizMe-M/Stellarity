@@ -7,11 +7,7 @@ namespace Stellarity.Views.Pages;
 
 public partial class EditProfileView : ExtUserControl<EditProfileViewModel>
 {
-    public EditProfileView()
-    {
-        DataContext = null;
-        AvaloniaXamlLoader.Load(this);
-    }
+    public EditProfileView() => AvaloniaXamlLoader.Load(this);
 
     public override async Task InitializeViewModelAsync(EditProfileViewModel viewModel)
     {

@@ -8,11 +8,7 @@ namespace Stellarity.Views.Pages;
 
 public partial class MyProfileView : ExtUserControl<MyProfileViewModel>, IContentPage
 {
-    public MyProfileView()
-    {
-        DataContext = null;
-        AvaloniaXamlLoader.Load(this);
-    }
+    public MyProfileView() => AvaloniaXamlLoader.Load(this);
 
     public override async Task InitializeViewModelAsync(MyProfileViewModel viewModel)
     {

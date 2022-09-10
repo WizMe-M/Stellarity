@@ -7,11 +7,7 @@ namespace Stellarity.Views.Pages;
 
 public partial class GameShopView : ExtUserControl<GameShopViewModel>
 {
-    public GameShopView()
-    {
-        DataContext = null;
-        AvaloniaXamlLoader.Load(this);
-    }
+    public GameShopView() => AvaloniaXamlLoader.Load(this);
 
     public override async Task InitializeViewModelAsync(GameShopViewModel viewModel)
     {

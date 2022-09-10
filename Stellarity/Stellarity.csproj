@@ -77,6 +77,7 @@
     <ItemGroup>
         <AdditionalFiles Include="Assets\Resources\HamburgerResources.axaml" />
         <AdditionalFiles Include="Assets\Resources\MaterialDesignIcons.axaml" />
+        <AdditionalFiles Include="Styles\ExtendedUserControlStyles.axaml"/>
         <AdditionalFiles Include="TemplatedControls\LineSeparator.axaml" />
         <AdditionalFiles Include="TemplatedControls\ImageButton.axaml" />
         <AdditionalFiles Include="TemplatedControls\Navigation\NavigationView.axaml" />
@@ -85,8 +86,5 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets\Images\stellaris-logo.ico" />
         <AvaloniaResource Include="Assets\Images\placeholder.png" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Styles" />
     </ItemGroup>
 </Project>
