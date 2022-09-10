@@ -25,6 +25,8 @@ public partial class MainView : ReactiveWindow<MainViewModel>
             await EditProfile.InitializeViewModelAsync(editProfileViewModel);
 
             await Shop.InitializeViewModelAsync(new GameShopViewModel());
+
+            await AddGame.InitializeViewModelAsync(new AddGameViewModel());
         });
 
         InitializeComponent();
@@ -37,6 +39,7 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         MyProfile = this.GetControl<MyProfileView>(nameof(MyProfile));
         EditProfile = this.GetControl<EditProfileView>(nameof(EditProfile));
         Shop = this.GetControl<GameShopView>(nameof(Shop));
+        AddGame = this.GetControl<AddGameView>(nameof(AddGame));
     }
 
 

@@ -58,6 +58,10 @@
             <nav:NavigationViewItem IconValue="{StaticResource Shop}" Header="Shop">
                 <p:GameShopView Name="Shop" />
             </nav:NavigationViewItem>
+            
+            <nav:NavigationViewItem IconValue="{StaticResource Shop}" Header="Add game">
+                <p:AddGameView Name="AddGame" />
+            </nav:NavigationViewItem>
         </nav:NavigationView>
     </Panel>
 </Window>
