@@ -81,4 +81,12 @@ public partial class Game
 
         return bytes;
     }
+
+    public static async Task<bool> ExistsAsync(string title)
+    {
+        var name = title.Trim();
+        await using var context = new StellarisContext();
+        var game = await context.Games.FirstOrDefaultAsync(game => game.Name == name);
+        return game is { };
+    }
 }
