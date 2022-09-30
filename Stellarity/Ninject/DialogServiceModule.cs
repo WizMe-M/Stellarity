@@ -4,6 +4,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Ninject;
 using Ninject.Modules;
 using Stellarity.Basic;
+using DialogManager = Stellarity.Basic.DialogManager;
 
 namespace Stellarity.Ninject;
 

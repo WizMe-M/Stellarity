@@ -8,6 +8,7 @@ namespace Stellarity.Basic.CommunityMvvm;
 
 public class ViewModelBase : ObservableObject, IValidatableObject, IViewModelBase
 {
+    public Guid Id = new();
     private IObjectValidator? _validator;
 
     public IObjectValidator? Validator

@@ -4,12 +4,13 @@ using HanumanInstitute.MvvmDialogs;
 using Ninject;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Stellarity.Basic.CommunityMvvm;
 using Stellarity.Database.Entities;
 using Stellarity.Services.Accounting;
 
 namespace Stellarity.ViewModels;
 
-public class AuthorizationViewModel : Basic.ReactiveViewModelBase
+public class AuthorizationViewModel : ViewModelBase
 {
     private readonly IDialogService _windowService = null!;
 

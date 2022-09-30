@@ -1,7 +1,7 @@
-﻿using Stellarity.Basic;
+﻿using Stellarity.Basic.CommunityMvvm;
 
 namespace Stellarity.ViewModels;
 
-public class MainViewModel : ReactiveViewModelBase
+public class MainViewModel : ViewModelBase
 {
 }
