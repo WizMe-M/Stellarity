@@ -168,7 +168,7 @@ public partial class Account
     public static Account GetFirst()
     {
         using var context = new StellarisContext();
-        return context.Users.First();
+        return context.Users.First(u => u.RoleId == 1);
     }
 #endif
     public async Task<byte[]?> GetAvatarAsync()
