@@ -26,9 +26,10 @@ public partial class Image
         Name = name;
     }
 
-    public Image(string name) : this()
+    public Image(string name, byte[] data) : this()
     {
         Name = name;
+        Data = data;
     }
 
     /// <summary>
@@ -165,5 +166,14 @@ public partial class Image
     {
         var bm = new Bitmap(fileName);
         return bm;
+    }
+
+    public static async Task<Image> AddFromAsync(Game game, byte[] coverData)
+    {
+        await using var context = new StellarisContext(); 
+        var img = new Image(game.Name, coverData);
+        await context.Images.AddAsync(img);
+        await context.SaveChangesAsync();
+        return context.Entry(img).Entity;
     }
 }

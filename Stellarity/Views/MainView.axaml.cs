@@ -13,6 +13,8 @@ namespace Stellarity.Views;
 
 public partial class MainView : ReactiveWindow<MainViewModel>
 {
+    private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
+
     public MainView()
     {
         this.WhenActivated(async d =>
@@ -26,7 +28,9 @@ public partial class MainView : ReactiveWindow<MainViewModel>
 
             await Shop.InitializeViewModelAsync(new GameShopViewModel());
 
-            await AddGame.InitializeViewModelAsync(new AddGameViewModel());
+            var addGameViewModel = App.Current.DiContainer.Get<AddGameViewModel>(
+                new Parameter("windowOwner", ViewModel, false));
+            await AddGame.InitializeViewModelAsync(addGameViewModel);
         });
 
         InitializeComponent();
@@ -41,7 +45,4 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         Shop = this.GetControl<GameShopView>(nameof(Shop));
         AddGame = this.GetControl<AddGameView>(nameof(AddGame));
     }
-
-
-    private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 }

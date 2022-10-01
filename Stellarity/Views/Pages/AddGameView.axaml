@@ -13,6 +13,10 @@
             <Setter Property="Margin" Value="5" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
+        
+        <Style Selector="UniformGrid TextBox">
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+        </Style>
 
         <Style Selector="NumericUpDown">
             <Setter Property="FontSize" Value="16" />
@@ -29,7 +33,6 @@
     </UserControl.Styles>
     
     <DockPanel>
-
         <Button DockPanel.Dock="Bottom" Command="{Binding AddCommand}" Content="Добавить"
                 HorizontalAlignment="Right" Margin="20" />
 
@@ -38,18 +41,23 @@
             <TextBox Text="{Binding Developer}" Watermark="Разработчик" />
         </UniformGrid>
 
-        <Button DockPanel.Dock="Left" Command="{Binding SetCoverCommand}" Classes="avatar" Margin="5">
+        <Button DockPanel.Dock="Left" Command="{Binding SetCoverCommand}" 
+                Classes="avatar" Margin="5" VerticalAlignment="Top">
             <Panel>
                 <Image Source="{Binding Cover}" Stretch="UniformToFill" />
                 <Image Source="/Assets/Images/placeholder.png" IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNull}}" Stretch="UniformToFill" />
             </Panel>
         </Button>
 
-        <NumericUpDown DockPanel.Dock="Top" Value="{Binding Cost}" Watermark="Стоимость"
-                       Increment=".01" Maximum="5000" Minimum="100"
-                       ShowButtonSpinner="False" ParsingNumberStyle="Float"
-                       ClipValueToMinMax="True" Width="150" Margin="5 10 0 0" />
-
+        <DockPanel Dock="Top">
+            <NumericUpDown DockPanel.Dock="Left" Value="{Binding Cost}" Watermark="Стоимость"
+                           Increment=".01" Maximum="5000" Minimum="100"
+                           ShowButtonSpinner="False" ParsingNumberStyle="Float"
+                           ClipValueToMinMax="True" Width="150" Margin="5 0 20 0"
+                           IsEnabled="{Binding !Free}" />
+            <CheckBox IsChecked="{Binding Free}" Content="Бесплатная" 
+                      IsThreeState="False" VerticalAlignment="Bottom" />
+        </DockPanel>
         <TextBox Text="{Binding Description}" Watermark="Описание игры"
                  AcceptsReturn="True" AcceptsTab="False"
                  VerticalContentAlignment="Top" Margin="5 5 5 10" />

@@ -54,15 +54,17 @@ public partial class Game
     }
 
     public static async Task AddAsync(string name, string description, string developer,
-        decimal cost, string coverPath)
+        decimal cost, byte[] coverData)
     {
         await using var context = new StellarisContext();
         var game = new Game(name, description, developer, cost);
-        context.Games.Add(game);
+        await context.Games.AddAsync(game);
         await context.SaveChangesAsync();
-
-        game = await context.Games.FirstAsync(g => g.Name == game.Name);
-        await Image.SaveAsync(coverPath, game);
+        game = context.Entry(game).Entity;
+        var img = await Image.AddFromAsync(game, coverData);
+        game.Cover = img;
+        context.Games.Update(game);
+        await context.SaveChangesAsync();
     }
 
     public async Task<byte[]?> GetCoverAsync()

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Media.Imaging;
 using Microsoft.EntityFrameworkCore;
 using Ninject;
 using Stellarity.Services;
@@ -119,7 +118,7 @@ public partial class Account
         context.Users.Attach(user);
         if (user.AvatarGuid is null)
         {
-            var avatar = new Image(user.Email) { Data = avatarData };
+            var avatar = new Image(user.Email, avatarData);
             user.Avatar = avatar;
             context.Users.Update(user);
         }
