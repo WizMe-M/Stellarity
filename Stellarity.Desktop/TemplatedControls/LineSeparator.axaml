@@ -1,0 +1,21 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:templatedControls="clr-namespace:Stellarity.Desktop.TemplatedControls">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <templatedControls:LineSeparator Width="200" Margin="5" Color="Gray" Thickness="1" />
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="templatedControls|LineSeparator">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Rectangle Width="{TemplateBinding Width}"
+                           Stroke="{TemplateBinding Color}"
+                           Height="{TemplateBinding Thickness}"
+                           StrokeThickness="{TemplateBinding Thickness}" />
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Ninject;
 using Stellarity.Services;
 
@@ -69,7 +65,7 @@ public partial class Game
 
     public async Task<byte[]?> GetCoverAsync()
     {
-        var cacheService = App.Current.DiContainer.Get<ImageCacheService>();
+        var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
         var bytes = await cacheService.LoadAvatarAsync(CoverGuid);
         if (CoverGuid is { } && bytes is null)
         {

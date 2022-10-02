@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Stellarity.Database.Entities;
+﻿namespace Stellarity.Database.Entities;
 
 public partial class Role
 {
@@ -18,6 +16,4 @@ public partial class Role
     public string Name { get; set; } = null!;
 
     public virtual ICollection<Account> Users { get; set; }
-
-    public bool CanAddGames => Id == 1;
 }

@@ -1,0 +1,26 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:basic="clr-namespace:Stellarity.Desktop.Basic"
+             x:Class="Stellarity.Desktop.App">
+    <Application.DataTemplates>
+        <basic:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Resources/HamburgerResources.axaml" />
+                <ResourceInclude Source="/Resources/MaterialDesignIcons.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme Mode="Dark" />
+        <StyleInclude Source="/Styles/ExtendedUserControlStyles.axaml" />
+        <StyleInclude Source="/TemplatedControls/LineSeparator.axaml" />
+        <StyleInclude Source="/TemplatedControls/ImageButton.axaml" />
+        <StyleInclude Source="/TemplatedControls/Navigation/NavigationView.axaml" />
+        <StyleInclude Source="/TemplatedControls/Navigation/NavigationViewItem.axaml" />
+    </Application.Styles>
+</Application>

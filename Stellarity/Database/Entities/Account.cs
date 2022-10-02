@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Ninject;
 using Stellarity.Services;
 
@@ -24,6 +20,8 @@ public partial class Account
         Balance = 0;
         RoleId = 1;
     }
+
+    public bool CanAddGames => RoleId == (int)Roles.Administrator;
 
     public int Id { get; set; }
     public string Email { get; set; } = null!;
@@ -131,7 +129,7 @@ public partial class Account
         }
 
         await context.SaveChangesAsync();
-        var cacheService = App.Current.DiContainer.Get<ImageCacheService>();
+        var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
         await cacheService.SaveAvatarAsync(Avatar!);
     }
 
@@ -174,7 +172,7 @@ public partial class Account
     {
         // get image from cache or db by guid
         // return its data
-        var cacheService = App.Current.DiContainer.Get<ImageCacheService>();
+        var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
         var bytes = await cacheService.LoadAvatarAsync(AvatarGuid);
         if (AvatarGuid is { } && bytes is null)
         {

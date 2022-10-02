@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Stellarity.Database.Entities;
+﻿namespace Stellarity.Database.Entities;
 
 public partial class Library
 {

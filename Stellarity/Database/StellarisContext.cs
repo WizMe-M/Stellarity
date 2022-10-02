@@ -1,7 +1,6 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Stellarity.Database.Entities;
+using Stellarity.Database.XmlConfiguration;
 
 namespace Stellarity.Database;
 
@@ -196,8 +195,6 @@ public sealed class StellarisContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(25)
                 .HasColumnName("name");
-
-            entity.Ignore(e => e.CanAddGames);
         });
 
         modelBuilder.Entity<Account>(entity =>
@@ -258,6 +255,8 @@ public sealed class StellarisContext : DbContext
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("fk_users_role_id");
+
+            entity.Ignore(e => e.CanAddGames);
         });
 
         modelBuilder.Entity<Role>().HasData(
@@ -269,7 +268,7 @@ public sealed class StellarisContext : DbContext
             Id = 1,
             RoleId = 1,
             Email = "admin@mail.ru",
-            Nickname = "Stellarity",
+            Nickname = "Stellarity.Desktop",
             Password = "P@ssw0rd"
         });
     }

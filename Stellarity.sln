@@ -1,8 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity", "Stellarity\Stellarity.csproj", "{B20D2C63-32CE-4198-B3E4-7F2591169586}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Desktop", "Stellarity.Desktop\Stellarity.Desktop.csproj", "{B20D2C63-32CE-4198-B3E4-7F2591169586}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Tests", "Stellarity.Tests\Stellarity.Tests.csproj", "{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Avalonia", "Stellarity.Avalonia\Stellarity.Avalonia.csproj", "{D545CC72-0370-4AAC-904C-5106CC1345C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity", "Stellarity\Stellarity.csproj", "{BC8AF152-3636-44D1-A256-7354D1E95B20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +22,13 @@ Global
 		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D545CC72-0370-4AAC-904C-5106CC1345C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D545CC72-0370-4AAC-904C-5106CC1345C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D545CC72-0370-4AAC-904C-5106CC1345C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D545CC72-0370-4AAC-904C-5106CC1345C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

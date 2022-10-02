@@ -1,0 +1,69 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:navigation="clr-namespace:Stellarity.Desktop.TemplatedControls.Navigation"
+        xmlns:viewModels="clr-namespace:Stellarity.Desktop.ViewModels"
+        xmlns:pages="clr-namespace:Stellarity.Desktop.Views.Pages"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+        x:Class="Stellarity.Desktop.Views.MainView" x:DataType="viewModels:MainViewModel"
+        x:CompileBindings="True"
+        MinWidth="1000" MinHeight="600"
+        Width="1000" Height="600"
+        MaxWidth="1600" MaxHeight="860"
+
+        Icon="avares://Stellarity.Avalonia/Assets/Images/stellaris-logo.ico"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+
+        ExtendClientAreaChromeHints="Default"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        ExtendClientAreaToDecorationsHint="True"
+        SystemDecorations="Full"
+
+        ShowActivated="True" ShowInTaskbar="True"
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
+        Title="Stellarity">
+
+    <Window.Styles>
+        <Style Selector="Window[WindowState=Normal] Panel#RootPanel">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        <Style Selector="Window[WindowState=Maximized] Panel#RootPanel">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+    </Window.Styles>
+
+    <Panel Name="RootPanel">
+        <!-- TODO: не забыть посмотреть как будет выглядеть UI без прозрачности фона страницы и панели навигации -->
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black"
+                                             TintOpacity="1" MaterialOpacity="0.75" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        <Border Name="DragBorder" Background="Transparent"
+                Height="40" Margin="40 0 0 0"
+                VerticalAlignment="Top" ZIndex="2" />
+
+        <navigation:NavigationView Name="NavView" Background="Transparent" Header="Stellarity" SelectedItem="{Binding #MyProfile}">
+            <navigation:NavigationViewItem Header="My profile" IconValue="{StaticResource MyProfile}">
+                <navigation:NavigationViewItem.ContentPage>
+                    <pages:MyProfileView Name="MyProfile" />
+                </navigation:NavigationViewItem.ContentPage>
+            </navigation:NavigationViewItem>
+
+            <navigation:NavigationViewItem IconValue="{StaticResource User}" Header="Edit profile">
+                <navigation:NavigationViewItem.ContentPage>
+                    <pages:EditProfileView Name="EditProfile" />
+                </navigation:NavigationViewItem.ContentPage>
+            </navigation:NavigationViewItem>
+
+            <navigation:NavigationViewItem IconValue="{StaticResource Shop}" Header="Shop">
+                <navigation:NavigationViewItem.ContentPage>
+                    <pages:GameShopView Name="Shop" />
+                </navigation:NavigationViewItem.ContentPage>
+            </navigation:NavigationViewItem>
+        </navigation:NavigationView>
+    </Panel>
+</Window>

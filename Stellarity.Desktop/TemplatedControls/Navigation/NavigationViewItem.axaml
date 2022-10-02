@@ -1,0 +1,82 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+        xmlns:navigation1="clr-namespace:Stellarity.Desktop.TemplatedControls.Navigation">
+    <Design.PreviewWith>
+        <Border Padding="20" Width="400" Height="200">
+            <StackPanel Spacing="10">
+                <navigation1:NavigationViewItem Header="Profile" IconValue="mdi-account" />
+                <navigation1:NavigationViewItem Header="Cart" IconValue="mdi-cart" IsSelected="True" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+        <x:Double x:Key="NavigationViewItemMinHeight">48</x:Double>
+        <x:Double x:Key="TabItemVerticalPipeHeight">24</x:Double>
+        <x:Double x:Key="TabItemPipeThickness">2</x:Double>
+    </Styles.Resources>
+
+    <Style Selector="navigation1|NavigationViewItem">
+        <Setter Property="FontSize" Value="{DynamicResource TabItemHeaderFontSize}" />
+        <Setter Property="FontWeight" Value="{DynamicResource TabItemHeaderThemeFontWeight}" />
+        <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundUnselected}" />
+        <Setter Property="Foreground" Value="{DynamicResource SystemBaseHighColor}" />
+        <Setter Property="Padding" Value="{DynamicResource TabItemHeaderMargin}" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="MinHeight" Value="{DynamicResource NavigationViewItemMinHeight}" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="PART_Border" BorderThickness="{TemplateBinding BorderThickness}">
+
+                    <Grid Name="PART_InternalGrid" ColumnDefinitions="auto *" Margin="0"
+                          Background="{TemplateBinding Background}">
+
+                        <Grid Name="PART_IconGrid"
+                              Width="{DynamicResource NavigationViewCompactPaneLength}"
+                              Height="{DynamicResource NavigationViewCompactPaneLength}"
+                              HorizontalAlignment="Left" Margin="0">
+
+                            <Border Name="PART_SelectionBorder" Width="2.5" Margin="5 10 10 10"
+                                    HorizontalAlignment="Left" CornerRadius="5" />
+
+                            <i:Icon Value="{TemplateBinding IconValue}"
+                                    Margin="{DynamicResource NavigationViewItemIconMargin}"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        </Grid>
+
+                        <ContentPresenter Grid.Column="1" Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          TextBlock.FontSize="14" TextBlock.FontFamily="Segoe UI"
+                                          HorizontalAlignment="Left" VerticalAlignment="Center"
+                                          ClipToBounds="True" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="navigation1|NavigationViewItem /template/ i|Icon">
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+
+    <Style Selector="navigation1|NavigationViewItem /template/ Grid#PART_ContainerGrid">
+        <Setter Property="MaxHeight" Value="40" />
+        <Setter Property="ClipToBounds" Value="True" />
+    </Style>
+
+    <Style Selector="navigation1|NavigationViewItem:selected /template/ Border#PART_SelectionBorder">
+        <Setter Property="Background" Value="{DynamicResource NavigationViewItemSelectedBrush}" />
+    </Style>
+
+    <Style Selector="navigation1|NavigationViewItem /template/ Grid:pointerover#PART_InternalGrid">
+        <Setter Property="Background" Value="{DynamicResource NavigationViewItemPointerOver}" />
+    </Style>
+
+    <Style Selector="navigation1|NavigationViewItem.header /template/ Grid:pointerover#PART_InternalGrid">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+</Styles>

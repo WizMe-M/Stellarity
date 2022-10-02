@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Stellarity.Services.Cache;
+﻿namespace Stellarity.Services.Cache;
 
 public abstract class CachingBase<TCacheDataType> where TCacheDataType : class
 {
