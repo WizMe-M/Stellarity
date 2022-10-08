@@ -27,12 +27,12 @@ public partial class MainView : ReactiveWindow<MainViewModel>
             var myProfileViewModel = DiContainingService.Kernel.Get<MyProfileViewModel>();
             await MyProfile.InitializeViewModelAsync(myProfileViewModel);
 
-            var iDialog = DiContainingService.Kernel.Get<IDialogService>();
-            var acc = DiContainingService.Kernel.Get<AccountingService>();
-            var editProfileViewModel = new EditProfileViewModel(iDialog, acc, ViewModel!);
+            var dialog = DiContainingService.Kernel.Get<IDialogService>();
+            var accounting = DiContainingService.Kernel.Get<AccountingService>();
+            var editProfileViewModel = new EditProfileViewModel(dialog, accounting, ViewModel!);
             await EditProfile.InitializeViewModelAsync(editProfileViewModel);
 
-            var shopViewModel = DiContainingService.Kernel.Get<GameShopViewModel>();
+            var shopViewModel = new GameShopViewModel(accounting, ViewModel!, NavView.Navigator, dialog);
             await Shop.InitializeViewModelAsync(shopViewModel);
         });
 
@@ -49,10 +49,9 @@ public partial class MainView : ReactiveWindow<MainViewModel>
             if (logicalChild is not NavigationViewItem item) return;
             item.Initialize(NavView.Navigator);
         }
-        
+
         MyProfile = this.GetControl<MyProfileView>(nameof(MyProfile));
         EditProfile = this.GetControl<EditProfileView>(nameof(EditProfile));
         Shop = this.GetControl<GameShopView>(nameof(Shop));
-        Shop.Navigator = NavView.Navigator;
     }
 }

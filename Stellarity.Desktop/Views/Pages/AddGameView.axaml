@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pages="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
+             xmlns:c="clr-namespace:Stellarity.Desktop.TemplatedControls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Stellarity.Desktop.Views.Pages.AddGameView"
              x:CompileBindings="True" x:DataType="pages:AddGameViewModel"
@@ -23,43 +24,32 @@
             <Setter Property="Margin" Value="5 0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
-
-        <Style Selector="Button.avatar">
-            <Setter Property="Height" Value="150" />
-            <Setter Property="Width" Value="150" />
-            <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="BorderThickness" Value="1" />
-        </Style>
     </UserControl.Styles>
     
     <DockPanel>
-        <Button DockPanel.Dock="Bottom" Command="{Binding AddCommand}" Content="Добавить"
-                HorizontalAlignment="Right" Margin="20" />
+        <Button DockPanel.Dock="Bottom" Command="{Binding AddCommand}" 
+                Content="Добавить" HorizontalAlignment="Right" Margin="20" />
 
         <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1">
             <TextBox Text="{Binding Title}" Watermark="Название игры" />
             <TextBox Text="{Binding Developer}" Watermark="Разработчик" />
         </UniformGrid>
 
-        <Button DockPanel.Dock="Left" Command="{Binding SetCoverCommand}" 
-                Classes="avatar" Margin="5" VerticalAlignment="Top">
-            <Panel>
-                <Image Source="{Binding Cover}" Stretch="UniformToFill" />
-                <Image Source="avares://Stellarity.Avalonia/Assets/Images/placeholder.png" IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNull}}" Stretch="UniformToFill" />
-            </Panel>
-        </Button>
+        <c:ImageButton DockPanel.Dock="Left" Command="{Binding SetCoverCommand}"
+                       ImageSource="{Binding Cover}" Stretch="UniformToFill"
+                       Width="300" Height="300" Margin="5" VerticalAlignment="Top" />
 
         <DockPanel Dock="Top">
             <NumericUpDown DockPanel.Dock="Left" Value="{Binding Cost}" Watermark="Стоимость"
-                           Increment=".01" Maximum="5000" Minimum="100"
-                           ShowButtonSpinner="False" ParsingNumberStyle="Float"
-                           ClipValueToMinMax="True" Width="150" Margin="5 0 20 0"
-                           IsEnabled="{Binding !Free}" />
+                           Increment=".01" Maximum="5000" Minimum="100" ParsingNumberStyle="Float"
+                           ShowButtonSpinner="False" ClipValueToMinMax="True" 
+                           IsEnabled="{Binding !Free}"
+                           Width="150" Margin="5 0 20 0" />
             <CheckBox IsChecked="{Binding Free}" Content="Бесплатная" 
                       IsThreeState="False" VerticalAlignment="Bottom" />
         </DockPanel>
         <TextBox Text="{Binding Description}" Watermark="Описание игры"
-                 AcceptsReturn="True" AcceptsTab="False"
-                 VerticalContentAlignment="Top" Margin="5 5 5 10" />
+                 AcceptsReturn="True" AcceptsTab="False" TextWrapping="Wrap"
+                 VerticalContentAlignment="Top" Margin="5" />
     </DockPanel>
 </UserControl>

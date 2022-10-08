@@ -12,28 +12,12 @@ using ReactiveValidation.Extensions;
 using Stellarity.Avalonia.Extensions;
 using Stellarity.Avalonia.ViewModel;
 using Stellarity.Database.Entities;
+using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
 public partial class AddGameViewModel : PageViewModel
 {
-    [ObservableProperty]
-    private string _title = string.Empty;
-
-    [ObservableProperty]
-    private string _description = string.Empty;
-
-    [ObservableProperty]
-    private string _developer = string.Empty;
-
-    [ObservableProperty]
-    private decimal _cost;
-
-    [ObservableProperty]
-    private bool _free;
-
-    private byte[] _coverData = null!;
-
     /// <summary>
     /// Viewmodel to resolve view for <see cref="IDialogService"/>
     /// </summary>
@@ -44,16 +28,38 @@ public partial class AddGameViewModel : PageViewModel
     /// </summary>
     private readonly IDialogService _dialogService = null!;
 
+    private readonly NavigationPublisher _navigator = null!;
+    
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    private string _title = string.Empty;
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    private string _description = string.Empty;
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    private string _developer = string.Empty;
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    private decimal _cost;
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    private bool _free;
+
+    private byte[] _coverData = null!;
+
     private AddGameViewModel()
     {
         Free = true;
+        Cover = Avalonia.Models.Image.GetPlaceholderBitmap();
         Validator = GetValidator();
     }
 
-    public AddGameViewModel(MainViewModel windowOwner, IDialogService dialogService) : this()
+    public AddGameViewModel(MainViewModel windowOwner, IDialogService dialogService,
+        NavigationPublisher navigationPublisher) : this()
     {
         _windowOwner = windowOwner;
         _dialogService = dialogService;
+        _navigator = navigationPublisher;
     }
 
     private IObjectValidator GetValidator()
@@ -73,9 +79,6 @@ public partial class AddGameViewModel : PageViewModel
 
         builder.RuleFor(vm => vm.Cost)
             .Between(0, 5000);
-
-        builder.RuleFor(vm => vm.Cover)
-            .NotNull();
         
         return builder.Build(this);
     }
@@ -98,10 +101,9 @@ public partial class AddGameViewModel : PageViewModel
     [RelayCommand]
     private async Task SetCover()
     {
-        await Task.Delay(3000);
         var settings = new OpenFileDialogSettings
         {
-            Title = "Выберите изображение для аватара своего профиля",
+            Title = "Выберите изображение для обложки игры",
             InitialDirectory = Directory.GetDirectoryRoot(Assembly.GetExecutingAssembly().Location),
             Filters = new List<FileFilter>(new[]
             {
@@ -121,5 +123,6 @@ public partial class AddGameViewModel : PageViewModel
     {
         if (Free) Cost = 0;
         await Game.AddAsync(Title, Description, Developer, Cost, _coverData);
+        _navigator.RaiseNavigated(this, NavigatedEventArgs.Pop());
     }
 }
