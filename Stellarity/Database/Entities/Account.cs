@@ -4,7 +4,7 @@ using Stellarity.Services;
 
 namespace Stellarity.Database.Entities;
 
-public partial class Account
+public sealed partial class Account
 {
     public Account()
     {
@@ -20,8 +20,6 @@ public partial class Account
         Balance = 0;
         RoleId = 1;
     }
-
-    public bool CanAddGames => RoleId == (int)Roles.Administrator;
 
     public int Id { get; set; }
     public string Email { get; set; } = null!;
@@ -50,23 +48,23 @@ public partial class Account
 
     public Guid? AvatarGuid { get; set; }
 
-    public virtual Image? Avatar { get; set; }
-    public virtual Role Role { get; set; } = null!;
-    public virtual ICollection<Comment> CommentAuthors { get; set; }
-    public virtual ICollection<Comment> CommentProfiles { get; set; }
-    public virtual ICollection<Library> Library { get; set; }
+    public Image? Avatar { get; set; }
+    public Role Role { get; set; } = null!;
+    public ICollection<Comment> CommentAuthors { get; set; }
+    public ICollection<Comment> CommentProfiles { get; set; }
+    public ICollection<Library> Library { get; set; }
 
     public static bool Exists(string email)
     {
-        using var context = new StellarisContext();
-        var user = context.Users.FirstOrDefault(u => u.Email == email);
+        using var context = new StellarityContext();
+        var user = context.Accounts.FirstOrDefault(u => u.Email == email);
         return user is { };
     }
 
     public static Account? Find(string email, string password)
     {
-        using var context = new StellarisContext();
-        return context.Users
+        using var context = new StellarityContext();
+        return context.Accounts
             .Include(user => user.Role)
             .Include(user => user.Avatar)
             .Include(user => user.Library)
@@ -75,22 +73,22 @@ public partial class Account
 
     public static Account? Find(string email)
     {
-        using var context = new StellarisContext();
-        return context.Users
+        using var context = new StellarityContext();
+        return context.Accounts
             .Include(user => user.Role)
             .Include(user => user.Avatar)
             .Include(user => user.Library)
             .FirstOrDefault(user => user.Email == email);
     }
 
-    public static Account Register(string email, string password, Roles role)
+    public static Account Register(string email, string password, int roleId)
     {
-        using var context = new StellarisContext();
+        using var context = new StellarityContext();
         var gamer = new Account(email, password)
         {
-            RoleId = (int)role
+            RoleId = roleId
         };
-        context.Users.Add(gamer);
+        context.Accounts.Add(gamer);
         context.SaveChanges();
         context.Entry(gamer).Reference(u => u.Role).Load();
         return gamer;
@@ -101,9 +99,9 @@ public partial class Account
         if (Nickname?.Trim().Length == 0) Nickname = null;
         if (About?.Trim().Length == 0) About = null;
 
-        await using var context = new StellarisContext();
+        await using var context = new StellarityContext();
         var user = context.Entry(this).Entity;
-        context.Users.Update(user);
+        context.Accounts.Update(user);
         await context.SaveChangesAsync();
     }
 
@@ -111,14 +109,14 @@ public partial class Account
     {
         if (avatarData is null) return;
 
-        await using var context = new StellarisContext();
+        await using var context = new StellarityContext();
         var user = context.Entry(this).Entity;
-        context.Users.Attach(user);
+        context.Accounts.Attach(user);
         if (user.AvatarGuid is null)
         {
             var avatar = new Image(user.Email, avatarData);
             user.Avatar = avatar;
-            context.Users.Update(user);
+            context.Accounts.Update(user);
         }
         else
         {
@@ -133,41 +131,32 @@ public partial class Account
         await cacheService.SaveAvatarAsync(Avatar!);
     }
 
-    public void ChangePassword(string password)
+    public void UpdatePassword(string password)
     {
         Password = password;
-        using var context = new StellarisContext();
+        using var context = new StellarityContext();
         var user = context.Entry(this).Entity;
-        context.Users.Update(user);
+        context.Accounts.Update(user);
         context.SaveChanges();
     }
 
-    public void Deposit(decimal depositSum)
+    public void UpdateBalance(decimal depositSum)
     {
         Balance += depositSum;
-        using var context = new StellarisContext();
+        using var context = new StellarityContext();
         var user = context.Entry(this).Entity;
-        context.Users.Update(user);
+        context.Accounts.Update(user);
         context.SaveChanges();
-    }
-
-    public void PurchaseGame(Game game)
-    {
-        if (Balance < game.Cost)
-            throw new InvalidOperationException(
-                "Cannot purchase a game that costs much more you have on your balance");
-
-        // confirm purchase
-        // update user game list (Library prop)
     }
 
 #if DEBUG
     public static Account GetFirst()
     {
-        using var context = new StellarisContext();
-        return context.Users.First(u => u.RoleId == 1);
+        using var context = new StellarityContext();
+        return context.Accounts.First(u => u.RoleId == 1);
     }
 #endif
+
     public async Task<byte[]?> GetAvatarAsync()
     {
         // get image from cache or db by guid
@@ -176,14 +165,38 @@ public partial class Account
         var bytes = await cacheService.LoadAvatarAsync(AvatarGuid);
         if (AvatarGuid is { } && bytes is null)
         {
-            await using var context = new StellarisContext();
+            await using var context = new StellarityContext();
             var user = context.Entry(this).Entity;
-            context.Users.Attach(user);
+            context.Accounts.Attach(user);
             await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
             bytes = Avatar!.Data;
             await cacheService.SaveAvatarAsync(Avatar);
         }
 
         return bytes;
+    }
+
+    public async Task UpdateLibraryAsync()
+    {
+        await using var context = new StellarityContext();
+        await context.Entry(this)
+            .Collection(acc => acc.Library)
+            .LoadAsync();
+    }
+
+    public async Task PurchaseGameAsync(Game game)
+    {
+        await using var context = new StellarityContext();
+        
+        var entity = context.Entry(this).Entity;
+        entity.Balance -= game.Cost;
+        var lib = new Library()
+        {
+            AccountId = Id,
+            GameId = game.Id
+        };
+        context.Libraries.Add(lib);
+        context.Accounts.Update(entity);
+        await context.SaveChangesAsync();
     }
 }

@@ -11,16 +11,16 @@ public partial class Game
         Libraries = new HashSet<Library>();
     }
 
-    private Game(string name, string description, string developer, decimal cost)
+    private Game(string title, string description, string developer, decimal cost)
     {
-        Name = name;
+        Title = title;
         Description = description;
         Developer = developer;
         Cost = cost;
     }
 
     public int Id { get; set; }
-    public string Name { get; set; } = null!;
+    public string Title { get; set; } = null!;
     public string Description { get; set; }
     public string Developer { get; set; } = null!;
 
@@ -36,14 +36,14 @@ public partial class Game
 
     public static IEnumerable<Game> GetAll()
     {
-        using var context = new StellarisContext();
+        using var context = new StellarityContext();
         var games = context.Games.ToArray();
-        return games.OrderByDescending(game => game.AddDate).ThenBy(game => game.Name);
+        return games.OrderByDescending(game => game.AddDate).ThenBy(game => game.Title);
     }
 
     public static void Add(string name, string description, string developer, decimal cost)
     {
-        using var context = new StellarisContext();
+        using var context = new StellarityContext();
         var game = new Game(name, description, developer, cost);
         context.Games.Add(game);
         context.SaveChanges();
@@ -52,7 +52,7 @@ public partial class Game
     public static async Task AddAsync(string name, string description, string developer,
         decimal cost, byte[] coverData)
     {
-        await using var context = new StellarisContext();
+        await using var context = new StellarityContext();
         var game = new Game(name, description, developer, cost);
         await context.Games.AddAsync(game);
         await context.SaveChangesAsync();
@@ -69,7 +69,7 @@ public partial class Game
         var bytes = await cacheService.LoadAvatarAsync(CoverGuid);
         if (CoverGuid is { } && bytes is null)
         {
-            await using var context = new StellarisContext();
+            await using var context = new StellarityContext();
             var game = context.Entry(this).Entity;
             context.Games.Attach(game);
             await context.Entry(game).Reference(g => g.Cover).LoadAsync();
@@ -83,8 +83,19 @@ public partial class Game
     public static async Task<bool> ExistsAsync(string title)
     {
         var name = title.Trim();
-        await using var context = new StellarisContext();
-        var game = await context.Games.FirstOrDefaultAsync(game => game.Name == name);
+        await using var context = new StellarityContext();
+        var game = await context.Games.FirstOrDefaultAsync(game => game.Title == name);
         return game is { };
+    }
+
+    public static Game? ResolveFrom(int gameId)
+    {
+        using var context = new StellarityContext();
+        return context.Games.FirstOrDefault(game => game.Id == gameId);
+    }
+
+    public void UpdateInfo(in string title, in string description, in string developer, in string cost)
+    {
+        // todo update game info
     }
 }

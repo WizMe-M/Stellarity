@@ -9,8 +9,9 @@
              x:CompileBindings="True" x:DataType="pages:GameShopViewModel">
 
     <DockPanel>
+        <!-- IsVisible="{Binding Authorized.CanAddGames}"  -->
         <Button DockPanel.Dock="Top" Content="Добавить игру" Command="{Binding GoToAddGameCommand}"
-                IsVisible="{Binding Authorized.CanAddGames}" HorizontalAlignment="Right" Margin="50 20" />
+                HorizontalAlignment="Right" Margin="50 20" />
         <ListBox Items="{Binding AllGames}" SelectedItem="{Binding }"
                  Background="Transparent" Margin="0 20">
             <ListBox.Styles>
@@ -29,7 +30,7 @@
                 <DataTemplate>
                     <DockPanel Width="250">
                         <TextBlock DockPanel.Dock="Bottom" Text="{Binding Instance.Cost, StringFormat={}{0} руб.}" />
-                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Instance.Name}" FontWeight="Bold" />
+                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Instance.Title}" FontWeight="Bold" />
                         <Image Source="{Binding Cover}" Stretch="Uniform" />
                     </DockPanel>
                 </DataTemplate>

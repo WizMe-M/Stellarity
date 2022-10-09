@@ -41,7 +41,7 @@ public partial class MyProfileViewModel : IAsyncImageLoader
     [RelayCommand(CanExecute = nameof(CanComment))]
     private void SendComment()
     {
-        var comment = Comment.Send(_commentText, User);
+        var comment = Comment.Add(_commentText, User);
         Comments.Add(comment);
     }
 

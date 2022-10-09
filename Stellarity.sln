@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Avalonia", "Stel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity", "Stellarity\Stellarity.csproj", "{BC8AF152-3636-44D1-A256-7354D1E95B20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Domain", "Stellarity.Domain\Stellarity.Domain.csproj", "{9AA43674-BE9F-4AE7-BF0B-1EF4E87DD855}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA43674-BE9F-4AE7-BF0B-1EF4E87DD855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA43674-BE9F-4AE7-BF0B-1EF4E87DD855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA43674-BE9F-4AE7-BF0B-1EF4E87DD855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA43674-BE9F-4AE7-BF0B-1EF4E87DD855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

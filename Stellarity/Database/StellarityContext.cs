@@ -4,7 +4,7 @@ using Stellarity.Database.XmlConfiguration;
 
 namespace Stellarity.Database;
 
-public sealed class StellarisContext : DbContext
+internal sealed class StellarityContext : DbContext
 {
     /// <summary>
     /// Checks is database existing and creates it if not
@@ -12,7 +12,7 @@ public sealed class StellarisContext : DbContext
     /// <returns>Did database exist</returns>
     public static async Task<bool> CreateDatabaseAsync()
     {
-        await using var context = new StellarisContext();
+        await using var context = new StellarityContext();
         return await context.Database.EnsureCreatedAsync();
     }
 
@@ -21,7 +21,7 @@ public sealed class StellarisContext : DbContext
     public DbSet<Image> Images { get; set; } = null!;
     public DbSet<Library> Libraries { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
-    public DbSet<Account> Users { get; set; } = null!;
+    public DbSet<Account> Accounts { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -97,7 +97,7 @@ public sealed class StellarisContext : DbContext
         {
             entity.ToTable("games");
 
-            entity.HasIndex(e => e.Name, "uq_games_name")
+            entity.HasIndex(e => e.Title, "uq_games_name")
                 .IsUnique();
 
             entity.Property(e => e.Id)
@@ -118,7 +118,7 @@ public sealed class StellarisContext : DbContext
                 .HasMaxLength(30)
                 .HasColumnName("developer");
 
-            entity.Property(e => e.Name)
+            entity.Property(e => e.Title)
                 .HasMaxLength(25)
                 .HasColumnName("name");
 
@@ -155,12 +155,12 @@ public sealed class StellarisContext : DbContext
 
         modelBuilder.Entity<Library>(entity =>
         {
-            entity.HasKey(e => new { e.UserId, e.GameId })
+            entity.HasKey(e => new { UserId = e.AccountId, e.GameId })
                 .HasName("pk_library");
 
             entity.ToTable("library");
 
-            entity.Property(e => e.UserId)
+            entity.Property(e => e.AccountId)
                 .HasColumnName("user_id");
 
             entity.Property(e => e.GameId)
@@ -178,7 +178,7 @@ public sealed class StellarisContext : DbContext
 
             entity.HasOne(d => d.Account)
                 .WithMany(p => p.Library)
-                .HasForeignKey(d => d.UserId)
+                .HasForeignKey(d => d.AccountId)
                 .HasConstraintName("fk_library_user");
         });
 
@@ -255,8 +255,6 @@ public sealed class StellarisContext : DbContext
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("fk_users_role_id");
-
-            entity.Ignore(e => e.CanAddGames);
         });
 
         modelBuilder.Entity<Role>().HasData(

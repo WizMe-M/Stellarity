@@ -29,7 +29,7 @@ public partial class Comment
 
     public override bool Equals(object? obj) => obj is Comment comment && comment.Id == Id;
 
-    public static Comment Send(string text, Account profile, Account? sender = null)
+    public static Comment Add(string text, Account profile, Account? sender = null)
     {
         sender ??= profile;
         var comment = new Comment
@@ -38,10 +38,19 @@ public partial class Comment
             Author = sender, AuthorId = sender.Id,
             Profile = profile, ProfileId = profile.Id
         };
-        // TODO: insert into db table
-        // context.Comments.Add(comment);
-        // var id = comment.Id;
-        // comment = context.Comments.First(c => c.Id == id);
+        using var context = new StellarityContext();
+        context.Comments.Add(comment);
+        context.SaveChanges();
+        comment = context.Entry(comment).Entity;
         return comment;
+    }
+
+    public void UpdateBody(string body)
+    {
+        Body = body;
+        using var context = new StellarityContext();
+        var comment = context.Entry(this).Entity;
+        context.Comments.Update(comment);
+        context.SaveChanges();
     }
 }

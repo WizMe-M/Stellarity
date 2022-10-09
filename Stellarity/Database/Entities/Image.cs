@@ -35,8 +35,8 @@ public partial class Image
 
     public static async Task<Image> AddFromAsync(Game game, byte[] coverData)
     {
-        await using var context = new StellarisContext(); 
-        var img = new Image(game.Name, coverData);
+        await using var context = new StellarityContext(); 
+        var img = new Image(game.Title, coverData);
         await context.Images.AddAsync(img);
         await context.SaveChangesAsync();
         return context.Entry(img).Entity;
@@ -44,7 +44,7 @@ public partial class Image
 
     public static Image? Find(Guid? guid)
     {
-        using var context = new StellarisContext();
+        using var context = new StellarityContext();
         return context.Images.FirstOrDefault(img => img.Guid == guid);
     }
 }
