@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DynamicData;
 using Stellarity.Avalonia.Extensions;
-using Stellarity.Database.Entities;
+using Stellarity.Avalonia.Models;
 using Stellarity.Desktop.Basic;
-using Stellarity.Services.Accounting;
-using Image = Stellarity.Avalonia.Models.Image;
+using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Models;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
@@ -17,12 +18,12 @@ public partial class MyProfileViewModel : IAsyncImageLoader
     public MyProfileViewModel(AccountingService service)
     {
         User = service.AuthorizedAccount!;
-        Avatar = Image.GetPlaceholderBitmap();
+        Avatar = ImagePlaceholder.GetPlaceholderBitmap();
     }
 
-    public ObservableCollection<CommentEntity> Comments { get; } = new();
+    public ObservableCollection<Comment> Comments { get; } = new();
 
-    [ObservableProperty] private AccountEntity _user = null!;
+    [ObservableProperty] private Account _user = null!;
 
     [ObservableProperty] private Bitmap? _avatar;
 
@@ -37,10 +38,12 @@ public partial class MyProfileViewModel : IAsyncImageLoader
     }
 
     [RelayCommand(CanExecute = nameof(CanComment))]
-    private void SendComment()
+    private async Task SendCommentAsync()
     {
-        var comment = CommentEntity.Add(_commentText, User);
-        Comments.Add(comment);
+        User.LeaveComment(_commentText, User);
+        var comments = await User.LoadCommentsFor(User);
+        Comments.Clear();
+        Comments.AddRange(comments);
     }
 
     public async Task LoadAsync()

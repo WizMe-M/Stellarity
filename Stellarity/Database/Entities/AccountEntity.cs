@@ -204,4 +204,13 @@ public sealed partial class AccountEntity : IEntity
             .Where(comment => comment.ProfileId == profile.Id)
             .ToArrayAsync();
     }
+
+    public void LoadAvatar()
+    {
+        using var context = new StellarityContext();
+        var entry = context.Accounts.Attach(this);
+        entry.Reference(accountEntity => accountEntity.Avatar)
+            .Load();
+        Avatar = entry.Entity.Avatar;
+    }
 }

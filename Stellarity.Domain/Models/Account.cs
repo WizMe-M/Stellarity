@@ -1,7 +1,9 @@
-﻿using Stellarity.Database.Entities;
+﻿using Ninject;
+using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Registration;
+using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
 
@@ -30,6 +32,8 @@ public class Account : DomainModel<AccountEntity>
 
     public Image? Avatar { get; private set; }
     public IEnumerable<Game> Library { get; private set; } = ArraySegment<Game>.Empty;
+
+    public bool HasAvatar => Entity.AvatarGuid is { };
 
     public static async Task<AuthorizationResult> AuthorizeAsync(string email, string password)
     {
@@ -119,4 +123,19 @@ public class Account : DomainModel<AccountEntity>
 
     public bool IsIdenticalWith(Account acc) => acc.Entity.Id == Entity.Id;
     public bool IsMyProfile(Account profile) => profile.Entity.Id == Entity.Id;
+
+    public async Task<byte[]> GetAvatarAsync()
+    {
+        if (!HasAvatar) return Array.Empty<byte>();
+
+        var imageCacheService = DiContainingService.Kernel.Get<ImageCacheService>();
+        var imageData = await imageCacheService.LoadImageAsync(Entity.AvatarGuid);
+        if (imageData is null)
+        {
+            Entity.LoadAvatar();
+            imageData = Entity.Avatar!.Data;
+        }
+
+        return imageData;
+    }
 }
