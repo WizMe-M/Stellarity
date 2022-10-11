@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ninject;
-using Stellarity.Services;
 
 namespace Stellarity.Database.Entities;
 
@@ -105,31 +103,31 @@ public sealed partial class AccountEntity : IEntity
         await context.SaveChangesAsync();
     }
 
-    public async Task ChangeAvatarAsync(byte[]? avatarData)
-    {
-        if (avatarData is null) return;
-
-        await using var context = new StellarityContext();
-        var user = context.Entry(this).Entity;
-        context.Accounts.Attach(user);
-        if (user.AvatarGuid is null)
-        {
-            var avatar = new ImageEntity(user.Email, avatarData);
-            user.Avatar = avatar;
-            context.Accounts.Update(user);
-        }
-        else
-        {
-            if (user.Avatar is null)
-                await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
-            user.Avatar!.Data = avatarData;
-            context.Images.Update(user.Avatar!);
-        }
-
-        await context.SaveChangesAsync();
-        var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-        await cacheService.SaveAvatarAsync(Avatar!);
-    }
+    // public async Task ChangeAvatarAsync(byte[]? avatarData)
+    // {
+    //     if (avatarData is null) return;
+    //
+    //     await using var context = new StellarityContext();
+    //     var user = context.Entry(this).Entity;
+    //     context.Accounts.Attach(user);
+    //     if (user.AvatarGuid is null)
+    //     {
+    //         var avatar = new ImageEntity(user.Email, avatarData);
+    //         user.Avatar = avatar;
+    //         context.Accounts.Update(user);
+    //     }
+    //     else
+    //     {
+    //         if (user.Avatar is null)
+    //             await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
+    //         user.Avatar!.Data = avatarData;
+    //         context.Images.Update(user.Avatar!);
+    //     }
+    //
+    //     await context.SaveChangesAsync();
+    //     var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
+    //     await cacheService.SaveAvatarAsync(Avatar!);
+    // }
 
     public void UpdatePassword(string password)
     {
@@ -157,24 +155,24 @@ public sealed partial class AccountEntity : IEntity
     }
 #endif
 
-    public async Task<byte[]?> GetAvatarAsync()
-    {
-        // get image from cache or db by guid
-        // return its data
-        var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-        var bytes = await cacheService.LoadAvatarAsync(AvatarGuid);
-        if (AvatarGuid is { } && bytes is null)
-        {
-            await using var context = new StellarityContext();
-            var user = context.Entry(this).Entity;
-            context.Accounts.Attach(user);
-            await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
-            bytes = Avatar!.Data;
-            await cacheService.SaveAvatarAsync(Avatar);
-        }
-
-        return bytes;
-    }
+    // public async Task<byte[]?> GetAvatarAsync()
+    // {
+    //     // get image from cache or db by guid
+    //     // return its data
+    //     var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
+    //     var bytes = await cacheService.LoadAvatarAsync(AvatarGuid);
+    //     if (AvatarGuid is { } && bytes is null)
+    //     {
+    //         await using var context = new StellarityContext();
+    //         var user = context.Entry(this).Entity;
+    //         context.Accounts.Attach(user);
+    //         await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
+    //         bytes = Avatar!.Data;
+    //         await cacheService.SaveAvatarAsync(Avatar);
+    //     }
+    //
+    //     return bytes;
+    // }
 
     public async Task LoadLibraryAsync()
     {

@@ -1,13 +1,13 @@
 ﻿using Stellarity.Database.Entities;
+using Stellarity.Domain.Services.Cache;
 using Stellarity.Extensions;
-using Stellarity.Services.Cache;
 
-namespace Stellarity.Services;
+namespace Stellarity.Domain.Services;
 
-public class ImageCacheService : CachingBase<byte[]>
+public class ImageCacheService : CachingBaseService<byte[]>
 {
-    public ImageCacheService(CachingService cachingService)
-        : base(cachingService, "Images/", CachingType.Binary)
+    public ImageCacheService(Cacher cacher)
+        : base(cacher, "Images/", CachingType.Binary)
     {
     }
 

@@ -1,4 +1,4 @@
-﻿namespace Stellarity.Services.Cache;
+﻿namespace Stellarity.Domain.Services.Cache;
 
 public enum CachingType
 {

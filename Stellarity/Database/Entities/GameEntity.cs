@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ninject;
-using Stellarity.Services;
 
 namespace Stellarity.Database.Entities;
 
@@ -62,23 +60,23 @@ public partial class GameEntity : IEntity
         context.Games.Update(game);
         await context.SaveChangesAsync();
     }
-
-    public async Task<byte[]?> GetCoverAsync()
-    {
-        var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-        var bytes = await cacheService.LoadAvatarAsync(CoverGuid);
-        if (CoverGuid is { } && bytes is null)
-        {
-            await using var context = new StellarityContext();
-            var game = context.Entry(this).Entity;
-            context.Games.Attach(game);
-            await context.Entry(game).Reference(g => g.Cover).LoadAsync();
-            bytes = Cover!.Data;
-            await cacheService.SaveAvatarAsync(Cover);
-        }
-
-        return bytes;
-    }
+    //
+    // public async Task<byte[]?> GetCoverAsync()
+    // {
+    //     var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
+    //     var bytes = await cacheService.LoadAvatarAsync(CoverGuid);
+    //     if (CoverGuid is { } && bytes is null)
+    //     {
+    //         await using var context = new StellarityContext();
+    //         var game = context.Entry(this).Entity;
+    //         context.Games.Attach(game);
+    //         await context.Entry(game).Reference(g => g.Cover).LoadAsync();
+    //         bytes = Cover!.Data;
+    //         await cacheService.SaveAvatarAsync(Cover);
+    //     }
+    //
+    //     return bytes;
+    // }
 
     public static async Task<bool> ExistsAsync(string title)
     {

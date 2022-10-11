@@ -1,13 +1,13 @@
 using Newtonsoft.Json;
 using Stellarity.Extensions;
 
-namespace Stellarity.Services.Cache;
+namespace Stellarity.Domain.Services.Cache;
 
-public class CachingService
+public class Cacher
 {
     private readonly string _rootFolder;
 
-    public CachingService(string rootFolder = "Cache/")
+    public Cacher(string rootFolder = "Cache/")
     {
         _rootFolder = rootFolder;
     }

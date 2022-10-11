@@ -6,7 +6,7 @@ public class NavigationStack
 {
     private readonly Stack<IContentPage> _navStack;
 
-    public NavigationStack(IContentPage root) => 
+    public NavigationStack(IContentPage root) =>
         _navStack = new Stack<IContentPage>(new[] { root });
 
     public IContentPage Current => _navStack.Peek();
@@ -27,6 +27,7 @@ public class NavigationStack
                     default:
                         throw new NavigationStackException("ContentPage stack is empty");
                 }
+
                 break;
             case NavigationStrategy.Push:
                 _navStack.Push(e.ContentPage!);
@@ -40,7 +41,8 @@ public class NavigationStack
                 _navStack.Push(e.ContentPage!);
                 break;
             default:
-                throw new NavigationStackException($"For some reason {nameof(e.NavigationStrategy)} was outside bounds");
+                throw new NavigationStackException(
+                    $"For some reason {nameof(e.NavigationStrategy)} was outside bounds");
         }
     }
 }

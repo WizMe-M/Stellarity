@@ -1,8 +1,8 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using Stellarity.Ninject;
+using Stellarity.Domain.Ninject;
 
-namespace Stellarity.Services;
+namespace Stellarity.Domain.Services;
 
 public class DiContainingService
 {
