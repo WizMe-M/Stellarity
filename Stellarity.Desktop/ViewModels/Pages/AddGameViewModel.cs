@@ -10,6 +10,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveValidation;
 using ReactiveValidation.Extensions;
 using Stellarity.Avalonia.Extensions;
+using Stellarity.Avalonia.Models;
 using Stellarity.Avalonia.ViewModel;
 using Stellarity.Database.Entities;
 using Stellarity.Navigation.Event;
@@ -50,7 +51,7 @@ public partial class AddGameViewModel : PageViewModel
     private AddGameViewModel()
     {
         Free = true;
-        Cover = Avalonia.Models.Image.GetPlaceholderBitmap();
+        Cover = ImagePlaceholder.GetBitmap();
         Validator = GetValidator();
     }
 

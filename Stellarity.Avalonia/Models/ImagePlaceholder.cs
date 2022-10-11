@@ -9,20 +9,20 @@ public static class ImagePlaceholder
 {
     private const string PlaceholderUri = "avares://Stellarity.Avalonia/Assets/Images/placeholder.png";
 
-    public static Bitmap GetPlaceholderBitmap()
+    public static Bitmap GetBitmap()
     {
-        var placeholderStream = GetPlaceholderAsset();
+        var placeholderStream = GetAsset();
         return new Bitmap(placeholderStream);
     }
 
-    public static byte[] GetPlaceholderBytes()
+    public static byte[] GetBytes()
     {
-        var placeholderStream = GetPlaceholderAsset();
+        var placeholderStream = GetAsset();
         var bm = new Bitmap(placeholderStream);
         return bm.FromBitmap()!;
     }
 
-    private static Stream GetPlaceholderAsset()
+    private static Stream GetAsset()
     {
         var uri = new Uri(PlaceholderUri);
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;

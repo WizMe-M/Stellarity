@@ -16,7 +16,7 @@ public partial class GameViewModel : IAsyncImageLoader
     public GameViewModel(Game instance)
     {
         Instance = instance;
-        _cover = ImagePlaceholder.GetPlaceholderBitmap();
+        _cover = ImagePlaceholder.GetBitmap();
     }
 
     public Game Instance { get; }

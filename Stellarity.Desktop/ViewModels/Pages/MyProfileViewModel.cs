@@ -18,7 +18,7 @@ public partial class MyProfileViewModel : IAsyncImageLoader
     public MyProfileViewModel(AccountingService service)
     {
         User = service.AuthorizedAccount!;
-        Avatar = ImagePlaceholder.GetPlaceholderBitmap();
+        Avatar = ImagePlaceholder.GetBitmap();
     }
 
     public ObservableCollection<Comment> Comments { get; } = new();
