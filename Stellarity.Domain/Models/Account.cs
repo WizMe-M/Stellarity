@@ -34,6 +34,7 @@ public class Account : DomainModel<AccountEntity>
     public IEnumerable<Game> Library { get; private set; } = ArraySegment<Game>.Empty;
 
     public bool HasAvatar => Entity.AvatarGuid is { };
+    public bool IsNicknameSet => Entity.Nickname != null;
 
     public static async Task<AuthorizationResult> AuthorizeAsync(string email, string password)
     {
@@ -137,5 +138,10 @@ public class Account : DomainModel<AccountEntity>
         }
 
         return imageData;
+    }
+
+    public async Task EditBasicInfo()
+    {
+        throw new NotImplementedException();
     }
 }
