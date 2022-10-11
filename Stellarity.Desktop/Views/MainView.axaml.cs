@@ -5,14 +5,13 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using HanumanInstitute.MvvmDialogs;
 using Ninject;
-using Ninject.Parameters;
 using ReactiveUI;
 using Stellarity.Desktop.TemplatedControls.Navigation;
 using Stellarity.Desktop.ViewModels;
 using Stellarity.Desktop.ViewModels.Pages;
 using Stellarity.Desktop.Views.Pages;
-using Stellarity.Services;
-using Stellarity.Services.Accounting;
+using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Services;
 
 namespace Stellarity.Desktop.Views;
 
@@ -40,18 +39,17 @@ public partial class MainView : ReactiveWindow<MainViewModel>
 #if DEBUG
         this.AttachDevTools();
 #endif
+
         DragBorder = this.GetControl<Border>(nameof(DragBorder));
         DragBorder.PointerPressed += (_, e) => BeginMoveDrag(e);
-
+        MyProfile = this.GetControl<MyProfileView>(nameof(MyProfile));
+        EditProfile = this.GetControl<EditProfileView>(nameof(EditProfile));
+        Shop = this.GetControl<GameShopView>(nameof(Shop));
         NavView = this.GetControl<NavigationView>(nameof(NavView));
         foreach (var logicalChild in NavView.GetLogicalChildren())
         {
             if (logicalChild is not NavigationViewItem item) return;
             item.Initialize(NavView.Navigator);
         }
-
-        MyProfile = this.GetControl<MyProfileView>(nameof(MyProfile));
-        EditProfile = this.GetControl<EditProfileView>(nameof(EditProfile));
-        Shop = this.GetControl<GameShopView>(nameof(Shop));
     }
 }

@@ -148,10 +148,10 @@ public sealed partial class AccountEntity : IEntity
     }
 
 #if DEBUG
-    public static AccountEntity GetFirst()
+    public static AccountEntity GetAdmin()
     {
         using var context = new StellarityContext();
-        return context.Accounts.First(u => u.RoleId == 1);
+        return context.Accounts.First(account => account.Id == 1);
     }
 #endif
 
@@ -177,9 +177,8 @@ public sealed partial class AccountEntity : IEntity
     public async Task LoadLibraryAsync()
     {
         await using var context = new StellarityContext();
-        await context.Entry(this)
-            .Collection(acc => acc.Library)
-            .LoadAsync();
+        var entry = context.Accounts.Attach(this);
+        await entry.Collection(account => account.Library).LoadAsync();
     }
 
     public async Task PurchaseGameAsync(GameEntity game)

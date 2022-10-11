@@ -6,9 +6,8 @@ using Avalonia.ReactiveUI;
 using Projektanker.Icons.Avalonia;
 using Projektanker.Icons.Avalonia.MaterialDesign;
 using ReactiveValidation.Avalonia;
-using Stellarity.Desktop;
 
-namespace Stellarity;
+namespace Stellarity.Desktop;
 
 class Program
 {

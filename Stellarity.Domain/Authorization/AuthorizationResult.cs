@@ -4,7 +4,7 @@ namespace Stellarity.Domain.Authorization;
 
 public class AuthorizationResult
 {
-    private AuthorizationResult(Account? account, string message = "")
+    private AuthorizationResult(Account? account = null, string message = "")
     {
         Account = account;
         Message = message;
@@ -16,10 +16,10 @@ public class AuthorizationResult
 
     public bool IsSuccessful => Account is { };
 
-    public static AuthorizationResult Fail() => new(null,
-        "User with such email and/or password doesn't exist");
+    public static AuthorizationResult NoSuchUser() =>
+        new(message: "User with such email and/or password doesn't exist");
 
-    public static AuthorizationResult FailBanned() => new(null, "This user was banned");
+    public static AuthorizationResult UserWasBanned() => new(message: "This user was banned by administrator");
 
     public static AuthorizationResult Success(Account account) => new(account);
 }

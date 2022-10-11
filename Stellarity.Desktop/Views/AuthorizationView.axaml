@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
-        xmlns:locales="clr-namespace:Stellarity.Assets.Locales;assembly=Stellarity.Avalonia"
+        xmlns:locales="clr-namespace:Stellarity.Assets.Locales"
         xmlns:templatedControls1="clr-namespace:Stellarity.Desktop.TemplatedControls"
         xmlns:viewModels="clr-namespace:Stellarity.Desktop.ViewModels"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
@@ -114,11 +114,11 @@
                 
                 <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" 
                           Content="{x:Static locales:Resources.remember_me}" 
-                          IsChecked="{Binding RememberUser}"
+                          IsChecked="{Binding RememberMe}"
                           IsThreeState="False" />
                 
                 <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{x:Static locales:Resources.log_in}"
-                        Command="{ReflectionBinding  LogIn}" IsEnabled="{ReflectionBinding !LogIn.IsExecuting}"
+                        Command="{Binding LogInCommand}" IsEnabled="{ReflectionBinding !LogIn.IsExecuting}"
                         FontSize="14" Padding="50 5" Margin="0 0 0 10" HorizontalAlignment="Center" />
             </sg:SpacedGrid>
 

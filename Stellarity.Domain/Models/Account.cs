@@ -34,8 +34,8 @@ public class Account : DomainModel<AccountEntity>
     public static async Task<AuthorizationResult> AuthorizeAsync(string email, string password)
     {
         var entity = AccountEntity.Find(email, password);
-        if (entity is null) return AuthorizationResult.Fail();
-        if (entity.Deleted) return AuthorizationResult.FailBanned();
+        if (entity is null) return AuthorizationResult.NoSuchUser();
+        if (entity.Deleted) return AuthorizationResult.UserWasBanned();
 
         var account = new Account(entity);
         await account.RefreshLibraryAsync();

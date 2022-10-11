@@ -1,52 +1,73 @@
-﻿using System.Reactive;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using Ninject;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Stellarity.Avalonia.ViewModel;
-using Stellarity.Database.Entities;
-using Stellarity.Desktop.Basic;
-using Stellarity.Services;
-using Stellarity.Services.Accounting;
+using Stellarity.Domain.Authorization;
 
 namespace Stellarity.Desktop.ViewModels;
 
-public class AuthorizationViewModel : ViewModelBase
+public partial class AuthorizationViewModel : ViewModelBase
 {
     private readonly IDialogService _windowService = null!;
+    private readonly AccountingService _accountingService = null!;
 
-    public AuthorizationViewModel()
+    [ObservableProperty] private string _email = string.Empty;
+
+    [ObservableProperty] private string _password = string.Empty;
+
+    [ObservableProperty] private bool _rememberMe;
+
+    private AuthorizationViewModel()
     {
-        RememberUser = true;
-
-        LogIn = ReactiveCommand.CreateFromTask(async () =>
-        {
-            // TODO: authorization logic
-            var accountingService = DiContainingService.Kernel.Get<AccountingService>();
-            accountingService.AuthorizedAccount = Account.GetFirst();
-            await Task.Delay(1000);
-
-            var vm = _windowService.CreateViewModel<MainViewModel>();
-            _windowService.Show(this, vm);
-            _windowService.Close(this);
-        });
+        Email = "";
+        Password = "";
+        RememberMe = true;
     }
 
-    // ReSharper disable once UnusedMember.Global
-    public AuthorizationViewModel(IDialogService windowService) : this()
+    public AuthorizationViewModel(IDialogService windowService, AccountingService accountingService) : this()
     {
         _windowService = windowService;
+        _accountingService = accountingService;
     }
 
-    [Reactive]
-    public string Email { get; set; } = "";
+    [RelayCommand]
+    private async Task LogInAsync()
+    {
+        var authorizationResult = await _accountingService.AccountAuthorizationAsync(Email, Password, RememberMe);
+        if (!authorizationResult.IsSuccessful)
+        {
+            await ShowErrorAsync(authorizationResult.Message, "Authorization error");
+            return;
+        }
 
-    [Reactive]
-    public string Password { get; set; } = "";
+        OpenMainView();
+    }
 
-    [Reactive]
-    public bool RememberUser { get; set; }
+    public async Task TryAutoLogInAsync()
+    {
+        if (!_accountingService.HaveAuthHistory) return;
 
-    public ReactiveCommand<Unit, Unit> LogIn { get; }
+        if (_accountingService.IsAutoLogIn)
+        {
+            OpenMainView();
+            return;
+        }
+
+        if (_accountingService.AuthorizedAccount!.IsBanned)
+        {
+            await ShowErrorAsync("User was banned. Log into another account", "Authorization error");
+        }
+    }
+
+    private Task ShowErrorAsync(string text, string title) =>
+        _windowService.ShowMessageBoxAsync(this, text, title, MessageBoxButton.Ok, MessageBoxImage.Error);
+
+    private void OpenMainView()
+    {
+        var vm = _windowService.CreateViewModel<MainViewModel>();
+        _windowService.Show(this, vm);
+        _windowService.Close(this);
+    }
 }
