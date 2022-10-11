@@ -110,5 +110,15 @@ public partial class GameEntity : IEntity
     {
         using var context = new StellarityContext();
         var entity = context.Entry(this).Entity;
+        throw new NotImplementedException();
+    }
+
+    public void LoadCover()
+    {
+        using var context = new StellarityContext();
+        var entry = context.Games.Attach(this);
+        entry.Reference(game => game.Cover)
+            .Load();
+        Cover = entry.Entity.Cover;
     }
 }

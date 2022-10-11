@@ -11,19 +11,19 @@ public class ImageCacheService : CachingBaseService<byte[]>
     {
     }
 
-    public Task SaveAvatarAsync(ImageEntity avatar)
+    public Task SaveImageAsync(ImageEntity image)
     {
-        var guidStr = avatar.Guid.ToString();
+        var guidStr = image.Guid.ToString();
         var hashedFileName = guidStr.CreateMD5();
-        var data = avatar.Data;
+        var data = image.Data;
         return SaveAsync(hashedFileName, data);
     }
 
-    public async Task<byte[]?> LoadAvatarAsync(Guid? avatarGuid)
+    public async Task<byte[]?> LoadImageAsync(Guid? imageGuid)
     {
-        if (avatarGuid is null) return null;
+        if (imageGuid is null) return null;
 
-        var guidStr = avatarGuid.Value.ToString();
+        var guidStr = imageGuid.Value.ToString();
         var hashedFileName = guidStr.CreateMD5();
         byte[]? result;
         try

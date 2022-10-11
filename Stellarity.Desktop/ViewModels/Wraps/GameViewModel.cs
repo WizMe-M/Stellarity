@@ -2,9 +2,9 @@
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Stellarity.Avalonia.Extensions;
-using Stellarity.Database.Entities;
+using Stellarity.Avalonia.Models;
 using Stellarity.Desktop.Basic;
-using Image = Stellarity.Avalonia.Models.Image;
+using Stellarity.Domain.Models;
 
 namespace Stellarity.Desktop.ViewModels.Wraps;
 
@@ -13,17 +13,17 @@ public partial class GameViewModel : IAsyncImageLoader
 {
     [ObservableProperty] private Bitmap? _cover;
 
-    public GameViewModel(GameEntity instance)
+    public GameViewModel(Game instance)
     {
         Instance = instance;
-        _cover = Image.GetPlaceholderBitmap();
+        _cover = ImagePlaceholder.GetPlaceholderBitmap();
     }
 
-    public GameEntity Instance { get; }
+    public Game Instance { get; }
 
     public async Task LoadAsync()
     {
-        var bytes = await Instance.GetCoverAsync();
+        var bytes = await Instance.GetCoverBytesAsync();
         var bm = bytes.ToBitmap();
         Cover = bm ?? Cover;
     }

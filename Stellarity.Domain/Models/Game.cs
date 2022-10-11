@@ -1,5 +1,7 @@
-﻿using Stellarity.Database.Entities;
+﻿using Ninject;
+using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
+using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
 
@@ -23,6 +25,8 @@ public class Game : DomainModel<GameEntity>
 
     public DateTime AddedInShopDate { get; }
 
+    public bool HasCover => Entity.CoverGuid is { };
+
     public void EditBasicInfo(in string title, in string description, in string developer, in decimal cost)
     {
         Entity.UpdateInfo(title, description, developer, cost);
@@ -36,5 +40,26 @@ public class Game : DomainModel<GameEntity>
     {
         Entity.UpdateCover(newCover.Entity);
         Cover = new Image(Entity.Cover!);
+    }
+
+    public async Task<byte[]> GetCoverBytesAsync()
+    {
+        if (!HasCover) return Array.Empty<byte>();
+
+        var imageCacheService = DiContainingService.Kernel.Get<ImageCacheService>();
+        var imageData = await imageCacheService.LoadImageAsync(Entity.CoverGuid);
+        if (imageData is null)
+        {
+            Entity.LoadCover();
+            imageData = Entity.Cover!.Data;
+        }
+
+        return imageData;
+    }
+
+    public static IEnumerable<Game> GetAllShop()
+    {
+        var gameEntities = GameEntity.GetAll();
+        return gameEntities.Select(entity => new Game(entity));
     }
 }

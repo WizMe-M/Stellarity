@@ -9,8 +9,9 @@ using Stellarity.Database.Entities;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.ViewModels.Wraps;
 using Stellarity.Desktop.Views.Pages;
+using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Models;
 using Stellarity.Navigation.Event;
-using Stellarity.Services.Accounting;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
@@ -26,9 +27,9 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
         _windowOwner = windowOwner;
         _navigator = navigator;
         _dialog = dialogService;
-        Authorized = accountingService.AuthorizedAccount!;
+        // Authorized = accountingService.AuthorizedAccount!;
 
-        var games = GameEntity.GetAll();
+        var games = Game.GetAllShop();
         AllGames.AddRange(games.Select(g => new GameViewModel(g)));
     }
 
@@ -38,7 +39,8 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
 
     public async Task LoadAsync()
     {
-        foreach (var game in AllGames) await game.LoadAsync();
+        foreach (IAsyncImageLoader asyncImageLoader in AllGames)
+            await asyncImageLoader.LoadAsync();
     }
 
     [RelayCommand]
