@@ -6,12 +6,12 @@ namespace Stellarity.Services;
 
 public class ImageCacheService : CachingBase<byte[]>
 {
-    public ImageCacheService(CachingService cachingService) 
+    public ImageCacheService(CachingService cachingService)
         : base(cachingService, "Images/", CachingType.Binary)
     {
     }
 
-    public Task SaveAvatarAsync(Image avatar)
+    public Task SaveAvatarAsync(ImageEntity avatar)
     {
         var guidStr = avatar.Guid.ToString();
         var hashedFileName = guidStr.CreateMD5();
@@ -34,6 +34,7 @@ public class ImageCacheService : CachingBase<byte[]>
         {
             result = null;
         }
+
         return result;
     }
 }

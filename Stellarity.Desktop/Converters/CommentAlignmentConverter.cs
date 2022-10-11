@@ -11,7 +11,7 @@ public class CommentAlignmentConverter : IValueConverter
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         var result = HorizontalAlignment.Left;
-        if (value is not Comment comment) return result;
+        if (value is not CommentEntity comment) return result;
         result = comment.Author == comment.Profile ? HorizontalAlignment.Right : HorizontalAlignment.Left;
         return result;
     }

@@ -10,7 +10,7 @@ public class CommentCornerRadiusConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not Comment comment) return new CornerRadius();
+        if (value is not CommentEntity comment) return new CornerRadius();
         var result = comment.Author == comment.Profile
             ? new CornerRadius(10, 10, 0, 10)
             : new CornerRadius(10, 10, 10, 0);

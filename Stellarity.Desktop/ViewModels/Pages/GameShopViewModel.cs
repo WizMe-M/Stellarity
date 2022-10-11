@@ -28,13 +28,13 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
         _dialog = dialogService;
         Authorized = accountingService.AuthorizedAccount!;
 
-        var games = Game.GetAll();
+        var games = GameEntity.GetAll();
         AllGames.AddRange(games.Select(g => new GameViewModel(g)));
     }
 
     public ObservableCollection<GameViewModel> AllGames { get; } = new();
 
-    public Account Authorized { get; }
+    public AccountEntity Authorized { get; }
 
     public async Task LoadAsync()
     {

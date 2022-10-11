@@ -20,13 +20,11 @@ public partial class MyProfileViewModel : IAsyncImageLoader
         Avatar = Image.GetPlaceholderBitmap();
     }
 
-    public ObservableCollection<Comment> Comments { get; } = new();
+    public ObservableCollection<CommentEntity> Comments { get; } = new();
 
-    [ObservableProperty]
-    private Account _user = null!;
+    [ObservableProperty] private AccountEntity _user = null!;
 
-    [ObservableProperty]
-    private Bitmap? _avatar;
+    [ObservableProperty] private Bitmap? _avatar;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommentCommand))]
     private string _commentText = string.Empty;
@@ -41,7 +39,7 @@ public partial class MyProfileViewModel : IAsyncImageLoader
     [RelayCommand(CanExecute = nameof(CanComment))]
     private void SendComment()
     {
-        var comment = Comment.Add(_commentText, User);
+        var comment = CommentEntity.Add(_commentText, User);
         Comments.Add(comment);
     }
 

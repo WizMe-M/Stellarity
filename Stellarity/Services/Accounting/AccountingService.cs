@@ -16,7 +16,7 @@ public class AccountingService : CachingBase<AuthorizationInfo>
     public bool UserRemembered { get; private set; }
 
     // TODO: public setter for dev only
-    public Account? AuthorizedAccount { get; set; }
+    public AccountEntity? AuthorizedAccount { get; set; }
 
     /// <summary>
     /// Asynchronously initializes accounting service with cached data
@@ -57,7 +57,7 @@ public class AccountingService : CachingBase<AuthorizationInfo>
         var authenticated = email == "test@mail.ru" && password == "password";
         if (authenticated)
         {
-            AuthorizedAccount = new Account(email, password);
+            AuthorizedAccount = new AccountEntity(email, password);
             UserRemembered = remember;
             SaveAuthorizationInfoAsync();
         }

@@ -16,12 +16,12 @@ internal sealed class StellarityContext : DbContext
         return await context.Database.EnsureCreatedAsync();
     }
 
-    public DbSet<Comment> Comments { get; set; } = null!;
-    public DbSet<Game> Games { get; set; } = null!;
-    public DbSet<Image> Images { get; set; } = null!;
-    public DbSet<Library> Libraries { get; set; } = null!;
-    public DbSet<Role> Roles { get; set; } = null!;
-    public DbSet<Account> Accounts { get; set; } = null!;
+    public DbSet<CommentEntity> Comments { get; set; } = null!;
+    public DbSet<GameEntity> Games { get; set; } = null!;
+    public DbSet<ImageEntity> Images { get; set; } = null!;
+    public DbSet<LibraryEntity> Libraries { get; set; } = null!;
+    public DbSet<RoleEntity> Roles { get; set; } = null!;
+    public DbSet<AccountEntity> Accounts { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -59,7 +59,7 @@ internal sealed class StellarityContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Comment>(entity =>
+        modelBuilder.Entity<CommentEntity>(entity =>
         {
             entity.ToTable("comments");
 
@@ -93,7 +93,7 @@ internal sealed class StellarityContext : DbContext
                 .HasConstraintName("fk_comments_profile_id");
         });
 
-        modelBuilder.Entity<Game>(entity =>
+        modelBuilder.Entity<GameEntity>(entity =>
         {
             entity.ToTable("games");
 
@@ -134,7 +134,7 @@ internal sealed class StellarityContext : DbContext
                 .HasConstraintName("fk_games_cover_guid");
         });
 
-        modelBuilder.Entity<Image>(entity =>
+        modelBuilder.Entity<ImageEntity>(entity =>
         {
             entity.HasKey(e => e.Guid)
                 .HasName("pk_images");
@@ -153,7 +153,7 @@ internal sealed class StellarityContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Library>(entity =>
+        modelBuilder.Entity<LibraryEntity>(entity =>
         {
             entity.HasKey(e => new { UserId = e.AccountId, e.GameId })
                 .HasName("pk_library");
@@ -182,7 +182,7 @@ internal sealed class StellarityContext : DbContext
                 .HasConstraintName("fk_library_user");
         });
 
-        modelBuilder.Entity<Role>(entity =>
+        modelBuilder.Entity<RoleEntity>(entity =>
         {
             entity.ToTable("roles");
 
@@ -197,7 +197,7 @@ internal sealed class StellarityContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Account>(entity =>
+        modelBuilder.Entity<AccountEntity>(entity =>
         {
             entity.ToTable("users");
 
@@ -257,11 +257,11 @@ internal sealed class StellarityContext : DbContext
                 .HasConstraintName("fk_users_role_id");
         });
 
-        modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, Name = "Администратор" },
-            new Role { Id = 2, Name = "Игрок" });
+        modelBuilder.Entity<RoleEntity>().HasData(
+            new RoleEntity { Id = 1, Name = "Администратор" },
+            new RoleEntity { Id = 2, Name = "Игрок" });
 
-        modelBuilder.Entity<Account>().HasData(new Account
+        modelBuilder.Entity<AccountEntity>().HasData(new AccountEntity
         {
             Id = 1,
             RoleId = 1,

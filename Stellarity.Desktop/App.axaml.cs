@@ -27,7 +27,7 @@ public class App : Application
         {
 #if DEBUG
             var service = DiContainingService.Kernel.Get<AccountingService>();
-            service.AuthorizedAccount = Account.GetFirst();
+            service.AuthorizedAccount = AccountEntity.GetFirst();
             desktop.MainWindow = new MainView
             {
                 ViewModel = new MainViewModel()

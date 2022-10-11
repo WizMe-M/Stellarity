@@ -4,14 +4,14 @@ using Stellarity.Services;
 
 namespace Stellarity.Database.Entities;
 
-public partial class Game
+public partial class GameEntity : IEntity
 {
-    public Game()
+    public GameEntity()
     {
-        Libraries = new HashSet<Library>();
+        Libraries = new HashSet<LibraryEntity>();
     }
 
-    private Game(string title, string description, string developer, decimal cost)
+    private GameEntity(string title, string description, string developer, decimal cost)
     {
         Title = title;
         Description = description;
@@ -31,10 +31,10 @@ public partial class Game
 
     public Guid? CoverGuid { get; set; }
 
-    public virtual Image? Cover { get; set; }
-    public virtual ICollection<Library> Libraries { get; set; }
+    public virtual ImageEntity? Cover { get; set; }
+    public virtual ICollection<LibraryEntity> Libraries { get; set; }
 
-    public static IEnumerable<Game> GetAll()
+    public static IEnumerable<GameEntity> GetAll()
     {
         using var context = new StellarityContext();
         var games = context.Games.ToArray();
@@ -44,7 +44,7 @@ public partial class Game
     public static void Add(string name, string description, string developer, decimal cost)
     {
         using var context = new StellarityContext();
-        var game = new Game(name, description, developer, cost);
+        var game = new GameEntity(name, description, developer, cost);
         context.Games.Add(game);
         context.SaveChanges();
     }
@@ -53,11 +53,11 @@ public partial class Game
         decimal cost, byte[] coverData)
     {
         await using var context = new StellarityContext();
-        var game = new Game(name, description, developer, cost);
+        var game = new GameEntity(name, description, developer, cost);
         await context.Games.AddAsync(game);
         await context.SaveChangesAsync();
         game = context.Entry(game).Entity;
-        var img = await Image.AddFromAsync(game, coverData);
+        var img = await ImageEntity.AddFromAsync(game, coverData);
         game.Cover = img;
         context.Games.Update(game);
         await context.SaveChangesAsync();
@@ -88,14 +88,29 @@ public partial class Game
         return game is { };
     }
 
-    public static Game? ResolveFrom(int gameId)
+    public static GameEntity? ResolveFrom(int gameId)
     {
         using var context = new StellarityContext();
         return context.Games.FirstOrDefault(game => game.Id == gameId);
     }
 
-    public void UpdateInfo(in string title, in string description, in string developer, in string cost)
+    public void UpdateInfo(in string title, in string description, in string developer, in decimal cost)
     {
-        // todo update game info
+        using var context = new StellarityContext();
+        var entity = context.Entry(this).Entity;
+        entity.Title = title;
+        entity.Description = description;
+        entity.Developer = developer;
+        entity.Cost = cost;
+        context.Games.Update(entity);
+        context.SaveChanges();
+
+        Title = entity.Title;
+    }
+
+    public void UpdateCover(ImageEntity newCover)
+    {
+        using var context = new StellarityContext();
+        var entity = context.Entry(this).Entity;
     }
 }

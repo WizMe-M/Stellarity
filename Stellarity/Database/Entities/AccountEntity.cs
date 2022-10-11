@@ -4,16 +4,16 @@ using Stellarity.Services;
 
 namespace Stellarity.Database.Entities;
 
-public sealed partial class Account
+public sealed partial class AccountEntity : IEntity
 {
-    public Account()
+    public AccountEntity()
     {
-        CommentAuthors = new HashSet<Comment>();
-        CommentProfiles = new HashSet<Comment>();
-        Library = new HashSet<Library>();
+        CommentAuthors = new HashSet<CommentEntity>();
+        CommentProfiles = new HashSet<CommentEntity>();
+        Library = new HashSet<LibraryEntity>();
     }
 
-    public Account(string email, string password) : this()
+    public AccountEntity(string email, string password) : this()
     {
         Email = email;
         Password = password;
@@ -48,11 +48,11 @@ public sealed partial class Account
 
     public Guid? AvatarGuid { get; set; }
 
-    public Image? Avatar { get; set; }
-    public Role Role { get; set; } = null!;
-    public ICollection<Comment> CommentAuthors { get; set; }
-    public ICollection<Comment> CommentProfiles { get; set; }
-    public ICollection<Library> Library { get; set; }
+    public ImageEntity? Avatar { get; set; }
+    public RoleEntity Role { get; set; } = null!;
+    public ICollection<CommentEntity> CommentAuthors { get; set; }
+    public ICollection<CommentEntity> CommentProfiles { get; set; }
+    public ICollection<LibraryEntity> Library { get; set; }
 
     public static bool Exists(string email)
     {
@@ -61,7 +61,7 @@ public sealed partial class Account
         return user is { };
     }
 
-    public static Account? Find(string email, string password)
+    public static AccountEntity? Find(string email, string password)
     {
         using var context = new StellarityContext();
         return context.Accounts
@@ -71,7 +71,7 @@ public sealed partial class Account
             .FirstOrDefault(user => user.Email == email && user.Password == password);
     }
 
-    public static Account? Find(string email)
+    public static AccountEntity? Find(string email)
     {
         using var context = new StellarityContext();
         return context.Accounts
@@ -81,10 +81,10 @@ public sealed partial class Account
             .FirstOrDefault(user => user.Email == email);
     }
 
-    public static Account Register(string email, string password, int roleId)
+    public static AccountEntity Register(string email, string password, int roleId)
     {
         using var context = new StellarityContext();
-        var gamer = new Account(email, password)
+        var gamer = new AccountEntity(email, password)
         {
             RoleId = roleId
         };
@@ -114,7 +114,7 @@ public sealed partial class Account
         context.Accounts.Attach(user);
         if (user.AvatarGuid is null)
         {
-            var avatar = new Image(user.Email, avatarData);
+            var avatar = new ImageEntity(user.Email, avatarData);
             user.Avatar = avatar;
             context.Accounts.Update(user);
         }
@@ -150,7 +150,7 @@ public sealed partial class Account
     }
 
 #if DEBUG
-    public static Account GetFirst()
+    public static AccountEntity GetFirst()
     {
         using var context = new StellarityContext();
         return context.Accounts.First(u => u.RoleId == 1);
@@ -176,7 +176,7 @@ public sealed partial class Account
         return bytes;
     }
 
-    public async Task UpdateLibraryAsync()
+    public async Task LoadLibraryAsync()
     {
         await using var context = new StellarityContext();
         await context.Entry(this)
@@ -184,13 +184,13 @@ public sealed partial class Account
             .LoadAsync();
     }
 
-    public async Task PurchaseGameAsync(Game game)
+    public async Task PurchaseGameAsync(GameEntity game)
     {
         await using var context = new StellarityContext();
-        
+
         var entity = context.Entry(this).Entity;
         entity.Balance -= game.Cost;
-        var lib = new Library()
+        var lib = new LibraryEntity()
         {
             AccountId = Id,
             GameId = game.Id
@@ -198,5 +198,13 @@ public sealed partial class Account
         context.Libraries.Add(lib);
         context.Accounts.Update(entity);
         await context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<CommentEntity>> LoadCommentsForAsync(AccountEntity profile)
+    {
+        await using var context = new StellarityContext();
+        return await context.Comments
+            .Where(comment => comment.ProfileId == profile.Id)
+            .ToArrayAsync();
     }
 }

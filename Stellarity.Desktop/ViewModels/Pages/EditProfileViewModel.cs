@@ -36,9 +36,9 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     /// <summary>
     /// Current authorized user
     /// </summary>
-    private readonly Account _user;
+    private readonly AccountEntity _user;
 
-    private EditProfileViewModel(Account user)
+    private EditProfileViewModel(AccountEntity user)
     {
         _user = user;
         _previousAvatarData = Image.GetPlaceholderBytes();

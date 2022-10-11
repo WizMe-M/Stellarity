@@ -2,16 +2,16 @@
 
 namespace Stellarity.Database.Entities;
 
-public partial class Comment
+public partial class CommentEntity : IEntity
 {
     /// <summary>
     /// Обязательный конструктор. Не удалять!
     /// </summary>
-    public Comment()
+    public CommentEntity()
     {
     }
 
-    public Comment(Account commentator, Account profile, string text) : this()
+    public CommentEntity(AccountEntity commentator, AccountEntity profile, string text) : this()
     {
         AuthorId = commentator.Id;
         ProfileId = profile.Id;
@@ -24,15 +24,15 @@ public partial class Comment
     public string Body { get; set; } = null!;
     public DateTime CommentDate { get; set; }
 
-    public virtual Account Author { get; set; } = null!;
-    public virtual Account Profile { get; set; } = null!;
+    public virtual AccountEntity Author { get; set; } = null!;
+    public virtual AccountEntity Profile { get; set; } = null!;
 
-    public override bool Equals(object? obj) => obj is Comment comment && comment.Id == Id;
+    public override bool Equals(object? obj) => obj is CommentEntity comment && comment.Id == Id;
 
-    public static Comment Add(string text, Account profile, Account? sender = null)
+    public static CommentEntity Add(string text, AccountEntity profile, AccountEntity? sender = null)
     {
         sender ??= profile;
-        var comment = new Comment
+        var comment = new CommentEntity
         {
             Body = text,
             Author = sender, AuthorId = sender.Id,

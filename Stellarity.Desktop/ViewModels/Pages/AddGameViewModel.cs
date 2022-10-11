@@ -29,7 +29,7 @@ public partial class AddGameViewModel : PageViewModel
     private readonly IDialogService _dialogService = null!;
 
     private readonly NavigationPublisher _navigator = null!;
-    
+
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
     private string _title = string.Empty;
 
@@ -65,7 +65,7 @@ public partial class AddGameViewModel : PageViewModel
     private IObjectValidator GetValidator()
     {
         var builder = new ValidationBuilder<AddGameViewModel>();
-        
+
         builder.RuleFor(vm => vm.Title)
             .NotEmpty()
             .MaxLength(25);
@@ -79,7 +79,7 @@ public partial class AddGameViewModel : PageViewModel
 
         builder.RuleFor(vm => vm.Cost)
             .Between(0, 5000);
-        
+
         return builder.Build(this);
     }
 
@@ -122,7 +122,7 @@ public partial class AddGameViewModel : PageViewModel
     private async Task AddAsync()
     {
         if (Free) Cost = 0;
-        await Game.AddAsync(Title, Description, Developer, Cost, _coverData);
+        await GameEntity.AddAsync(Title, Description, Developer, Cost, _coverData);
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Pop());
     }
 }

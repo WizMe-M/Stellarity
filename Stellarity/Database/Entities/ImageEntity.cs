@@ -1,22 +1,22 @@
 ﻿namespace Stellarity.Database.Entities;
 
-public partial class Image
+public partial class ImageEntity : IEntity
 {
-    public Image()
+    public ImageEntity()
     {
         // Guid = Guid.NewGuid();
-        Games = new HashSet<Game>();
-        Users = new HashSet<Account>();
+        Games = new HashSet<GameEntity>();
+        Users = new HashSet<AccountEntity>();
     }
 
-    public Image(Guid guid, string name, byte[] data) : this()
+    public ImageEntity(Guid guid, string name, byte[] data) : this()
     {
         Guid = guid;
         Data = data;
         Name = name;
     }
 
-    public Image(string name, byte[] data) : this()
+    public ImageEntity(string name, byte[] data) : this()
     {
         Name = name;
         Data = data;
@@ -30,19 +30,19 @@ public partial class Image
     public byte[] Data { get; set; } = null!;
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<Game> Games { get; set; }
-    public virtual ICollection<Account> Users { get; set; }
+    public virtual ICollection<GameEntity> Games { get; set; }
+    public virtual ICollection<AccountEntity> Users { get; set; }
 
-    public static async Task<Image> AddFromAsync(Game game, byte[] coverData)
+    public static async Task<ImageEntity> AddFromAsync(GameEntity game, byte[] coverData)
     {
-        await using var context = new StellarityContext(); 
-        var img = new Image(game.Title, coverData);
+        await using var context = new StellarityContext();
+        var img = new ImageEntity(game.Title, coverData);
         await context.Images.AddAsync(img);
         await context.SaveChangesAsync();
         return context.Entry(img).Entity;
     }
 
-    public static Image? Find(Guid? guid)
+    public static ImageEntity? Find(Guid? guid)
     {
         using var context = new StellarityContext();
         return context.Images.FirstOrDefault(img => img.Guid == guid);
