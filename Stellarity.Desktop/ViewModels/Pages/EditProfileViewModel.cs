@@ -4,15 +4,16 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Stellarity.Avalonia.Extensions;
+using Stellarity.Avalonia.Models;
 using Stellarity.Avalonia.ViewModel;
-using Stellarity.Database.Entities;
 using Stellarity.Desktop.Basic;
-using Stellarity.Services.Accounting;
-using Image = Stellarity.Avalonia.Models.Image;
+using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Models;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
@@ -22,6 +23,12 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     private byte[]? _currentAvatarData;
     private string? _previousNickname;
     private string? _previousAbout;
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
+    private string _currentNickname = string.Empty;
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
+    private string _currentAbout = string.Empty;
 
     /// <summary>
     /// Viewmodel to resolve view for <see cref="IDialogService"/>
@@ -36,22 +43,22 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     /// <summary>
     /// Current authorized user
     /// </summary>
-    private readonly AccountEntity _user;
+    private readonly Account _user;
 
-    private EditProfileViewModel(AccountEntity user)
+    private EditProfileViewModel(Account user)
     {
         _user = user;
-        _previousAvatarData = Image.GetPlaceholderBytes();
+        _previousAvatarData = _user.Avatar?.ImageBinaryData ?? ImagePlaceholder.GetBytes();
         _currentAvatarData = _previousAvatarData;
-        _previousNickname = _user.Nickname ?? string.Empty;
-        _previousAbout = _user.About ?? string.Empty;
+        _previousAbout = _user.About;
+        _previousNickname = _user.Nickname;
 
-        Nickname ??= string.Empty;
-        AboutSelf ??= string.Empty;
+        if (_user.IsNicknameSet) CurrentNickname = _previousNickname;
+        CurrentAbout = _previousAbout;
     }
 
-    public EditProfileViewModel(IDialogService dialogService, AccountingService accounting, MainViewModel windowOwner) :
-        this(accounting.AuthorizedAccount!)
+    public EditProfileViewModel(IDialogService dialogService, AccountingService accounting, MainViewModel windowOwner)
+        : this(accounting.AuthorizedAccount!)
     {
         _dialogService = dialogService;
         _windowOwner = windowOwner;
@@ -70,32 +77,6 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
         }
     }
 
-    public string? Nickname
-    {
-        get => _user.Nickname;
-        set
-        {
-            if (EqualityComparer<string?>.Default.Equals(_user.Nickname, value)) return;
-
-            SetProperty(_user.Nickname, value, _user,
-                (account, nickname) => account.Nickname = nickname);
-            SaveChangesCommand.NotifyCanExecuteChanged();
-        }
-    }
-
-    public string? AboutSelf
-    {
-        get => _user.About;
-        set
-        {
-            if (EqualityComparer<string?>.Default.Equals(_user.About, value)) return;
-
-            SetProperty(_user.About, value, _user,
-                (account, about) => account.About = about);
-            SaveChangesCommand.NotifyCanExecuteChanged();
-        }
-    }
-
     public string Password
     {
         get
@@ -105,8 +86,8 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
         }
     }
 
-    public bool HasChanges() => _currentAvatarData != null && _previousAvatarData != _currentAvatarData
-                                || Nickname != _previousNickname || AboutSelf != _previousAbout;
+    public bool HasChanges => _currentAvatarData != null && _previousAvatarData != _currentAvatarData
+                              || CurrentNickname != _previousNickname || CurrentAbout != _previousAbout;
 
     public async Task LoadAsync()
     {
@@ -149,11 +130,16 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     [RelayCommand(CanExecute = nameof(HasChanges))]
     private async Task SaveChangesAsync()
     {
-        await _user.SaveChangesAsync();
-        await _user.ChangeAvatarAsync(_currentAvatarData);
+        await _user.EditBasicInfo();
+        // await _user.ChangeAvatarAsync(_currentAvatarData);
 
         _previousAvatarData = _currentAvatarData;
-        _previousNickname = Nickname;
-        _previousAbout = AboutSelf;
+        _previousNickname = CurrentNickname;
+        _previousAbout = CurrentAbout;
+        Back();
+    }
+
+    private void Back()
+    {
     }
 }
