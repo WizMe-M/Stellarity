@@ -1,7 +1,16 @@
-﻿namespace Stellarity.Domain.Models;
+﻿using Stellarity.Database.Entities;
+using Stellarity.Domain.Abstractions;
 
-public class Image
+namespace Stellarity.Domain.Models;
+
+public class Image : DomainModel<ImageEntity>
 {
-    public byte[] Data { get; set; } = null!;
-    public string Name { get; set; } = null!;
+    public Image(ImageEntity entity) : base(entity)
+    {
+        Name = entity.Name;
+        ImageBinaryData = entity.Data;
+    }
+
+    public byte[] ImageBinaryData { get; }
+    public string Name { get; }
 }

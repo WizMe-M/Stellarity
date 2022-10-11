@@ -1,23 +1,28 @@
-﻿using CommentEntity = Stellarity.Database.Entities.Comment;
+﻿using Stellarity.Database.Entities;
+using Stellarity.Domain.Abstractions;
 
 namespace Stellarity.Domain.Models;
 
-public class Comment
+public class Comment : DomainModel<CommentEntity>
 {
-    public CommentEntity Entity { get; }
-    
-    private Comment(CommentEntity entity, Account author)
+    private Comment(CommentEntity entity) : base(entity)
     {
-        Entity = entity;
+        Body = Entity.Body;
+        CommentDate = Entity.CommentDate;
+        Author = new Account(Entity.Author);
+        Profile = new Account(Entity.Profile);
+    }
+
+    private Comment(CommentEntity entity, Account author) : base(entity)
+    {
         Body = Entity.Body;
         CommentDate = Entity.CommentDate;
         Author = author;
         Profile = author;
     }
 
-    private Comment(CommentEntity entity, Account profile, Account author)
+    private Comment(CommentEntity entity, Account profile, Account author) : base(entity)
     {
-        Entity = entity;
         Body = Entity.Body;
         CommentDate = Entity.CommentDate;
         Author = author;
@@ -51,5 +56,11 @@ public class Comment
     {
         Entity.UpdateBody(body);
         Body = Entity.Body;
+    }
+
+    public static Comment FromEntity(CommentEntity entity)
+    {
+        var comment = new Comment(entity);
+        return comment;
     }
 }

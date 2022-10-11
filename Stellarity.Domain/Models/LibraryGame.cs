@@ -1,4 +1,4 @@
-﻿using GameEntity = Stellarity.Database.Entities.Game;
+﻿using Stellarity.Database.Entities;
 
 namespace Stellarity.Domain.Models;
 

@@ -1,16 +1,14 @@
-﻿using Stellarity.Domain.Authorization;
+﻿using Stellarity.Database.Entities;
+using Stellarity.Domain.Abstractions;
+using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Registration;
-using AccountEntity = Stellarity.Database.Entities.Account;
 
 namespace Stellarity.Domain.Models;
 
-public class Account
+public class Account : DomainModel<AccountEntity>
 {
-    public AccountEntity Entity { get; }
-
-    public Account(AccountEntity entity)
+    public Account(AccountEntity entity) : base(entity)
     {
-        Entity = entity;
         Email = Entity.Email;
         Nickname = Entity.Nickname ?? Entity.Email;
         Password = Entity.Password;
@@ -21,7 +19,7 @@ public class Account
     }
 
     public bool CanAddGames => Role == Roles.Administrator;
-    public string Email { get; private set; }
+    public string Email { get; }
     public string Nickname { get; private set; }
     public string Password { get; private set; }
     public string About { get; private set; }
@@ -39,13 +37,13 @@ public class Account
         if (entity is null) return AuthorizationResult.Fail();
 
         var account = new Account(entity);
-        await account.LoadLibraryAsync();
+        await account.RefreshLibraryAsync();
         return AuthorizationResult.Success(account);
     }
 
-    private async Task LoadLibraryAsync()
+    private async Task RefreshLibraryAsync()
     {
-        await Entity.UpdateLibraryAsync();
+        await Entity.LoadLibraryAsync();
         var games = Entity.Library.Select(library =>
             new LibraryGame(library.Game, library.PurchaseDate));
         Library = games;
@@ -71,11 +69,7 @@ public class Account
         return RegistrationResult.Success(account);
     }
 
-    /// <summary>
-    /// Applies new user password
-    /// </summary>
-    /// <param name="password">String that satisfies all requirements to password</param>
-    public void ChangePassword(in string password)
+    public void ApplySatisfiedPassword(in string password)
     {
         Entity.UpdatePassword(password);
         Password = Entity.Password;
@@ -84,29 +78,44 @@ public class Account
     /// <summary>
     /// Deposits specified amount on user balance
     /// </summary>
-    /// <param name="depositSum">Amount of deposition, that more than zero</param>
-    public void Deposit(decimal depositSum)
+    /// <param name="depositionAmount">Amount of deposition, that more than zero</param>
+    public void Deposit(decimal depositionAmount)
     {
-        Entity.UpdateBalance(depositSum);
+        Entity.UpdateBalance(depositionAmount);
         Balance = Entity.Balance;
     }
 
     /// <returns>Does user satisfy game's purchasing requirements</returns>
-    public bool CanPurchaseGame(Game game) => Balance < game.Cost;
+    public bool CheckCanPurchaseGame(Game game) => Balance < game.Cost;
 
     /// <summary>
     /// Purchases specified game and add it to user's library
     /// </summary>
-    /// <param name="game">Game that user can purchase - see <see cref="CanPurchaseGame"/></param>
+    /// <param name="game">Game that can be purchased by user - see <see cref="CheckCanPurchaseGame"/></param>
     public async Task PurchaseGameAsync(Game game)
     {
+        if (CheckCanPurchaseGame(game))
+            throw new InvalidOperationException("User can't purchase this game - not enough balance");
         await Entity.PurchaseGameAsync(game.Entity);
         Balance = Entity.Balance;
-        await LoadLibraryAsync();
+        await RefreshLibraryAsync();
     }
 
-    public void LeaveCommentOnMyProfile(string commentText)
+    public async Task<IEnumerable<Comment>> LoadCommentsFor(Account profile)
     {
-        var comment = Comment.SendOnMyProfile(commentText, this);
+        var comments = await Entity.LoadCommentsForAsync(profile.Entity);
+        return comments.Select(Comment.FromEntity);
     }
+
+    public Comment LeaveComment(string commentText, Account profile)
+    {
+        var comment = IsIdenticalWith(profile)
+            ? Comment.SendOnMyProfile(commentText, profile)
+            : Comment.SendOnOtherProfile(commentText, profile, this);
+        return comment;
+    }
+
+
+    public bool IsIdenticalWith(Account acc) => acc.Entity.Id == Entity.Id;
+    public bool IsMyProfile(Account profile) => profile.Entity.Id == Entity.Id;
 }

@@ -1,14 +1,12 @@
-﻿using GameEntity = Stellarity.Database.Entities.Game;
+﻿using Stellarity.Database.Entities;
+using Stellarity.Domain.Abstractions;
 
 namespace Stellarity.Domain.Models;
 
-public class Game
+public class Game : DomainModel<GameEntity>
 {
-    public GameEntity Entity { get; }
-
-    protected Game(GameEntity entity)
+    protected Game(GameEntity entity) : base(entity)
     {
-        Entity = entity;
         Title = Entity.Title;
         Description = Entity.Description;
         Developer = Entity.Developer;
@@ -22,23 +20,21 @@ public class Game
     public decimal Cost { get; private set; }
 
     public Image? Cover { get; private set; }
-    
+
     public DateTime AddedInShopDate { get; }
 
-    
-    /// <summary>
-    /// Edits information about game. All parameters are satisfying requirements
-    /// </summary>
-    /// <param name="title"></param>
-    /// <param name="description"></param>
-    /// <param name="developer"></param>
-    /// <param name="cost"></param>
-    public void EditBasicInfo(in string title, in string description, in string developer, in string cost)
+    public void EditBasicInfo(in string title, in string description, in string developer, in decimal cost)
     {
         Entity.UpdateInfo(title, description, developer, cost);
         Title = Entity.Title;
         Description = Entity.Description;
         Developer = Entity.Developer;
         Cost = Entity.Cost;
+    }
+
+    public void ChangeCover(Image newCover)
+    {
+        Entity.UpdateCover(newCover.Entity);
+        Cover = new Image(Entity.Cover!);
     }
 }
