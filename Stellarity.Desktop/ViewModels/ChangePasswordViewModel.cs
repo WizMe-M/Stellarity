@@ -5,7 +5,6 @@ using HanumanInstitute.MvvmDialogs;
 using ReactiveValidation;
 using ReactiveValidation.Extensions;
 using Stellarity.Avalonia.ViewModel;
-using Stellarity.Desktop.Basic;
 
 namespace Stellarity.Desktop.ViewModels;
 
@@ -23,7 +22,6 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
     {
         Validator = GetValidator();
     }
-
 
     [RelayCommand(CanExecute = nameof(IsPasswordCorrect))]
     public void Confirm()
@@ -43,7 +41,7 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
     {
         var builder = new ValidationBuilder<ChangePasswordViewModel>();
 
-        builder.RuleFor<string>(vm => vm.NewPassword)
+        builder.RuleFor(vm => vm.NewPassword)
             .NotEmpty()
             .WithMessage("The password mustn't be empty string")
             .Matches(PasswordPattern)
