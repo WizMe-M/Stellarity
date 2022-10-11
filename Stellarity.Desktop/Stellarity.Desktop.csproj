@@ -20,23 +20,25 @@
         <TrimmableAssembly Include="Avalonia.Themes.Default" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.18" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
+        <PackageReference Include="Avalonia" Version="0.10.18"/>
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.18"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18" />
-        <PackageReference Include="AvaloniaSpacedGrid" Version="0.10.4" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-        <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia" Version="1.4.1" />
-        <PackageReference Include="MikD1.AvaloniaFixedWrapPanel" Version="0.0.2" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Ninject" Version="3.3.6" />
-        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
-        <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="5.5.0" />
-        <PackageReference Include="ReactiveUI" Version="18.3.1" />
-        <PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />
-        <PackageReference Include="ReactiveValidation.Avalonia" Version="2.0.1" />
-        <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18"/>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18"/>
+        <PackageReference Include="AvaloniaSpacedGrid" Version="0.10.4"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0"/>
+        <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia" Version="1.4.1"/>
+        <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia.MessageBox" Version="1.4.1"/>
+        <PackageReference Include="MessageBox.Avalonia" Version="2.1.0"/>
+        <PackageReference Include="MikD1.AvaloniaFixedWrapPanel" Version="0.0.2"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="Ninject" Version="3.3.6"/>
+        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0"/>
+        <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="5.5.0"/>
+        <PackageReference Include="ReactiveUI" Version="18.3.1"/>
+        <PackageReference Include="ReactiveUI.Fody" Version="18.3.1"/>
+        <PackageReference Include="ReactiveValidation.Avalonia" Version="2.0.1"/>
+        <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4"/>
     </ItemGroup>
     <ItemGroup>
         <Compile Update="TemplatedControls\Navigation\NavigationViewItem.cs">
@@ -47,14 +49,30 @@
         </Compile>
     </ItemGroup>
     <ItemGroup>
-        <AdditionalFiles Include="Styles\ExtendedUserControlStyles.axaml" />
-        <AdditionalFiles Include="TemplatedControls\LineSeparator.axaml" />
-        <AdditionalFiles Include="TemplatedControls\ImageButton.axaml" />
-        <AdditionalFiles Include="TemplatedControls\Navigation\NavigationView.axaml" />
-        <AdditionalFiles Include="TemplatedControls\Navigation\NavigationViewItem.axaml" />
+        <AdditionalFiles Include="Styles\ExtendedUserControlStyles.axaml"/>
+        <AdditionalFiles Include="TemplatedControls\LineSeparator.axaml"/>
+        <AdditionalFiles Include="TemplatedControls\ImageButton.axaml"/>
+        <AdditionalFiles Include="TemplatedControls\Navigation\NavigationView.axaml"/>
+        <AdditionalFiles Include="TemplatedControls\Navigation\NavigationViewItem.axaml"/>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Stellarity.Avalonia\Stellarity.Avalonia.csproj" />
-      <ProjectReference Include="..\Stellarity\Stellarity.csproj" />
+        <ProjectReference Include="..\Stellarity.Avalonia\Stellarity.Avalonia.csproj"/>
+        <ProjectReference Include="..\Stellarity\Stellarity.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Assets\Locales\Resources.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Locales\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Locales\Resources.ru.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\Images\placeholder.png"/>
+        <AvaloniaResource Include="Assets\Images\stellaris-logo.ico"/>
     </ItemGroup>
 </Project>
