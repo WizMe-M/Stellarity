@@ -18,7 +18,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Stellarity.Avalonia\Stellarity.Avalonia.csproj" />
-      <ProjectReference Include="..\Stellarity.Desktop\Stellarity.Desktop.csproj" />
       <ProjectReference Include="..\Stellarity\Stellarity.csproj" />
     </ItemGroup>
 
