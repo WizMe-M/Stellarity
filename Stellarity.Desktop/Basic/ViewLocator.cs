@@ -1,14 +1,15 @@
 ﻿using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 using ReactiveUI;
 using Stellarity.Avalonia.ViewModel;
 
 namespace Stellarity.Desktop.Basic;
 
-internal class ViewLocator : IDataTemplate, IViewLocator
+internal class ViewLocator : ViewLocatorBase, IViewLocator
 {
-    public IControl Build(object data)
+    public override IControl Build(object data)
     {
         var name = data.GetType().FullName!.Replace("ViewModel", "View");
         var type = Type.GetType(name);
@@ -18,18 +19,15 @@ internal class ViewLocator : IDataTemplate, IViewLocator
             return (Control)Activator.CreateInstance(type)!;
         }
 
-        return new TextBlock { Text = "Not Found: " + name };
+        return new TextBlock { Text = $"Not Found: {name}" };
     }
 
-    public bool Match(object? data)
-    {
-        return data is IViewModelBase;
-    }
+    public override bool Match(object? data) => data is IViewModelBase;
 
     public IViewFor? ResolveView<T>(T? viewModel, string? contract = null)
     {
         if (viewModel is null) return null;
-        
+
         var name = viewModel.GetType().FullName!.Replace("ViewModel", "View");
         var type = Type.GetType(name);
 
