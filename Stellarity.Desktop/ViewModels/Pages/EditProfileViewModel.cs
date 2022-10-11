@@ -77,15 +77,6 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
         }
     }
 
-    public string Password
-    {
-        get
-        {
-            var pattern = new Regex("."); // matches any symbol
-            return pattern.Replace(_user.Password, "*");
-        }
-    }
-
     public bool HasChanges => _currentAvatarData != null && _previousAvatarData != _currentAvatarData
                               || CurrentNickname != _previousNickname || CurrentAbout != _previousAbout;
 
@@ -123,7 +114,8 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
         var passwordChanged = await _dialogService.ShowDialogAsync(_windowOwner, vm);
         if (passwordChanged == true)
         {
-            // _user.ChangePassword(vm.NewPassword);
+            var password = vm.NewPassword!;
+            _user.ApplySatisfiedPassword(password.Password);
         }
     }
 

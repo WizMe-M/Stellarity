@@ -5,6 +5,7 @@ using HanumanInstitute.MvvmDialogs;
 using ReactiveValidation;
 using ReactiveValidation.Extensions;
 using Stellarity.Avalonia.ViewModel;
+using Stellarity.Domain.Cryptography;
 
 namespace Stellarity.Desktop.ViewModels;
 
@@ -16,16 +17,21 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
     private const string PasswordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=])(?!.*\s).{8,}$";
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
-    private string _newPassword = string.Empty;
+    private string _input = string.Empty;
 
     public ChangePasswordViewModel()
     {
         Validator = GetValidator();
     }
 
+    private bool IsPasswordCorrect => Validator!.IsValid;
+
+    public HashedPassword? NewPassword { get; private set; }
+
     [RelayCommand(CanExecute = nameof(IsPasswordCorrect))]
     public void Confirm()
     {
+        NewPassword = HashedPassword.FromDecrypted(_input);
         DialogResult = true;
         Close();
     }
@@ -41,7 +47,7 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
     {
         var builder = new ValidationBuilder<ChangePasswordViewModel>();
 
-        builder.RuleFor(vm => vm.NewPassword)
+        builder.RuleFor(vm => vm.Input)
             .NotEmpty()
             .WithMessage("The password mustn't be empty string")
             .Matches(PasswordPattern)
@@ -53,7 +59,6 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
         return builder.Build(this);
     }
 
-    private bool IsPasswordCorrect => Validator!.IsValid;
 
     private void Close()
     {

@@ -18,7 +18,7 @@
         <Button DockPanel.Dock="Bottom" Command="{Binding SaveChangesCommand}"
                 Content="Сохранить изменения" HorizontalAlignment="Right" />
 
-        <templatedControls1:ImageButton 
+        <templatedControls1:ImageButton
             DockPanel.Dock="Left" ImageSource="{Binding Avatar}"
             Command="{Binding SetAvatarCommand}" Width="250" Height="250" />
 
@@ -27,8 +27,7 @@
                     Content="Сменить пароль" HorizontalAlignment="Center" />
 
             <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center"
-                       Text="{Binding Password, TargetNullValue='Пароль: ********', FallbackValue='Password here'}"
-                       Margin="15 0 10 0" />
+                       Text="Пароль: ********" Margin="15 0 10 0" />
 
             <TextBox Text="{Binding CurrentNickname}" Watermark="Никнейм" FontWeight="DemiBold" />
 

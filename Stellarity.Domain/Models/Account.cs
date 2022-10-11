@@ -2,6 +2,7 @@
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
 using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Cryptography;
 using Stellarity.Domain.Registration;
 using Stellarity.Domain.Services;
 
@@ -13,7 +14,7 @@ public class Account : DomainModel<AccountEntity>
     {
         Email = Entity.Email;
         Nickname = Entity.Nickname ?? Entity.Email;
-        Password = Entity.Password;
+        Password = HashedPassword.FromEncrypted(Entity.Password);
         About = Entity.About ?? "";
         IsBanned = Entity.Deleted;
         RegistrationDate = Entity.RegistrationDate;
@@ -23,7 +24,7 @@ public class Account : DomainModel<AccountEntity>
     public bool CanAddGames => Role == Roles.Administrator;
     public string Email { get; }
     public string Nickname { get; private set; }
-    public string Password { get; private set; }
+    public HashedPassword Password { get; private set; }
     public string About { get; private set; }
     public decimal Balance { get; private set; }
     public DateTime RegistrationDate { get; }
@@ -78,7 +79,7 @@ public class Account : DomainModel<AccountEntity>
     public void ApplySatisfiedPassword(in string password)
     {
         Entity.UpdatePassword(password);
-        Password = Entity.Password;
+        Password = HashedPassword.FromEncrypted(Entity.Password);
     }
 
     /// <summary>
