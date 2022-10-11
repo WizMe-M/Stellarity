@@ -53,9 +53,9 @@ public class Cacher
     /// <returns>Represents task of caching operation</returns>
     public Task SaveToJsonCacheAsync<T>(string subfolder, string fileName, T data)
     {
-        var subPath = Path.Combine(_rootFolder, subfolder);
-        Directory.CreateDirectory(subPath);
-        var path = Path.Combine(_rootFolder, fileName);
+        var containingDirectory = Path.Combine(_rootFolder, subfolder);
+        Directory.CreateDirectory(containingDirectory);
+        var path = Path.Combine(_rootFolder, containingDirectory, fileName);
         var json = JsonConvert.SerializeObject(data);
         return File.WriteAllTextAsync(path, json);
     }
