@@ -6,6 +6,7 @@ namespace Stellarity.Domain.Authorization;
 
 public class AccountingService : CachingBaseService<AuthorizationHistory>
 {
+    private AuthorizationHistory? _authorizationHistory;
     private readonly string _cacheFileName;
 
     public AccountingService(Cacher cacher, string cacheFileName = "auth.info")
@@ -14,47 +15,48 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
         _cacheFileName = cacheFileName;
     }
 
-    public bool IsUserRemembered { get; private set; }
+    public Account? AuthorizedAccount { get; private set; }
 
-    public Account AuthorizedAccount { get; set; } = null!;
+    public bool IsAutoLogIn => _authorizationHistory is { RememberLastAuthorizedUser: true }
+                               && AuthorizedAccount is { IsBanned: false };
+
+    public bool HaveAuthHistory => _authorizationHistory is { };
 
     /// <summary>
     /// Asynchronously initializes accounting service with cached data
     /// </summary>
     public async Task InitializeAsync()
     {
-        var info = await LoadAuthorizationHistoryAsync();
-        if (info is null) return;
-        Initialize(info);
+        _authorizationHistory = await LoadAuthorizationHistoryAsync();
+        if (_authorizationHistory is null) return;
+        Initialize(_authorizationHistory);
     }
 
     /// <summary>
     /// Initialize accounting service with authorization info
     /// </summary>
-    /// <param name="info">Cached info about authorization</param>
-    private void Initialize(AuthorizationHistory info)
+    /// <param name="history">Cached info about authorization</param>
+    private void Initialize(AuthorizationHistory history)
     {
-        var accountEntity = AccountEntity.Find(info.UserEmail);
-        AuthorizedAccount = new Account(accountEntity!);
-        IsUserRemembered = info.RememberLastAuthorizedUser;
+        var accountEntity = AccountEntity.Find(history.UserEmail);
+        if (accountEntity is null) return;
+        AuthorizedAccount = new Account(accountEntity);
     }
 
-    public async Task<AuthorizationResult> AuthorizeAsync(string email, string password, bool remember)
+    public async Task<AuthorizationResult> AccountAuthorizationAsync(string email, string password, bool remember)
     {
         var authResult = await Account.AuthorizeAsync(email, password);
         if (!authResult.IsSuccessful) return authResult;
 
-        AuthorizedAccount = authResult.Account!;
-        IsUserRemembered = remember;
-        SaveAuthorizationHistoryAsync(AuthorizedAccount.Email, remember);
+        await SaveAuthorizationHistoryAsync(authResult.Account!.Email, remember);
         return authResult;
     }
 
-    private async Task<AuthorizationHistory?> LoadAuthorizationHistoryAsync() => await LoadAsync(_cacheFileName);
+    private Task<AuthorizationHistory?> LoadAuthorizationHistoryAsync() => LoadAsync(_cacheFileName);
 
-    private async void SaveAuthorizationHistoryAsync(string authorizedUserEmail, bool remember)
+    private async Task SaveAuthorizationHistoryAsync(string authorizedUserEmail, bool remember)
     {
-        var accountInfo = new AuthorizationHistory(authorizedUserEmail, remember);
-        await SaveAsync(_cacheFileName, accountInfo);
+        var authorizationHistory = new AuthorizationHistory(authorizedUserEmail, remember);
+        await SaveAsync(_cacheFileName, authorizationHistory);
     }
 }

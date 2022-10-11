@@ -19,5 +19,7 @@ public class AuthorizationResult
     public static AuthorizationResult Fail() => new(null,
         "User with such email and/or password doesn't exist");
 
+    public static AuthorizationResult FailBanned() => new(null, "This user was banned");
+
     public static AuthorizationResult Success(Account account) => new(account);
 }

@@ -35,6 +35,7 @@ public class Account : DomainModel<AccountEntity>
     {
         var entity = AccountEntity.Find(email, password);
         if (entity is null) return AuthorizationResult.Fail();
+        if (entity.Deleted) return AuthorizationResult.FailBanned();
 
         var account = new Account(entity);
         await account.RefreshLibraryAsync();
