@@ -2,31 +2,33 @@
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Stellarity.Avalonia.Extensions;
-using ImageModel = Stellarity.Database.Entities.Image;
 
 namespace Stellarity.Avalonia.Models;
 
-public class Image
+public static class ImagePlaceholder
 {
+    private const string PlaceholderUri = "avares://Stellarity.Avalonia/Assets/Images/placeholder.png";
+
     public static Bitmap GetPlaceholderBitmap()
     {
-        var uri = new Uri("avares://Stellarity.Avalonia/Assets/Images/placeholder.png");
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
-        var asset = assets.Open(uri);
-
-        return new Bitmap(asset);
+        var placeholderStream = GetPlaceholderAsset();
+        return new Bitmap(placeholderStream);
     }
 
     public static byte[] GetPlaceholderBytes()
     {
-        var uri = new Uri("avares://Stellarity.Avalonia/Assets/Images/placeholder.png");
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
-        var asset = assets.Open(uri);
-
-        var bm = new Bitmap(asset);
+        var placeholderStream = GetPlaceholderAsset();
+        var bm = new Bitmap(placeholderStream);
         return bm.FromBitmap()!;
     }
-    
+
+    private static Stream GetPlaceholderAsset()
+    {
+        var uri = new Uri(PlaceholderUri);
+        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
+        return assets.Open(uri);
+    }
+
     // public static async Task SaveAsync(string path, Account account)
     // {
     //     var data = await File.ReadAllBytesAsync(path);
