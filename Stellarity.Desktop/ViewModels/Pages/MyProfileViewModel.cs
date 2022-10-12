@@ -34,11 +34,6 @@ public partial class MyProfileViewModel : IAsyncImageLoader
 
     public bool CanComment => !string.IsNullOrWhiteSpace(_commentText);
 
-    [RelayCommand]
-    private void GoEditProfile()
-    {
-    }
-
     [RelayCommand(CanExecute = nameof(CanComment))]
     private async Task SendCommentAsync()
     {

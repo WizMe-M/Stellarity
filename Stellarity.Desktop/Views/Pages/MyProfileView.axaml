@@ -36,8 +36,6 @@
                         <TextBlock Text="{Binding User.Nickname, TargetNullValue='Никнейм не указан'}"
                                    FontWeight="Light" />
                         <TextBlock Text="{Binding User.RegistrationDate, StringFormat={}Дата регистрации: {0:d}}" />
-                        <Button Command="{Binding GoEditProfileCommand}" Content="Редактировать профиль"
-                                HorizontalAlignment="Center" Margin="0 30 0 0" />
                     </StackPanel>
                 </DockPanel>
                 <TextBlock Text="О себе:" Margin="50 0" HorizontalAlignment="Left" />
