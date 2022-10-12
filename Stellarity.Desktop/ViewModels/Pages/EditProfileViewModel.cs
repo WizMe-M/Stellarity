@@ -48,7 +48,7 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     {
         _user = user;
         _previousAvatarData = _user.TryGetImageBytes() ?? ImagePlaceholder.GetBytes();
-        _currentAvatarData = _previousAvatarData;
+        _currentAvatarData = ImagePlaceholder.GetBytes();
         _previousAbout = _user.About;
         _previousNickname = _user.Nickname;
 
@@ -81,9 +81,8 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
 
     public async Task LoadAsync()
     {
-        // var bytes = await _user.GetAvatarAsync();
-        // var bm = bytes.ToBitmap();
-        // Avatar = bm ?? Avatar;
+        var bitmap = await _user.GetImageBitmapAsync();
+        if (bitmap is { }) Avatar = bitmap;
     }
 
     [RelayCommand]
