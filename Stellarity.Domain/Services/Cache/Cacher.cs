@@ -5,11 +5,11 @@ namespace Stellarity.Domain.Services.Cache;
 
 public class Cacher
 {
-    private readonly string _rootFolder;
+    public string RootFolder { get; }
 
     public Cacher(string rootFolder = "Cache/")
     {
-        _rootFolder = rootFolder;
+        RootFolder = rootFolder;
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ public class Cacher
     /// <returns>Represents task of caching operation</returns>
     public Task SaveToBinaryCache<T>(string subfolder, string fileName, T data)
     {
-        var subPath = Path.Combine(_rootFolder, subfolder);
+        var subPath = Path.Combine(RootFolder, subfolder);
         Directory.CreateDirectory(subPath);
         var path = Path.Combine(subPath, fileName);
         var bytes = data.ToBytes();
@@ -37,7 +37,7 @@ public class Cacher
     public Task<T?> LoadFromBinaryCache<T>(string subfolder, string fileName)
         where T : class
     {
-        var path = Path.Combine(_rootFolder, subfolder, fileName);
+        var path = Path.Combine(RootFolder, subfolder, fileName);
         if (!File.Exists(path)) return Task.FromResult<T?>(null);
         var bytes = File.ReadAllBytes(path);
         var data = bytes.FromBytes<T>();
@@ -53,9 +53,9 @@ public class Cacher
     /// <returns>Represents task of caching operation</returns>
     public Task SaveToJsonCacheAsync<T>(string subfolder, string fileName, T data)
     {
-        var containingDirectory = Path.Combine(_rootFolder, subfolder);
+        var containingDirectory = Path.Combine(RootFolder, subfolder);
         Directory.CreateDirectory(containingDirectory);
-        var path = Path.Combine(_rootFolder, containingDirectory, fileName);
+        var path = Path.Combine(RootFolder, containingDirectory, fileName);
         var json = JsonConvert.SerializeObject(data);
         return File.WriteAllTextAsync(path, json);
     }
@@ -69,7 +69,7 @@ public class Cacher
     public Task<T?> LoadFromJsonCacheAsync<T>(string subfolder, string fileName)
         where T : class
     {
-        var path = Path.Combine(_rootFolder, subfolder, fileName);
+        var path = Path.Combine(RootFolder, subfolder, fileName);
         if (!File.Exists(path)) return Task.FromResult<T?>(null);
         var json = File.ReadAllText(path);
         var data = JsonConvert.DeserializeObject<T>(json);
@@ -81,7 +81,7 @@ public class Cacher
     /// </summary>
     public void Clear()
     {
-        var root = new DirectoryInfo(_rootFolder);
+        var root = new DirectoryInfo(RootFolder);
         foreach (var file in root.EnumerateFiles()) Clear(file);
         foreach (var directory in root.EnumerateDirectories()) Clear(directory);
     }
@@ -101,7 +101,7 @@ public class Cacher
     /// <param name="folder">Target folder name in cache root</param>
     public void ClearFolder(string folder)
     {
-        var path = Path.Combine(_rootFolder, folder);
+        var path = Path.Combine(RootFolder, folder);
         var dir = new DirectoryInfo(path);
         foreach (var file in dir.EnumerateFiles()) Clear(file);
     }

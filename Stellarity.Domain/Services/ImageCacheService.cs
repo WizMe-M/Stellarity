@@ -37,4 +37,11 @@ public class ImageCacheService : CachingBaseService<byte[]>
 
         return result;
     }
+
+    public void DeleteCacheFile(Guid imageGuid)
+    {
+        var guidStr = imageGuid.ToString();
+        var hashedFileName = MD5Hasher.Encrypt(guidStr);
+        DeleteFile(hashedFileName);
+    }
 }

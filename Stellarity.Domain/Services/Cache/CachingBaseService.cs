@@ -28,4 +28,10 @@ public abstract class CachingBaseService<TCacheDataType> where TCacheDataType : 
     };
 
     protected void ClearCache() => _cacher.ClearFolder(_cacheSubfolder);
+
+    protected void DeleteFile(string fileName)
+    {
+        var path = Path.Join(_cacher.RootFolder, _cacheSubfolder, fileName);
+        if (File.Exists(path)) File.Delete(path);
+    }
 }
