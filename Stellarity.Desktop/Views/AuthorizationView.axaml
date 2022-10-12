@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:Stellarity.Desktop.ViewModels"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
         x:Class="Stellarity.Desktop.Views.AuthorizationView"
-        x:DataType="viewModels:AuthorizationViewModel" 
+        x:DataType="viewModels:AuthorizationViewModel"
         x:CompileBindings="True"
         Width="300" Height="400" CanResize="False"
         Icon="avares://Stellarity.Avalonia/Assets/Images/stellaris-logo.ico"
@@ -24,7 +24,7 @@
         ShowActivated="True" ShowInTaskbar="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Title="{x:Static locales:Resources.authorization}">
-    
+
     <Window.Styles>
         <Style Selector="sg|SpacedGrid > :is(Control)">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -108,15 +108,16 @@
                            Text="{x:Static locales:Resources.email_colon}" />
                 <TextBlock Grid.Column="0" Grid.Row="1" Classes="right watermark"
                            Text="{x:Static locales:Resources.password_colon}" />
-                
+
                 <TextBox Grid.Column="1" Grid.Row="0" Classes="left" Text="{Binding Email}" />
-                <TextBox Grid.Column="1" Grid.Row="1" Classes="left"  Text="{Binding Password}" />
-                
-                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" 
-                          Content="{x:Static locales:Resources.remember_me}" 
+                <TextBox Grid.Column="1" Grid.Row="1" Classes="left" PasswordChar="*"
+                         Text="{Binding Password}" />
+
+                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
+                          Content="{x:Static locales:Resources.remember_me}"
                           IsChecked="{Binding RememberMe}"
                           IsThreeState="False" />
-                
+
                 <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{x:Static locales:Resources.log_in}"
                         Command="{Binding LogInCommand}" IsEnabled="{ReflectionBinding !LogIn.IsExecuting}"
                         FontSize="14" Padding="50 5" Margin="0 0 0 10" HorizontalAlignment="Center" />
@@ -125,8 +126,10 @@
             <templatedControls1:LineSeparator Width="270" Margin="10" DockPanel.Dock="Top" />
 
             <sg:SpacedGrid ColumnSpacing="5" RowSpacing="0" ColumnDefinitions="* 2.5*" RowDefinitions="* *">
-                <TextBlock Grid.Column="0" Grid.Row="0" Classes="right question" Text="{x:Static locales:Resources.forgot_password_q}" />
-                <TextBlock Grid.Column="0" Grid.Row="1" Classes="right question" Text="{x:Static locales:Resources.have_not_account_q}" />
+                <TextBlock Grid.Column="0" Grid.Row="0" Classes="right question"
+                           Text="{x:Static locales:Resources.forgot_password_q}" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Classes="right question"
+                           Text="{x:Static locales:Resources.have_not_account_q}" />
                 <Button Grid.Column="1" Grid.Row="0" Content="{x:Static locales:Resources.change_password}" />
                 <Button Grid.Column="1" Grid.Row="1" Content="{x:Static locales:Resources.register}" />
             </sg:SpacedGrid>

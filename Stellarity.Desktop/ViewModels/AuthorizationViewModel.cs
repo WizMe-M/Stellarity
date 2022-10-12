@@ -5,6 +5,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Stellarity.Avalonia.ViewModel;
 using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Cryptography;
 
 namespace Stellarity.Desktop.ViewModels;
 
@@ -35,7 +36,11 @@ public partial class AuthorizationViewModel : ViewModelBase
     [RelayCommand]
     private async Task LogInAsync()
     {
-        var authorizationResult = await _accountingService.AccountAuthorizationAsync(Email, Password, RememberMe);
+        Email = Email.Trim();
+        Password = Password.Trim();
+        var hashedPassword = MD5Hasher.Encrypt(Password);
+
+        var authorizationResult = await _accountingService.AccountAuthorizationAsync(Email, hashedPassword, RememberMe);
         if (!authorizationResult.IsSuccessful)
         {
             await ShowErrorAsync(authorizationResult.Message, "Authorization error");
