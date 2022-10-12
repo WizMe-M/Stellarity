@@ -233,7 +233,7 @@ internal sealed class StellarityContext : DbContext
                 .HasColumnName("nickname");
 
             entity.Property(e => e.Password)
-                .HasMaxLength(12)
+                .HasMaxLength(32)
                 .HasColumnName("password");
 
             entity.Property(e => e.RegistrationDate)
