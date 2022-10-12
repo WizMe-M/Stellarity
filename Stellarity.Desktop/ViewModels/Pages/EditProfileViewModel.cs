@@ -122,7 +122,7 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     [RelayCommand(CanExecute = nameof(HasChanges))]
     private async Task SaveChangesAsync()
     {
-        await _user.EditBasicInfo();
+        await _user.EditAccountInfoAsync(CurrentNickname, CurrentAbout);
         // await _user.ChangeAvatarAsync(_currentAvatarData);
 
         _previousAvatarData = _currentAvatarData;

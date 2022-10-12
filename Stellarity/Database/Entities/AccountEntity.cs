@@ -21,8 +21,6 @@ public sealed partial class AccountEntity : IEntity
 
     public int Id { get; set; }
     public string Email { get; set; } = null!;
-
-    // TODO: make Nickname not null
     public string? Nickname { get; set; }
     public string Password { get; set; } = null!;
     public string? About { get; set; }
@@ -212,5 +210,17 @@ public sealed partial class AccountEntity : IEntity
         entry.Reference(accountEntity => accountEntity.Avatar)
             .Load();
         Avatar = entry.Entity.Avatar;
+    }
+
+    public void UpdateUpdateInfo(string nickname, string about)
+    {
+        using var context = new StellarityContext();
+        var entity = context.Accounts.Attach(this).Entity;
+        entity.Nickname = nickname;
+        entity.About = about;
+        context.Accounts.Update(entity);
+        context.SaveChanges();
+        Nickname = entity.Nickname;
+        About = entity.About;
     }
 }

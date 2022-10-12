@@ -141,8 +141,11 @@ public class Account : DomainModel<AccountEntity>
         return imageData;
     }
 
-    public async Task EditBasicInfo()
+    public Task EditAccountInfoAsync(string nickname, string about)
     {
-        throw new NotImplementedException();
+        Entity.UpdateUpdateInfo(nickname, about);
+        Nickname = nickname;
+        About = about;
+        return Task.CompletedTask;
     }
 }
