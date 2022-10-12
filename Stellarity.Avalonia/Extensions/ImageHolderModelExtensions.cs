@@ -6,10 +6,10 @@ namespace Stellarity.Avalonia.Extensions;
 
 public static class ImageHolderModelExtensions
 {
-    public static async Task<Bitmap?> GetImageBitmap<TEntity>(this SingleImageHolderModel<TEntity> image)
+    public static async Task<Bitmap?> GetImageBitmapAsync<TEntity>(this SingleImageHolderModel<TEntity> image)
         where TEntity : SingleImageHolderEntity
     {
-        var bytes = await image.GetImageBytes();
+        var bytes = await image.GetImageBytesAsync();
         return bytes.ToBitmap();
     }
 }

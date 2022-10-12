@@ -19,7 +19,7 @@ public class DomainTests
 
         var ent = AccountEntity.GetAdmin();
         var acc = new Account(ent);
-        var bytes = await acc.GetImageBytes();
+        var bytes = await acc.GetImageBytesAsync();
     }
 
     [Test]

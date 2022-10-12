@@ -12,17 +12,14 @@ public class SingleImageHolderModel<TEntity> : DomainModel<TEntity>
 
     public SingleImageHolderModel(TEntity entity) : base(entity)
     {
-        if (ImageLoaded)
-        {
-            _singleImage = new Image(entity.SingleImageEntity!);
-        }
+        if (ImageLoaded) _singleImage = new Image(entity.SingleImageEntity!);
     }
 
     public bool HasImage => Entity.SingleImageId is { };
     public bool ImageLoaded => _singleImage is { } || Entity.SingleImageEntity is { };
 
 
-    public async Task<byte[]> GetImageBytes()
+    public async Task<byte[]> GetImageBytesAsync()
     {
         if (!HasImage) return Array.Empty<byte>();
 
