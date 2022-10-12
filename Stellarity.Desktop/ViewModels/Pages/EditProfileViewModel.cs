@@ -82,9 +82,9 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
 
     public async Task LoadAsync()
     {
-        var bytes = await _user.GetAvatarAsync();
-        var bm = bytes.ToBitmap();
-        Avatar = bm ?? Avatar;
+        // var bytes = await _user.GetAvatarAsync();
+        // var bm = bytes.ToBitmap();
+        // Avatar = bm ?? Avatar;
     }
 
     [RelayCommand]

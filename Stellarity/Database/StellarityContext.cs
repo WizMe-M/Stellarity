@@ -107,7 +107,7 @@ internal sealed class StellarityContext : DbContext
                 .HasPrecision(10, 2)
                 .HasColumnName("cost");
 
-            entity.Property(e => e.CoverGuid)
+            entity.Property(e => e.SingleImageId)
                 .HasColumnName("cover_guid");
 
             entity.Property(e => e.Description)
@@ -127,9 +127,9 @@ internal sealed class StellarityContext : DbContext
                 .HasColumnName("add_date")
                 .HasDefaultValueSql("now()");
 
-            entity.HasOne(d => d.Cover)
+            entity.HasOne(d => d.SingleImageEntity)
                 .WithMany(p => p.Games)
-                .HasForeignKey(d => d.CoverGuid)
+                .HasForeignKey(d => d.SingleImageId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("fk_games_cover_guid");
         });

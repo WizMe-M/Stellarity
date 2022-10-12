@@ -73,7 +73,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         using var context = new StellarityContext();
         return context.Accounts
             .Include(user => user.Role)
-            .Include(user => user.Avatar)
+            .Include(user => user.SingleImageEntity)
             .Include(user => user.Library)
             .FirstOrDefault(user => user.Email == email);
     }
@@ -208,7 +208,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         using var context = new StellarityContext();
         var entry = context.Accounts.Attach(this);
-        entry.Reference(accountEntity => accountEntity.Avatar)
+        entry.Reference(accountEntity => accountEntity.SingleImageEntity)
             .Load();
     }
 

@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Stellarity.Database.Entities;
 
-public partial class GameEntity : IEntity
+public partial class GameEntity : SingleImageHolderEntity
 {
     public GameEntity()
     {
@@ -27,10 +28,11 @@ public partial class GameEntity : IEntity
     // sets now() by default
     public DateTime AddDate { get; set; }
 
-    public Guid? CoverGuid { get; set; }
+    [NotMapped] public Guid? CoverGuid => SingleImageId;
 
-    public virtual ImageEntity? Cover { get; set; }
-    public virtual ICollection<LibraryEntity> Libraries { get; set; }
+    [NotMapped] public ImageEntity? Cover => SingleImageEntity;
+
+    public ICollection<LibraryEntity> Libraries { get; set; }
 
     public static IEnumerable<GameEntity> GetAll()
     {
@@ -54,11 +56,11 @@ public partial class GameEntity : IEntity
         var game = new GameEntity(name, description, developer, cost);
         await context.Games.AddAsync(game);
         await context.SaveChangesAsync();
-        game = context.Entry(game).Entity;
-        var img = await ImageEntity.AddFromAsync(game, coverData);
-        game.Cover = img;
-        context.Games.Update(game);
-        await context.SaveChangesAsync();
+        // game = context.Entry(game).Entity;
+        // var img = await ImageEntity.AddFromAsync(game, coverData);
+        // game.Cover = img;
+        // context.Games.Update(game);
+        // await context.SaveChangesAsync();
     }
     //
     // public async Task<byte[]?> GetCoverAsync()
@@ -111,15 +113,15 @@ public partial class GameEntity : IEntity
         using var context = new StellarityContext();
         var entry = context.Games.Attach(this);
         entry.Reference(game => game.Cover).Load();
-        Cover = entry.Entity.Cover;
+        // SingleImageEntity = entry.Entity.Cover;
     }
 
     public void LoadCover()
     {
-        using var context = new StellarityContext();
-        var entry = context.Games.Attach(this);
-        entry.Reference(game => game.Cover)
-            .Load();
-        Cover = entry.Entity.Cover;
+        // using var context = new StellarityContext();
+        // var entry = context.Games.Attach(this);
+        // entry.Reference(game => game.Cover)
+        // .Load();
+        // Cover = entry.Entity.Cover;
     }
 }

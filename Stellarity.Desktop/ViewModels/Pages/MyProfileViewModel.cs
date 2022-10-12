@@ -48,8 +48,8 @@ public partial class MyProfileViewModel : IAsyncImageLoader
 
     public async Task LoadAsync()
     {
-        var bytes = await User.GetAvatarAsync();
-        var bm = bytes.ToBitmap();
-        Avatar = bm ?? Avatar;
+        // var bytes = await User.GetAvatarAsync();
+        // var bm = bytes.ToBitmap();
+        // Avatar = bm ?? Avatar;
     }
 }
