@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -48,7 +47,7 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     private EditProfileViewModel(Account user)
     {
         _user = user;
-        _previousAvatarData = _user.Avatar?.ImageBinaryData ?? ImagePlaceholder.GetBytes();
+        _previousAvatarData = _user.TryGetImageBytes() ?? ImagePlaceholder.GetBytes();
         _currentAvatarData = _previousAvatarData;
         _previousAbout = _user.About;
         _previousNickname = _user.Nickname;

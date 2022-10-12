@@ -36,6 +36,13 @@ public class SingleImageHolderModel<TEntity> : DomainModel<TEntity>
         return imageData;
     }
 
+    public byte[]? TryGetImageBytes()
+    {
+        if (!HasImage) return null;
+        if (ImageLoaded) return _singleImage!.ImageBinaryData;
+        return null;
+    }
+
     public async Task LoadImageAsync()
     {
         if (!HasImage || ImageLoaded) return;
