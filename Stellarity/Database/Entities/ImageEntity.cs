@@ -9,22 +9,12 @@ public partial class ImageEntity : IEntity
         Users = new HashSet<AccountEntity>();
     }
 
-    public ImageEntity(Guid guid, string name, byte[] data) : this()
-    {
-        Guid = guid;
-        Data = data;
-        Name = name;
-    }
-
     public ImageEntity(string name, byte[] data) : this()
     {
         Name = name;
         Data = data;
     }
 
-    /// <summary>
-    /// Содержит уникальный идентификатор изображения. Может использоваться в качестве имени файла для кэша
-    /// </summary>
     public Guid Guid { get; set; }
 
     public byte[] Data { get; set; } = null!;

@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Stellarity.Database.Entities;
 
-public sealed partial class AccountEntity : IEntity
+public sealed partial class AccountEntity : SingleImageHolderEntity
 {
     public AccountEntity()
     {
@@ -42,9 +43,9 @@ public sealed partial class AccountEntity : IEntity
 
     public int RoleId { get; set; }
 
-    public Guid? AvatarGuid { get; set; }
+    [NotMapped] public Guid? AvatarGuid => SingleImageId;
 
-    public ImageEntity? Avatar { get; set; }
+    [NotMapped] public ImageEntity? Avatar => SingleImageEntity;
     public RoleEntity Role { get; set; } = null!;
     public ICollection<CommentEntity> CommentAuthors { get; set; }
     public ICollection<CommentEntity> CommentProfiles { get; set; }
@@ -209,7 +210,6 @@ public sealed partial class AccountEntity : IEntity
         var entry = context.Accounts.Attach(this);
         entry.Reference(accountEntity => accountEntity.Avatar)
             .Load();
-        Avatar = entry.Entity.Avatar;
     }
 
     public void UpdateUpdateInfo(string nickname, string about)

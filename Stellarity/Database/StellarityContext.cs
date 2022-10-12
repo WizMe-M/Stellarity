@@ -214,7 +214,7 @@ internal sealed class StellarityContext : DbContext
                 .HasMaxLength(250)
                 .HasColumnName("about");
 
-            entity.Property(e => e.AvatarGuid)
+            entity.Property(e => e.SingleImageId)
                 .HasColumnName("avatar_guid");
 
             entity.Property(e => e.Balance)
@@ -244,9 +244,9 @@ internal sealed class StellarityContext : DbContext
             entity.Property(e => e.RoleId)
                 .HasColumnName("role_id");
 
-            entity.HasOne(d => d.Avatar)
+            entity.HasOne(d => d.SingleImageEntity)
                 .WithMany(p => p.Users)
-                .HasForeignKey(d => d.AvatarGuid)
+                .HasForeignKey(d => d.SingleImageId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("fk_users_avatar_guid");
 
