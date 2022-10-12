@@ -63,7 +63,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         using var context = new StellarityContext();
         return context.Accounts
             .Include(user => user.Role)
-            .Include(user => user.Avatar)
+            .Include(user => user.SingleImageEntity)
             .Include(user => user.Library)
             .FirstOrDefault(user => user.Email == email && user.Password == password);
     }

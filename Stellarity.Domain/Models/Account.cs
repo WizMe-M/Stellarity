@@ -76,9 +76,9 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return RegistrationResult.Success(account);
     }
 
-    public void ApplySatisfiedPassword(in string password)
+    public void ApplySatisfiedPassword(in HashedPassword password)
     {
-        Entity.UpdatePassword(password);
+        Entity.UpdatePassword(password.Password);
         Password = HashedPassword.FromEncrypted(Entity.Password);
     }
 

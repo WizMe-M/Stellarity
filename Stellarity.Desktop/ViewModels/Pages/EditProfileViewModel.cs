@@ -115,7 +115,7 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
         if (passwordChanged == true)
         {
             var password = vm.NewPassword!;
-            _user.ApplySatisfiedPassword(password.Password);
+            _user.ApplySatisfiedPassword(password);
         }
     }
 

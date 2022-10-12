@@ -54,7 +54,9 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
             .WithMessage("The password must contain: 1 digit, 1 uppercase, 1 lowercase, 1 special symbol; " +
                          "and it's length should be at least 8 or more symbols")
             .MinLength(8)
-            .WithMessage("The password must be at least 8 characters long");
+            .WithMessage("The password must be at least 8 characters long")
+            .MaxLength(12)
+            .WithMessage("The password must be less or equal than 12 characters long");
 
         return builder.Build(this);
     }
