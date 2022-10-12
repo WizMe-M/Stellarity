@@ -1,11 +1,9 @@
-﻿using Ninject;
-using Stellarity.Database.Entities;
+﻿using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
-using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
 
-public class Game : DomainModel<GameEntity>
+public class Game : SingleImageHolderModel<GameEntity>
 {
     protected Game(GameEntity entity) : base(entity)
     {
@@ -20,12 +18,7 @@ public class Game : DomainModel<GameEntity>
     public string Description { get; private set; }
     public string Developer { get; private set; }
     public decimal Cost { get; private set; }
-
-    public Image? Cover { get; private set; }
-
     public DateTime AddedInShopDate { get; }
-
-    public bool HasCover => Entity.CoverGuid is { };
 
     public void EditBasicInfo(in string title, in string description, in string developer, in decimal cost)
     {
@@ -38,23 +31,9 @@ public class Game : DomainModel<GameEntity>
 
     public void ChangeCover(Image newCover)
     {
-        Entity.UpdateCover(newCover.Entity);
-        Cover = new Image(Entity.Cover!);
-    }
-
-    public async Task<byte[]> GetCoverBytesAsync()
-    {
-        if (!HasCover) return Array.Empty<byte>();
-
-        var imageCacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-        var imageData = await imageCacheService.LoadImageAsync(Entity.CoverGuid);
-        if (imageData is null)
-        {
-            Entity.LoadCover();
-            imageData = Entity.Cover!.Data;
-        }
-
-        return imageData;
+        // todo: replace with SingleIHM.SetImageAsync(byte[], string);
+        // Entity.UpdateCover(newCover.Entity);
+        // Cover = new Image(Entity.Cover!);
     }
 
     public static IEnumerable<Game> GetAllShop()

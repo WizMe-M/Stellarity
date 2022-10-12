@@ -31,7 +31,6 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public bool IsBanned { get; private set; }
     public Roles Role { get; }
 
-    public Image? Avatar { get; private set; }
     public IEnumerable<Game> Library { get; private set; } = ArraySegment<Game>.Empty;
 
     public bool HasAvatar => Entity.AvatarGuid is { };

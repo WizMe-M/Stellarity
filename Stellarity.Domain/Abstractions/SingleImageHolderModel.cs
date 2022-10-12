@@ -19,21 +19,13 @@ public class SingleImageHolderModel<TEntity> : DomainModel<TEntity>
     public bool ImageLoaded => _singleImage is { } || Entity.SingleImageEntity is { };
 
 
-    public async Task<byte[]> GetImageBytesAsync()
+    public async Task<byte[]?> GetImageBytesAsync()
     {
-        if (!HasImage) return Array.Empty<byte>();
-
+        if (!HasImage) return null;
         if (ImageLoaded) return _singleImage!.ImageBinaryData;
 
-        var imageCacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-        var imageData = await imageCacheService.LoadImageAsync(Entity.SingleImageId);
-        if (imageData is null)
-        {
-            await LoadImageAsync();
-            imageData = _singleImage?.ImageBinaryData ?? Array.Empty<byte>();
-        }
-
-        return imageData;
+        await LoadImageAsync();
+        return _singleImage?.ImageBinaryData;
     }
 
     public byte[]? TryGetImageBytes()
