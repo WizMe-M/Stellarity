@@ -8,7 +8,7 @@ using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
 
-public class Account : DomainModel<AccountEntity>
+public class Account : SingleImageHolderModel<AccountEntity>
 {
     public Account(AccountEntity entity) : base(entity)
     {

@@ -15,6 +15,10 @@ public abstract class SingleImageHolderEntity : IEntity
         SingleImageEntity = image;
     }
 
+    /// <summary>
+    /// Гарантированно записывает изображение в бд и
+    /// обновляет изображение (загружает) у текущей сущности 
+    /// </summary>
     public void SetImage(byte[] imageData, string name = "unknown")
     {
         using var context = new StellarityContext();
@@ -30,5 +34,15 @@ public abstract class SingleImageHolderEntity : IEntity
         if (oldImage is { }) context.Images.Remove(oldImage);
 
         context.SaveChanges();
+    }
+
+    public void SetImageFromCache(byte[] imageData)
+    {
+        SingleImageEntity = new ImageEntity
+        {
+            Guid = SingleImageId!.Value,
+            Data = imageData,
+            Name = "Unknown. Loaded from cache"
+        };
     }
 }
