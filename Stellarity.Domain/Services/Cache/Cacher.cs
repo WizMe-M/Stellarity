@@ -55,7 +55,7 @@ public class Cacher
     {
         var containingDirectory = Path.Combine(RootFolder, subfolder);
         Directory.CreateDirectory(containingDirectory);
-        var path = Path.Combine(RootFolder, containingDirectory, fileName);
+        var path = Path.Combine(containingDirectory, fileName);
         var json = JsonConvert.SerializeObject(data);
         return File.WriteAllTextAsync(path, json);
     }
