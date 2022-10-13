@@ -107,9 +107,9 @@ public class Account : SingleImageHolderModel<AccountEntity>
         await RefreshLibraryAsync();
     }
 
-    public async Task<IEnumerable<Comment>> LoadCommentsFor(Account profile)
+    public async Task<IEnumerable<Comment>> GetComments()
     {
-        var comments = await Entity.LoadCommentsForAsync(profile.Entity);
+        var comments = await Entity.LoadProfileCommentsAsync();
         return comments.Select(Comment.FromEntity);
     }
 
@@ -142,7 +142,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public Task EditAccountInfoAsync(string nickname, string about)
     {
-        Entity.UpdateUpdateInfo(nickname, about);
+        Entity.UpdateBasicInfo(nickname, about);
         Nickname = nickname;
         About = about;
         return Task.CompletedTask;

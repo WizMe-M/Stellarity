@@ -196,11 +196,11 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<CommentEntity>> LoadCommentsForAsync(AccountEntity profile)
+    public async Task<IEnumerable<CommentEntity>> LoadProfileCommentsAsync()
     {
         await using var context = new StellarityContext();
         return await context.Comments
-            .Where(comment => comment.ProfileId == profile.Id)
+            .Where(comment => comment.ProfileId == Id)
             .ToArrayAsync();
     }
 

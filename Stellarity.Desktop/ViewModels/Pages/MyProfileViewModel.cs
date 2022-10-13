@@ -23,11 +23,9 @@ public partial class MyProfileViewModel : IAsyncImageLoader
 
     public ObservableCollection<Comment> Comments { get; } = new();
 
-    [ObservableProperty]
-    private Account _user = null!;
+    [ObservableProperty] private Account _user = null!;
 
-    [ObservableProperty]
-    private Bitmap? _avatar;
+    [ObservableProperty] private Bitmap? _avatar;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommentCommand))]
     private string _commentText = string.Empty;
@@ -38,7 +36,7 @@ public partial class MyProfileViewModel : IAsyncImageLoader
     private async Task SendCommentAsync()
     {
         User.LeaveComment(_commentText, User);
-        var comments = await User.LoadCommentsFor(User);
+        var comments = await User.GetComments();
         Comments.Clear();
         Comments.AddRange(comments);
     }
