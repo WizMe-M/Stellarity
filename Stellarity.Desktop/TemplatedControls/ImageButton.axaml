@@ -4,14 +4,11 @@
     <Design.PreviewWith>
         <Border Background="White" Padding="10">
             <UniformGrid>
-                <templatedControls:ImageButton Width="200" Height="200" ImageSource="avares://Stellarity.Avalonia/Assets/Images/placeholder.png"
-                                      Margin="5" />
-                <templatedControls:ImageButton Width="200" Height="200" ImageSource="avares://Stellarity.Avalonia/Assets/Images/placeholder.png"
-                                      Margin="5" IsEnabled="False" />
-                <templatedControls:ImageButton Width="200" Height="100" ImageSource="avares://Stellarity.Avalonia/Assets/Images/placeholder.png"
-                                      Margin="5" Stretch="Fill" />
-                <templatedControls:ImageButton Width="200" Height="200" ImageSource="avares://Stellarity.Avalonia/Assets/Images/stellaris-logo.ico"
-                                      Margin="5" />
+                <templatedControls:ImageButton Width="200" Height="200" Margin="5" />
+                <templatedControls:ImageButton Width="200" Height="200" Margin="5" IsEnabled="False" />
+                <templatedControls:ImageButton Width="200" Height="100" Margin="5" Stretch="Fill" />
+                <templatedControls:ImageButton ImageSource="../Assets/Images/stellaris-logo.ico"
+                                               Width="200" Height="200" Margin="5" />
 
                 <Button Width="200" Height="200" CornerRadius="10">
                     <Button.Background>
@@ -35,45 +32,53 @@
         <Setter Property="CornerRadius" Value="7" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ContentPresenter x:Name="PART_ContentPresenter"
-                                  Margin="5"
-                                  BorderBrush="{TemplateBinding BorderBrush}"
-                                  BorderThickness="{TemplateBinding BorderThickness}"
-                                  CornerRadius="{TemplateBinding CornerRadius}"
-                                  Padding="{TemplateBinding Padding}"
-                                  RecognizesAccessKey="True"
-                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
-                    <ContentPresenter.Background>
-                        <ImageBrush
-                            Source="{Binding RelativeSource={RelativeSource AncestorType=templatedControls:ImageButton}, Path=ImageSource}" />
-                    </ContentPresenter.Background>
-                </ContentPresenter>
+                <Panel>
+                    <ContentPresenter x:Name="PART_ContentPresenter"
+                                      Margin="5"
+                                      IsVisible="{TemplateBinding IsImageSet}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Padding="{TemplateBinding Padding}"
+                                      RecognizesAccessKey="True"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <ContentPresenter.Background>
+                            <ImageBrush
+                                Source="{Binding RelativeSource={RelativeSource AncestorType=templatedControls:ImageButton}, Path=ImageSource}" />
+                        </ContentPresenter.Background>
+                    </ContentPresenter>
+
+                    <ContentPresenter Margin="5"
+                                      IsVisible="{TemplateBinding IsImageSet, Converter={x:Static BoolConverters.Not}}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Padding="{TemplateBinding Padding}"
+                                      RecognizesAccessKey="True"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <ContentPresenter.Background>
+                            <ImageBrush Source="../Assets/Images/placeholder.png" />
+                        </ContentPresenter.Background>
+                    </ContentPresenter>
+                </Panel>
             </ControlTemplate>
         </Setter>
     </Style>
 
-    <Style Selector="templatedControls|ImageButton">
-        <Setter Property="BoxShadow" Value="0 0 10 Black" />
-    </Style>
-    
     <Style Selector="templatedControls|ImageButton:pointerover">
-        <Setter Property="BorderBrush" Value="Transparent" />
+        <!-- <Setter Property="BorderBrush" Value="Transparent" /> -->
     </Style>
-    
+
     <Style Selector="templatedControls|ImageButton:pressed">
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="RenderTransform" Value="scale(0.98)" />
     </Style>
-    
-    <Style Selector="templatedControls|ImageButton:pressed">
-        <Setter Property="BoxShadow" Value="0 0 Transparent" />
-    </Style>
-    
+
     <Style Selector="templatedControls|ImageButton:disabled">
         <Setter Property="Opacity" Value=".5" />
-        <Setter Property="BoxShadow" Value="0 0 Transparent" />
     </Style>
 
 </Styles>
