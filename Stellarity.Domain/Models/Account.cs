@@ -140,9 +140,9 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return imageData;
     }
 
-    public Task EditAccountInfoAsync(string nickname, string about)
+    public Task EditProfileInfoAsync(string nickname, string about)
     {
-        Entity.UpdateBasicInfo(nickname, about);
+        Entity.UpdateProfileInfo(nickname, about);
         Nickname = nickname;
         About = about;
         return Task.CompletedTask;

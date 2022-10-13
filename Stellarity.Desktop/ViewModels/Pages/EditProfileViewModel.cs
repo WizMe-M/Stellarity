@@ -8,7 +8,6 @@ using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Stellarity.Avalonia.Extensions;
-using Stellarity.Avalonia.Models;
 using Stellarity.Avalonia.ViewModel;
 using Stellarity.Desktop.Basic;
 using Stellarity.Domain.Authorization;
@@ -47,8 +46,8 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     private EditProfileViewModel(Account user)
     {
         _user = user;
-        _previousAvatarData = _user.TryGetImageBytes() ?? ImagePlaceholder.GetBytes();
-        _currentAvatarData = ImagePlaceholder.GetBytes();
+        _previousAvatarData = _user.TryGetImageBytes();
+        _currentAvatarData = _previousAvatarData;
         _previousAbout = _user.About;
         _previousNickname = _user.Nickname;
 
@@ -76,13 +75,20 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
         }
     }
 
-    public bool HasChanges => _currentAvatarData != null && _previousAvatarData != _currentAvatarData
-                              || CurrentNickname != _previousNickname || CurrentAbout != _previousAbout;
+    private bool ImageWasChanged => _previousAvatarData != _currentAvatarData;
+    private bool ProfileInfoWasChanged => CurrentNickname != _previousNickname || CurrentAbout != _previousAbout;
+
+    public bool HasChanges => ImageWasChanged || ProfileInfoWasChanged;
 
     public async Task LoadAsync()
     {
-        var bitmap = await _user.GetImageBitmapAsync();
-        if (bitmap is { }) Avatar = bitmap;
+        var bytes = await _user.GetImageBytesAsync();
+        var bitmap = bytes.ToBitmap();
+        if (bitmap is { })
+        {
+            Avatar = bitmap;
+            _previousAvatarData = bytes;
+        }
     }
 
     [RelayCommand]
@@ -120,16 +126,11 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     [RelayCommand(CanExecute = nameof(HasChanges))]
     private async Task SaveChangesAsync()
     {
-        await _user.EditAccountInfoAsync(CurrentNickname, CurrentAbout);
-        // await _user.ChangeAvatarAsync(_currentAvatarData);
+        if (ProfileInfoWasChanged) await _user.EditProfileInfoAsync(CurrentNickname, CurrentAbout);
+        if (ImageWasChanged) await _user.SetImageAsync(_currentAvatarData!, _user.Email);
 
         _previousAvatarData = _currentAvatarData;
         _previousNickname = CurrentNickname;
         _previousAbout = CurrentAbout;
-        Back();
-    }
-
-    private void Back()
-    {
     }
 }

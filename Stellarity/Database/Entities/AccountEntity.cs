@@ -212,7 +212,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
             .Load();
     }
 
-    public void UpdateUpdateInfo(string nickname, string about)
+    public void UpdateProfileInfo(string nickname, string about)
     {
         using var context = new StellarityContext();
         var entity = context.Accounts.Attach(this).Entity;
@@ -220,7 +220,5 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         entity.About = about;
         context.Accounts.Update(entity);
         context.SaveChanges();
-        Nickname = entity.Nickname;
-        About = entity.About;
     }
 }
