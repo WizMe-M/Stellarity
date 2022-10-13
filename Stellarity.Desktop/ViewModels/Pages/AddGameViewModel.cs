@@ -12,7 +12,7 @@ using ReactiveValidation.Extensions;
 using Stellarity.Avalonia.Extensions;
 using Stellarity.Avalonia.Models;
 using Stellarity.Avalonia.ViewModel;
-using Stellarity.Database.Entities;
+using Stellarity.Domain.Models;
 using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
@@ -123,7 +123,11 @@ public partial class AddGameViewModel : PageViewModel
     private async Task AddAsync()
     {
         if (Free) Cost = 0;
-        await GameEntity.AddAsync(Title, Description, Developer, Cost, _coverData);
+        Title = Title.Trim();
+        Description = Description.Trim();
+        Developer = Developer.Trim();
+
+        await Game.AddNewAsync(Title, Description, Developer, Cost, _coverData);
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Pop());
     }
 }

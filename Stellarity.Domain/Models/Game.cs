@@ -41,4 +41,12 @@ public class Game : SingleImageHolderModel<GameEntity>
         var gameEntities = GameEntity.GetAll();
         return gameEntities.Select(entity => new Game(entity));
     }
+
+    public static async Task AddNewAsync(string title, string description, string developer, decimal cost,
+        byte[] coverData)
+    {
+        var entity = await GameEntity.AddAsync(title, description, developer, cost);
+        var game = new Game(entity);
+        await game.SetImageAsync(coverData, entity.Title);
+    }
 }

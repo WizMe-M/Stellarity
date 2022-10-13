@@ -8,7 +8,6 @@ namespace Stellarity.Desktop.Views.Pages;
 
 public partial class GameShopView : ExtUserControl<GameShopViewModel>, IContentPage
 {
-
     public GameShopView() => AvaloniaXamlLoader.Load(this);
 
     public override async Task InitializeViewModelAsync(GameShopViewModel viewModel)

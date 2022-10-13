@@ -11,13 +11,12 @@ namespace Stellarity.Desktop.ViewModels.Wraps;
 [ObservableObject]
 public partial class GameViewModel : IAsyncImageLoader
 {
-    [ObservableProperty]
-    private Bitmap? _cover;
+    [ObservableProperty] private Bitmap? _cover;
 
     public GameViewModel(Game instance)
     {
         Instance = instance;
-        _cover = ImagePlaceholder.GetBitmap();
+        _cover = Instance.TryGetImageBytes().ToBitmap() ?? ImagePlaceholder.GetBitmap();
     }
 
     public Game Instance { get; }
