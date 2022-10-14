@@ -14,7 +14,7 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
     public event EventHandler? RequestClose;
     public bool? DialogResult { get; private set; }
 
-    private const string PasswordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=])(?!.*\s).{8,}$";
+    private const string PasswordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*+\-=])(?!.*\s).{8,}$";
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
     private string _input = string.Empty;
