@@ -24,14 +24,13 @@ public abstract class SingleImageHolderEntity : IEntity
         using var context = new StellarityContext();
         var newImage = new ImageEntity(name, imageData);
         context.Images.Add(newImage);
+        var oldImage = context.Images.FirstOrDefault(img => img.Guid == SingleImageId);
+        if (oldImage is { }) context.Images.Remove(oldImage);
         context.SaveChanges();
 
-        var oldImage = context.Images.FirstOrDefault(img => img.Guid == SingleImageId);
-        var entity = context.Attach(this).Entity;
-        entity.SingleImageId = newImage.Guid;
-        context.Update(entity);
-
-        if (oldImage is { }) context.Images.Remove(oldImage);
+        context.Attach(this);
+        SingleImageId = newImage.Guid;
+        context.Update(this);
 
         context.SaveChanges();
     }
