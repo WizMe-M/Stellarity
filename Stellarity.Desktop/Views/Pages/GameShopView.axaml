@@ -11,6 +11,7 @@
     <DockPanel>
         <!-- IsVisible="{Binding Authorized.CanAddGames}"  -->
         <Button DockPanel.Dock="Top" Content="Добавить игру" Command="{Binding GoToAddGameCommand}"
+                IsVisible="{Binding Authorized.CanAddGames}"
                 HorizontalAlignment="Right" Margin="50 20" />
         <ListBox Items="{Binding AllGames}" SelectedItem="{Binding }"
                  Background="Transparent" Margin="0 20">

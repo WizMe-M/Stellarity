@@ -27,18 +27,19 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
         _windowOwner = windowOwner;
         _navigator = navigator;
         _dialog = dialogService;
-        // Authorized = accountingService.AuthorizedAccount!;
-
-        var games = Game.GetAllShop();
-        AllGames.AddRange(games.Select(g => new GameViewModel(g)));
+        Authorized = accountingService.AuthorizedUser!;
     }
 
     public ObservableCollection<GameViewModel> AllGames { get; } = new();
 
-    public AccountEntity Authorized { get; }
+    public Account Authorized { get; }
 
     public async Task LoadAsync()
     {
+        AllGames.Clear();
+        var games = Game.GetAllShop();
+        AllGames.AddRange(games.Select(g => new GameViewModel(g)));
+
         foreach (IAsyncImageLoader asyncImageLoader in AllGames)
             await asyncImageLoader.LoadAsync();
     }
