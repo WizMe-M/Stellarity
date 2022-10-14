@@ -15,7 +15,6 @@ public partial class GameShopView : ReactiveUserControl<GameShopViewModel>, ICon
         this.WhenActivated(async d => { await ViewModel!.LoadAsync(); });
     }
 
-
     public async Task InitializeViewModelAsync(GameShopViewModel viewModel)
     {
         ViewModel = viewModel;

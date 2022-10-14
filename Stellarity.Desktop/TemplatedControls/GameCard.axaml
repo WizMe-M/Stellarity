@@ -1,0 +1,55 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Stellarity.Desktop.TemplatedControls">
+    <Design.PreviewWith>
+        <Border Background="Gray" Padding="10">
+            <WrapPanel>
+                <controls:GameCard Cover="../Assets/Images/placeholder.png" Title="Test" CostString="250 руб." />
+                <controls:GameCard Cover="../Assets/Images/stellaris-logo.ico" Title="Test" CostString="250 руб." />
+            </WrapPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|GameCard">
+        <Setter Property="Template">
+            <ControlTemplate>
+<Border BoxShadow="{TemplateBinding BoxShadow}"
+        BorderThickness="{TemplateBinding BorderThickness}"
+        BorderBrush="Black" CornerRadius="0 0 5 5" Margin="10">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Bottom" Text="{TemplateBinding CostString}" Margin="5" />
+        <TextBlock DockPanel.Dock="Bottom" Text="{TemplateBinding Title}" FontWeight="Bold" />
+        <Border ClipToBounds="True" CornerRadius="{TemplateBinding CornerRadius}">
+            <Border.Background>
+                <ImageBrush
+                    Source="{Binding Path=Cover,
+                    RelativeSource={RelativeSource AncestorType=controls:GameCard}}"
+                    Stretch="UniformToFill" />
+            </Border.Background>
+        </Border>
+    </DockPanel>
+</Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="controls|GameCard">
+        <Setter Property="Width" Value="250" />
+        <Setter Property="Height" Value="300" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="controls|GameCard:pointerover">
+        <Setter Property="BoxShadow" Value="0 0 15 2 LightGray" />
+    </Style>
+
+    <Style Selector="controls|GameCard:pressed">
+        <Setter Property="BoxShadow" Value="0 0 0 0 LightGray" />
+        <Setter Property="BorderThickness" Value="3" />
+        <Setter Property="RenderTransform" Value="scale(1)" />
+    </Style>
+
+    <Style Selector="controls|GameCard TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+</Styles>
