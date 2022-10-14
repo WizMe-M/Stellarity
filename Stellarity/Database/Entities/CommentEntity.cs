@@ -35,8 +35,8 @@ public partial class CommentEntity : IEntity
         var comment = new CommentEntity
         {
             Body = text,
-            Author = sender, AuthorId = sender.Id,
-            Profile = profile, ProfileId = profile.Id
+            AuthorId = sender.Id,
+            ProfileId = profile.Id
         };
         using var context = new StellarityContext();
         context.Comments.Add(comment);

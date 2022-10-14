@@ -110,7 +110,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public async Task<IEnumerable<Comment>> GetComments()
     {
         var comments = await Entity.LoadProfileCommentsAsync();
-        return comments.Select(Comment.FromEntity);
+        return comments.Select(entity => new Comment(entity));
     }
 
     public Comment LeaveComment(string commentText, Account profile)

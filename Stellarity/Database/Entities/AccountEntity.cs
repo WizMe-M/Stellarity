@@ -200,6 +200,8 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         await using var context = new StellarityContext();
         return await context.Comments
+            .Include(comment => comment.Author)
+            .Include(comment => comment.Profile)
             .Where(comment => comment.ProfileId == Id)
             .ToArrayAsync();
     }

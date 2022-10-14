@@ -9,7 +9,11 @@ public abstract class DomainModel<TEntity>
     /// Base .ctor for resolving models from entities
     /// </summary>
     /// <param name="entity">Model's entity</param>
-    protected DomainModel(TEntity entity) => Entity = entity;
+    protected DomainModel(TEntity entity)
+    {
+        if (entity is null) throw new NullReferenceException("Model's entity was null!");
+        Entity = entity;
+    }
 
     internal TEntity Entity { get; }
 }

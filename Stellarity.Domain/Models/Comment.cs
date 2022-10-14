@@ -5,7 +5,7 @@ namespace Stellarity.Domain.Models;
 
 public class Comment : DomainModel<CommentEntity>
 {
-    private Comment(CommentEntity entity) : base(entity)
+    public Comment(CommentEntity entity) : base(entity)
     {
         Body = Entity.Body;
         CommentDate = Entity.CommentDate;
@@ -56,11 +56,5 @@ public class Comment : DomainModel<CommentEntity>
     {
         Entity.UpdateBody(body);
         Body = Entity.Body;
-    }
-
-    public static Comment FromEntity(CommentEntity entity)
-    {
-        var comment = new Comment(entity);
-        return comment;
     }
 }
