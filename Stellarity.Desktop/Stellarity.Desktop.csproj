@@ -10,14 +10,14 @@
         <RootNamespace>Stellarity.Desktop</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove=".gitignore" />
+        <None Remove=".gitignore"/>
     </ItemGroup>
     <ItemGroup>
         <!--This helps with theme dll-s trimming.
         If you will publish your application in self-contained mode with p:PublishTrimmed=true and it will use Fluent theme Default theme will be trimmed from the output and vice versa.
         https://github.com/AvaloniaUI/Avalonia/issues/5593 -->
-        <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
-        <TrimmableAssembly Include="Avalonia.Themes.Default" />
+        <TrimmableAssembly Include="Avalonia.Themes.Fluent"/>
+        <TrimmableAssembly Include="Avalonia.Themes.Default"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.18"/>
@@ -42,10 +42,10 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Update="TemplatedControls\Navigation\NavigationViewItem.cs">
-          <DependentUpon>NavigationViewItem.axaml</DependentUpon>
+            <DependentUpon>NavigationViewItem.axaml</DependentUpon>
         </Compile>
         <Compile Update="TemplatedControls\Navigation\NavigationView.cs">
-          <DependentUpon>NavigationView.axaml</DependentUpon>
+            <DependentUpon>NavigationView.axaml</DependentUpon>
         </Compile>
     </ItemGroup>
     <ItemGroup>
@@ -54,6 +54,7 @@
         <AdditionalFiles Include="TemplatedControls\ImageButton.axaml"/>
         <AdditionalFiles Include="TemplatedControls\Navigation\NavigationView.axaml"/>
         <AdditionalFiles Include="TemplatedControls\Navigation\NavigationViewItem.axaml"/>
+        <AdditionalFiles Include="TemplatedControls\GameCard.axaml"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Stellarity.Avalonia\Stellarity.Avalonia.csproj"/>

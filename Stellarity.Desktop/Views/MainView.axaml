@@ -8,8 +8,8 @@
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
         x:Class="Stellarity.Desktop.Views.MainView" x:DataType="viewModels:MainViewModel"
         x:CompileBindings="True"
-        MinWidth="1000" MinHeight="600"
-        Width="1000" Height="600"
+        MinWidth="850" MinHeight="600"
+        Width="850" Height="600"
         MaxWidth="1600" MaxHeight="860"
 
         Icon="avares://Stellarity.Avalonia/Assets/Images/stellaris-logo.ico"
