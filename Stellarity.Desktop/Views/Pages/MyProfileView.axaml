@@ -35,14 +35,14 @@
                     <StackPanel Orientation="Vertical" Spacing="25" HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
                         <TextBlock Text="{Binding User.Email}" FontWeight="DemiBold" />
-                        <TextBlock Text="{Binding User.Nickname, TargetNullValue='Никнейм не указан'}"
+                        <TextBlock Text="{Binding Nickname, TargetNullValue='Никнейм не указан'}"
                                    FontWeight="Light" />
                         <TextBlock Text="{Binding User.RegistrationDate, StringFormat={}Дата регистрации: {0:d}}" />
                     </StackPanel>
                 </DockPanel>
                 <TextBlock Text="О себе:" Margin="50 0" HorizontalAlignment="Left" />
                 <Border BorderBrush="Black" BorderThickness="1" Margin="20 0" Padding="5">
-                    <TextBlock Text="{Binding User.About, TargetNullValue='Информация о пользователе отсутствует'}"
+                    <TextBlock Text="{Binding AboutSelf, TargetNullValue='Информация о пользователе отсутствует'}"
                                TextAlignment="Left" TextWrapping="Wrap" Height="100" HorizontalAlignment="Stretch" />
                 </Border>
 

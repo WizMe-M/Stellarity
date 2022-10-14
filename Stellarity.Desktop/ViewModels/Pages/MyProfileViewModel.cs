@@ -15,20 +15,22 @@ namespace Stellarity.Desktop.ViewModels.Pages;
 [ObservableObject]
 public partial class MyProfileViewModel : IAsyncImageLoader
 {
-    public MyProfileViewModel(AccountingService service)
-    {
-        User = service.AuthorizedUser!;
-        Avatar = ImagePlaceholder.GetBitmap();
-    }
-
-    public ObservableCollection<Comment> Comments { get; } = new();
-
     [ObservableProperty] private Account _user = null!;
-
+    [ObservableProperty] private string _nickname = null!;
+    [ObservableProperty] private string _aboutSelf = null!;
     [ObservableProperty] private Bitmap? _avatar;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommentCommand))]
     private string _commentText = string.Empty;
+    public MyProfileViewModel(AccountingService service)
+    {
+        User = service.AuthorizedUser!;
+        Nickname = User.Nickname;
+        AboutSelf = User.About;
+        Avatar = ImagePlaceholder.GetBitmap();
+    }
+
+    public ObservableCollection<Comment> Comments { get; } = new();
 
     public bool CanComment => !string.IsNullOrWhiteSpace(_commentText);
 
@@ -43,6 +45,9 @@ public partial class MyProfileViewModel : IAsyncImageLoader
 
     public async Task LoadAsync()
     {
+        Nickname = User.Nickname;
+        AboutSelf = User.About;
+        
         var bitmap = await User.GetImageBitmapAsync();
         if (bitmap is { }) Avatar = bitmap;
     }
