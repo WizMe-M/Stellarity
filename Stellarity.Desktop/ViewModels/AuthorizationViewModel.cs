@@ -14,11 +14,14 @@ public partial class AuthorizationViewModel : ViewModelBase
     private readonly IDialogService _windowService = null!;
     private readonly AccountingService _accountingService = null!;
 
-    [ObservableProperty] private string _email = string.Empty;
+    [ObservableProperty]
+    private string _email = string.Empty;
 
-    [ObservableProperty] private string _password = string.Empty;
+    [ObservableProperty]
+    private string _password = string.Empty;
 
-    [ObservableProperty] private bool _rememberMe;
+    [ObservableProperty]
+    private bool _rememberMe;
 
     private AuthorizationViewModel()
     {
@@ -60,7 +63,7 @@ public partial class AuthorizationViewModel : ViewModelBase
             return;
         }
 
-        if (_accountingService.AuthorizedUser!.IsBanned)
+        if (_accountingService.AuthorizedUser is { IsBanned: true })
         {
             await ShowErrorAsync("User was banned. Log into another account", "Authorization error");
         }
