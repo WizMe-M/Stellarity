@@ -60,7 +60,7 @@ public partial class AuthorizationViewModel : ViewModelBase
             return;
         }
 
-        if (_accountingService.AuthorizedAccount!.IsBanned)
+        if (_accountingService.AuthorizedUser!.IsBanned)
         {
             await ShowErrorAsync("User was banned. Log into another account", "Authorization error");
         }

@@ -56,7 +56,7 @@ public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
     }
 
     public EditProfileViewModel(IDialogService dialogService, AccountingService accounting, MainViewModel windowOwner)
-        : this(accounting.AuthorizedAccount!)
+        : this(accounting.AuthorizedUser!)
     {
         _dialogService = dialogService;
         _windowOwner = windowOwner;

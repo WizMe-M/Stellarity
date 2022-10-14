@@ -17,7 +17,7 @@ public partial class MyProfileViewModel : IAsyncImageLoader
 {
     public MyProfileViewModel(AccountingService service)
     {
-        User = service.AuthorizedAccount!;
+        User = service.AuthorizedUser!;
         Avatar = ImagePlaceholder.GetBitmap();
     }
 

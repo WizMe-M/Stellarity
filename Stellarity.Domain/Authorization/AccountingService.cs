@@ -15,10 +15,10 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
         _cacheFileName = cacheFileName;
     }
 
-    public Account? AuthorizedAccount { get; private set; }
+    public Account? AuthorizedUser { get; private set; }
 
     public bool IsAutoLogIn => _authorizationHistory is { RememberLastAuthorizedUser: true }
-                               && AuthorizedAccount is { IsBanned: false };
+                               && AuthorizedUser is { IsBanned: false };
 
     public bool HaveAuthHistory => _authorizationHistory is { };
 
@@ -28,19 +28,18 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
     public async Task InitializeAsync()
     {
         _authorizationHistory = await LoadAuthorizationHistoryAsync();
-        if (_authorizationHistory is null) return;
-        Initialize(_authorizationHistory);
+        if (_authorizationHistory is { RememberLastAuthorizedUser: true })
+            AutoLogIn();
     }
 
     /// <summary>
-    /// Initialize accounting service with authorization info
+    /// Automatically authorize user
     /// </summary>
-    /// <param name="history">Cached info about authorization</param>
-    private void Initialize(AuthorizationHistory history)
+    private void AutoLogIn()
     {
-        var accountEntity = AccountEntity.Find(history.UserEmail);
-        if (accountEntity is null) return;
-        AuthorizedAccount = new Account(accountEntity);
+        var accountEntity = AccountEntity.Find(_authorizationHistory!.UserEmail);
+        if (accountEntity is { Deleted: false })
+            AuthorizedUser = new Account(accountEntity);
     }
 
     public async Task<AuthorizationResult> AccountAuthorizationAsync(string email, string password, bool remember)
@@ -48,6 +47,7 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
         var authResult = await Account.AuthorizeAsync(email, password);
         if (!authResult.IsSuccessful) return authResult;
 
+        AuthorizedUser = authResult.Account;
         await SaveAuthorizationHistoryAsync(authResult.Account!.Email, remember);
         return authResult;
     }
