@@ -53,6 +53,16 @@ public partial class AuthorizationViewModel : ViewModelBase
         OpenMainView();
     }
 
+    private async Task ShowChangePassword()
+    {
+        // TODO: show dialog
+    }
+
+    private void ShowRegistration()
+    {
+        // TODO: show registration view and close this
+    }
+
     public async Task TryAutoLogInAsync()
     {
         if (!_accountingService.HaveAuthHistory) return;

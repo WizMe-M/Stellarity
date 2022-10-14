@@ -46,6 +46,9 @@
                 Height="40" Margin="40 0 0 0"
                 VerticalAlignment="Top" ZIndex="2" />
 
+        <!-- TODO: add 'exit' button with deleting authorization history -->
+        <!-- TODO: add balance and 'deposit' btn -->
+        
         <navigation:NavigationView Name="NavView" Background="Transparent" Header="Stellarity" SelectedItem="{Binding #MyProfile}">
             <navigation:NavigationViewItem Header="My profile" IconValue="{StaticResource MyProfile}">
                 <navigation:NavigationViewItem.ContentPage>
@@ -64,6 +67,8 @@
                     <pages:GameShopView Name="Shop" />
                 </navigation:NavigationViewItem.ContentPage>
             </navigation:NavigationViewItem>
+            
+            <!-- TODO: add community page -->
         </navigation:NavigationView>
     </Panel>
 </Window>

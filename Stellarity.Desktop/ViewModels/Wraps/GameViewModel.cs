@@ -11,7 +11,8 @@ namespace Stellarity.Desktop.ViewModels.Wraps;
 [ObservableObject]
 public partial class GameViewModel : IAsyncImageLoader
 {
-    [ObservableProperty] private Bitmap? _cover;
+    [ObservableProperty]
+    private Bitmap? _cover;
 
     public GameViewModel(Game instance)
     {
@@ -20,6 +21,13 @@ public partial class GameViewModel : IAsyncImageLoader
     }
 
     public Game Instance { get; }
+
+    public void OpenGamePage()
+    {
+        // TODO: make 'open game page' command
+        // needs navigator
+        // should it be DI-contained?
+    }
 
     public async Task LoadAsync()
     {
