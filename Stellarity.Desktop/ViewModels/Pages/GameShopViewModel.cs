@@ -38,7 +38,7 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
     {
         AllGames.Clear();
         var games = Game.GetAllShop();
-        AllGames.AddRange(games.Select(g => new GameViewModel(g)));
+        AllGames.AddRange(games.Select(g => new GameViewModel(g, _navigator)));
 
         foreach (IAsyncImageLoader asyncImageLoader in AllGames)
             await asyncImageLoader.LoadAsync();

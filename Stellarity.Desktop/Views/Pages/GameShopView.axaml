@@ -31,6 +31,7 @@
                         <items:GameCard Title="{Binding Instance.Title}" 
                                         CostString="{Binding Instance.Cost, StringFormat={}{0} руб.}"
                                         Cover="{Binding Cover}"
+                                        Command="{Binding OpenGamePageCommand}"
                                         Margin="5 2" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
