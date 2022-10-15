@@ -6,6 +6,8 @@
             <WrapPanel>
                 <controls:GameCard Cover="../Assets/Images/placeholder.png" Title="Test" CostString="250 руб." />
                 <controls:GameCard Cover="../Assets/Images/stellaris-logo.ico" Title="Test" CostString="250 руб." />
+                <controls:GameCard Classes="purchased" Cover="../Assets/Images/stellaris-logo.ico"
+                                   Title="Test" CostString="250 руб." PurchaseDateString="Purchased on 24.10.2002" />
             </WrapPanel>
         </Border>
     </Design.PreviewWith>
@@ -29,7 +31,34 @@
                             </Border>
                         </DockPanel>
                     </Border>
-                    <Border BoxShadow="{TemplateBinding BoxShadow}" 
+                    <Border BoxShadow="{TemplateBinding BoxShadow}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="Black" CornerRadius="5" Margin="10" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="controls|GameCard.purchased">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border ClipToBounds="True" BorderBrush="Black" CornerRadius="5" Margin="10"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Bottom" Text="{TemplateBinding PurchaseDateString}" Margin="5" />
+                            <TextBlock DockPanel.Dock="Bottom" Text="{TemplateBinding Title}" FontWeight="Bold" />
+                            <Border>
+                                <Border.Background>
+                                    <ImageBrush
+                                        Source="{Binding Path=Cover,
+                    RelativeSource={RelativeSource AncestorType=controls:GameCard}}"
+                                        Stretch="UniformToFill" />
+                                </Border.Background>
+                            </Border>
+                        </DockPanel>
+                    </Border>
+                    <Border BoxShadow="{TemplateBinding BoxShadow}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="Black" CornerRadius="5" Margin="10" />
                 </Panel>
