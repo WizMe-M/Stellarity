@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Ninject;
 using Stellarity.Avalonia.Extensions;
 using Stellarity.Avalonia.Models;
@@ -59,8 +61,12 @@ public partial class GamePageViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanPurchase))]
     private async Task PurchaseAsync()
     {
-        // TODO: show purchase confirmation dialog Yes/No
-        if (true)
+        var dialogService = DiContainingService.Kernel.Get<IDialogService>();
+        var vm = DiContainingService.Kernel.Get<MainViewModel>();
+        var result = await dialogService.ShowMessageBoxAsync(vm, "Confirm purchase, please",
+            button: MessageBoxButton.YesNo, defaultResult: false);
+
+        if (result == true)
         {
             await User.PurchaseGameAsync(_game);
             await UpdatePurchased();

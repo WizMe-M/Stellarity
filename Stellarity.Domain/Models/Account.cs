@@ -16,6 +16,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
         Nickname = Entity.Nickname ?? Entity.Email;
         Password = HashedPassword.FromEncrypted(Entity.Password);
         About = Entity.About ?? "";
+        Balance = Entity.Balance;
         IsBanned = Entity.Deleted;
         RegistrationDate = Entity.RegistrationDate;
         Role = (Roles)Entity.RoleId;

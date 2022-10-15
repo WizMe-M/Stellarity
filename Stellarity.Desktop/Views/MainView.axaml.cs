@@ -23,6 +23,11 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     {
         this.WhenActivated(async d =>
         {
+            DiContainingService.Kernel
+                .Bind<MainViewModel>()
+                .ToConstant(ViewModel!)
+                .InSingletonScope();
+
             var myProfileViewModel = DiContainingService.Kernel.Get<MyProfileViewModel>();
             await MyProfile.InitializeViewModelAsync(myProfileViewModel);
 
