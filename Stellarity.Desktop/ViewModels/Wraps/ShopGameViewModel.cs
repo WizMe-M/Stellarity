@@ -23,7 +23,7 @@ public partial class ShopGameViewModel : IAsyncLoader
     {
         _navigator = navigator;
         Instance = instance;
-        _cover = Instance.TryGetImageBytes().ToBitmap() ?? ImagePlaceholder.GetBitmap();
+        _cover = Instance.GetImageBitmapOrDefault();
     }
 
     public Game Instance { get; }

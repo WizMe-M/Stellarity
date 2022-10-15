@@ -23,7 +23,7 @@ public partial class LibraryGameViewModel : ViewModelBase, IAsyncLoader
     {
         Game = game;
         _navigator = navigator;
-        Cover = Game.TryGetImageBytes().ToBitmap() ?? ImagePlaceholder.GetBitmap();
+        Cover = Game.GetImageBitmapOrDefault();
     }
 
     public LibraryGame Game { get; }
