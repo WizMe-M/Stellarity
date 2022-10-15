@@ -12,14 +12,14 @@ using Stellarity.Navigation.Event;
 namespace Stellarity.Desktop.ViewModels.Wraps;
 
 [ObservableObject]
-public partial class GameViewModel : IAsyncImageLoader
+public partial class ShopGameViewModel : IAsyncImageLoader
 {
     private readonly NavigationPublisher _navigator;
 
     [ObservableProperty]
     private Bitmap? _cover;
 
-    public GameViewModel(Game instance, NavigationPublisher navigator)
+    public ShopGameViewModel(Game instance, NavigationPublisher navigator)
     {
         _navigator = navigator;
         Instance = instance;

@@ -30,7 +30,7 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
         Authorized = accountingService.AuthorizedUser!;
     }
 
-    public ObservableCollection<GameViewModel> AllGames { get; } = new();
+    public ObservableCollection<ShopGameViewModel> AllGames { get; } = new();
 
     public Account Authorized { get; }
 
@@ -38,7 +38,7 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
     {
         AllGames.Clear();
         var games = Game.GetAllShop();
-        AllGames.AddRange(games.Select(g => new GameViewModel(g, _navigator)));
+        AllGames.AddRange(games.Select(g => new ShopGameViewModel(g, _navigator)));
 
         foreach (IAsyncImageLoader asyncImageLoader in AllGames)
             await asyncImageLoader.LoadAsync();
