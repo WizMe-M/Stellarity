@@ -1,0 +1,45 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Stellarity.Desktop.Views.Pages.GamePageView"
+             x:CompileBindings="True" x:DataType="vm:GamePageViewModel">
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="{Binding Title}" HorizontalAlignment="Center"
+                       FontWeight="Black" FontSize="28" Margin="0 40 0 20" />
+            <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="1.5"
+                    Margin="20 10" Width="350" Height="400">
+                <Image Source="{Binding Cover}" Stretch="UniformToFill" />
+            </Border>
+
+            <StackPanel DockPanel.Dock="Top" Orientation="Vertical" Margin="40" Spacing="20">
+                <TextBlock Text="{Binding Developer, StringFormat={}Developed by {0}}"
+                           FontSize="18" FontWeight="Normal" HorizontalAlignment="Center" />
+
+                <TextBlock Text="{Binding AddedInShop, StringFormat={}Release date: {0:d}}"
+                           FontSize="18" FontWeight="Normal" HorizontalAlignment="Center" />
+
+                <Border Background="#66383838" Padding="10">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Description:" FontSize="18" FontWeight="Light" />
+                        <TextBlock Text="{Binding Description}"
+                                   FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+
+                <Button Content="{Binding Cost, StringFormat='{}Приобрести за {0:0} руб.'}"
+                        Command="{Binding PurchaseCommand}"
+                        HorizontalAlignment="Center" />
+            </StackPanel>
+
+            <Button DockPanel.Dock="Bottom" Content="Edit game" VerticalAlignment="Bottom"
+                    IsVisible="{Binding User.CanEditGames}" />
+
+            <!-- TODO: navigate to my library -->
+            <Button Content="Перейти в библиотеку" IsVisible="False" />
+        </DockPanel>
+    </ScrollViewer>
+</UserControl>

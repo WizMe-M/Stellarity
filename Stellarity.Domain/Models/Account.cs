@@ -22,6 +22,8 @@ public class Account : SingleImageHolderModel<AccountEntity>
     }
 
     public bool CanAddGames => Role == Roles.Administrator;
+    public bool CanEditGames => Role == Roles.Administrator;
+
     public string Email { get; }
     public string Nickname { get; private set; }
     public HashedPassword Password { get; private set; }
