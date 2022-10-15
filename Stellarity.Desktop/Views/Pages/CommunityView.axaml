@@ -11,7 +11,8 @@
     <DockPanel>
         <Button DockPanel.Dock="Top" Content="Зарегистрировать пользователя"
                 HorizontalAlignment="Left" />
-        <pc:PaginatorControl DockPanel.Dock="Bottom" PageCount="{Binding PageCount}" />
+        <pc:PaginatorControl DockPanel.Dock="Bottom" PageCount="{Binding PageCount}"
+                             PageNumb="{Binding CurrentPageNumber}"/>
 
         <ItemsControl Items="{Binding Users}" Margin="10">
             <ItemsControl.ItemsPanel>

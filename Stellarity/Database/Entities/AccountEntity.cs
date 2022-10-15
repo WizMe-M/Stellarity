@@ -170,7 +170,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         using var context = new StellarityContext();
         var totalCount = context.Accounts.Count();
-        return totalCount / accountsByTime + 1;
+        return totalCount / accountsByTime;
     }
 
     public static async Task<IEnumerable<AccountEntity>> GetAccountsAsync(int accountsByTime, int skipRows)

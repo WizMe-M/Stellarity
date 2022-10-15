@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using DynamicData;
 using Stellarity.Avalonia.ViewModel;
 using Stellarity.Database.Entities;
 using Stellarity.Desktop.Basic;
@@ -13,7 +11,7 @@ namespace Stellarity.Desktop.ViewModels.Pages;
 
 public partial class CommunityViewModel : ViewModelBase, IAsyncLoader
 {
-    private const int AccountsByPage = 10;
+    private const int AccountsByPage = 5;
 
     [ObservableProperty]
     private int _pageCount;
@@ -29,10 +27,20 @@ public partial class CommunityViewModel : ViewModelBase, IAsyncLoader
 
     public ObservableCollection<AccountRowViewModel> Users { get; } = new();
 
+    async partial void OnCurrentPageNumberChanged(int value)
+    {
+        await LoadUsersForPage();
+    }
+
     public async Task LoadAsync()
     {
-        Users.Clear();
         PageCount = AccountEntity.GetAccountsCount(AccountsByPage);
+        await LoadUsersForPage();
+    }
+
+    private async Task LoadUsersForPage()
+    {
+        Users.Clear();
         var users = await Account.GetAccountsAsync(CurrentPageNumber, AccountsByPage);
         foreach (var account in users)
             Users.Add(new AccountRowViewModel(account));
