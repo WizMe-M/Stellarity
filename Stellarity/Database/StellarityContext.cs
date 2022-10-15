@@ -81,13 +81,13 @@ internal sealed class StellarityContext : DbContext
             entity.Property(e => e.ProfileId).HasColumnName("profile_id");
 
             entity.HasOne(d => d.Author)
-                .WithMany(p => p.CommentAuthors)
+                .WithMany(p => p.CommentWhereIsAuthor)
                 .HasForeignKey(d => d.AuthorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_comments_author_id");
 
             entity.HasOne(d => d.Profile)
-                .WithMany(p => p.CommentProfiles)
+                .WithMany(p => p.CommentWhereIsProfile)
                 .HasForeignKey(d => d.ProfileId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_comments_profile_id");

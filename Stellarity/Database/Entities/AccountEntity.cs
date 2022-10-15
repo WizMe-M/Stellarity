@@ -7,8 +7,8 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
 {
     public AccountEntity()
     {
-        CommentAuthors = new HashSet<CommentEntity>();
-        CommentProfiles = new HashSet<CommentEntity>();
+        CommentWhereIsAuthor = new HashSet<CommentEntity>();
+        CommentWhereIsProfile = new HashSet<CommentEntity>();
         Library = new HashSet<LibraryEntity>();
     }
 
@@ -43,12 +43,9 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
 
     public int RoleId { get; set; }
 
-    [NotMapped] public Guid? AvatarGuid => SingleImageId;
-
-    [NotMapped] public ImageEntity? Avatar => SingleImageEntity;
     public RoleEntity Role { get; set; } = null!;
-    public ICollection<CommentEntity> CommentAuthors { get; set; }
-    public ICollection<CommentEntity> CommentProfiles { get; set; }
+    public ICollection<CommentEntity> CommentWhereIsAuthor { get; set; }
+    public ICollection<CommentEntity> CommentWhereIsProfile { get; set; }
     public ICollection<LibraryEntity> Library { get; set; }
 
     public static bool Exists(string email)
@@ -91,43 +88,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         return gamer;
     }
 
-    public async Task SaveChangesAsync()
-    {
-        if (Nickname?.Trim().Length == 0) Nickname = null;
-        if (About?.Trim().Length == 0) About = null;
-
-        await using var context = new StellarityContext();
-        var user = context.Entry(this).Entity;
-        context.Accounts.Update(user);
-        await context.SaveChangesAsync();
-    }
-
-    // public async Task ChangeAvatarAsync(byte[]? avatarData)
-    // {
-    //     if (avatarData is null) return;
-    //
-    //     await using var context = new StellarityContext();
-    //     var user = context.Entry(this).Entity;
-    //     context.Accounts.Attach(user);
-    //     if (user.AvatarGuid is null)
-    //     {
-    //         var avatar = new ImageEntity(user.Email, avatarData);
-    //         user.Avatar = avatar;
-    //         context.Accounts.Update(user);
-    //     }
-    //     else
-    //     {
-    //         if (user.Avatar is null)
-    //             await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
-    //         user.Avatar!.Data = avatarData;
-    //         context.Images.Update(user.Avatar!);
-    //     }
-    //
-    //     await context.SaveChangesAsync();
-    //     var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-    //     await cacheService.SaveAvatarAsync(Avatar!);
-    // }
-
     public void UpdatePassword(string password)
     {
         Password = password;
@@ -153,25 +113,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         return context.Accounts.First(account => account.Id == 1);
     }
 #endif
-
-    // public async Task<byte[]?> GetAvatarAsync()
-    // {
-    //     // get image from cache or db by guid
-    //     // return its data
-    //     var cacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-    //     var bytes = await cacheService.LoadAvatarAsync(AvatarGuid);
-    //     if (AvatarGuid is { } && bytes is null)
-    //     {
-    //         await using var context = new StellarityContext();
-    //         var user = context.Entry(this).Entity;
-    //         context.Accounts.Attach(user);
-    //         await context.Entry(user).Reference(account => account.Avatar).LoadAsync();
-    //         bytes = Avatar!.Data;
-    //         await cacheService.SaveAvatarAsync(Avatar);
-    //     }
-    //
-    //     return bytes;
-    // }
 
     public async Task LoadLibraryAsync()
     {
