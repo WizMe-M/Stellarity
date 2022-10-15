@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -32,6 +33,12 @@ public partial class GamePageViewModel : ViewModelBase
     [ObservableProperty]
     private Bitmap _cover = null!;
 
+    [ObservableProperty]
+    private bool _wasPurchased;
+
+    [ObservableProperty]
+    private DateTime? _purchaseDate;
+
     public GamePageViewModel(Game game)
     {
         _game = game;
@@ -56,13 +63,25 @@ public partial class GamePageViewModel : ViewModelBase
         if (true)
         {
             await User.PurchaseGameAsync(_game);
+            await UpdatePurchased();
         }
     }
 
-    public Task UpdateGameInfoAsync()
+    private async Task UpdatePurchased()
+    {
+        WasPurchased = await User.CheckGameWasPurchasedAsync(_game);
+        if (WasPurchased)
+        {
+            var purchased = User.Library.First(g => g.Title == _game.Title);
+            PurchaseDate = purchased.PurchaseDate;
+        }
+    }
+
+    public async Task UpdatePageAsync()
     {
         SetInfo();
-        return UpdateCover();
+        await UpdateCover();
+        await UpdatePurchased();
     }
 
     private void SetInfo()

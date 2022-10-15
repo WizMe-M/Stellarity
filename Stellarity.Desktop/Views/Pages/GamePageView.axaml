@@ -17,10 +17,10 @@
 
             <StackPanel DockPanel.Dock="Top" Orientation="Vertical" Margin="40" Spacing="20">
                 <TextBlock Text="{Binding Developer, StringFormat={}Developed by {0}}"
-                           FontSize="18" FontWeight="Normal" HorizontalAlignment="Center" />
+                           FontSize="18" FontWeight="Normal" />
 
                 <TextBlock Text="{Binding AddedInShop, StringFormat={}Release date: {0:d}}"
-                           FontSize="18" FontWeight="Normal" HorizontalAlignment="Center" />
+                           FontSize="18" FontWeight="Normal" />
 
                 <Border Background="#66383838" Padding="10">
                     <StackPanel Spacing="10">
@@ -32,7 +32,11 @@
 
                 <Button Content="{Binding Cost, StringFormat='{}Приобрести за {0:0} руб.'}"
                         Command="{Binding PurchaseCommand}"
+                        IsVisible="{Binding !WasPurchased}"
                         HorizontalAlignment="Center" />
+
+                <TextBlock Text="{Binding PurchaseDate, StringFormat='{}Purchased on {0:d}'}"
+                           IsVisible="{Binding WasPurchased}" />
             </StackPanel>
 
             <Button DockPanel.Dock="Bottom" Content="Edit game" VerticalAlignment="Bottom"

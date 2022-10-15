@@ -177,22 +177,25 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         await using var context = new StellarityContext();
         var entry = context.Accounts.Attach(this);
-        await entry.Collection(account => account.Library).LoadAsync();
+        await entry
+            .Collection(account => account.Library)
+            .Query().OfType<LibraryEntity>()
+            .Include(library => library.Game)
+            .LoadAsync();
     }
 
     public async Task PurchaseGameAsync(GameEntity game)
     {
         await using var context = new StellarityContext();
-
-        var entity = context.Entry(this).Entity;
-        entity.Balance -= game.Cost;
-        var lib = new LibraryEntity()
+        context.Accounts.Attach(this);
+        Balance -= game.Cost;
+        var lib = new LibraryEntity
         {
             AccountId = Id,
             GameId = game.Id
         };
         context.Libraries.Add(lib);
-        context.Accounts.Update(entity);
+        context.Accounts.Update(this);
         await context.SaveChangesAsync();
     }
 
@@ -210,8 +213,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         using var context = new StellarityContext();
         var entry = context.Accounts.Attach(this);
-        entry.Reference(accountEntity => accountEntity.SingleImageEntity)
-            .Load();
+        entry.Reference(entity => entity.SingleImageEntity).Load();
     }
 
     public void UpdateProfileInfo(string nickname, string about)

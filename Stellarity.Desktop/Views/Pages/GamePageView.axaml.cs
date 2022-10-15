@@ -14,6 +14,6 @@ public partial class GamePageView : ReactiveUserControl<GamePageViewModel>, ICon
     public GamePageView(Game game) : this()
     {
         ViewModel = new GamePageViewModel(game);
-        this.WhenActivated(async d => await ViewModel.UpdateGameInfoAsync());
+        this.WhenActivated(async d => await ViewModel.UpdatePageAsync());
     }
 }

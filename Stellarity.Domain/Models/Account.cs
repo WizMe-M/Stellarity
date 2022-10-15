@@ -33,7 +33,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public bool IsBanned { get; private set; }
     public Roles Role { get; }
 
-    public IEnumerable<Game> Library { get; private set; } = ArraySegment<Game>.Empty;
+    public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
 
     public bool HasAvatar => Entity.AvatarGuid is { };
     public bool IsNicknameSet => Entity.Nickname != null;
@@ -49,7 +49,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return AuthorizationResult.Success(account);
     }
 
-    private async Task RefreshLibraryAsync()
+    public async Task RefreshLibraryAsync()
     {
         await Entity.LoadLibraryAsync();
         var games = Entity.Library.Select(library =>
@@ -148,5 +148,11 @@ public class Account : SingleImageHolderModel<AccountEntity>
         Nickname = nickname;
         About = about;
         return Task.CompletedTask;
+    }
+
+    public async Task<bool> CheckGameWasPurchasedAsync(Game game)
+    {
+        await RefreshLibraryAsync();
+        return Library.Any(g => g.Title == game.Title);
     }
 }
