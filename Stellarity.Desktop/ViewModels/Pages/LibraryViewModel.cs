@@ -25,7 +25,7 @@ public class LibraryViewModel : ViewModelBase, IAsyncImageLoader
         _owner = accountingService.AuthorizedUser!;
     }
 
-    private ObservableCollection<LibraryGameViewModel> Library { get; } = new();
+    public ObservableCollection<LibraryGameViewModel> Library { get; } = new();
 
     public async Task LoadAsync()
     {

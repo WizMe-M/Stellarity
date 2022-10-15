@@ -48,8 +48,9 @@
 
         <!-- TODO: add 'exit' button with deleting authorization history -->
         <!-- TODO: add balance and 'deposit' btn -->
-        
-        <navigation:NavigationView Name="NavView" Background="Transparent" Header="Stellarity" SelectedItem="{Binding #MyProfile}">
+
+        <navigation:NavigationView Name="NavView" Background="Transparent" Header="Stellarity"
+                                   SelectedItem="{Binding #MyProfile}">
             <navigation:NavigationViewItem Header="My profile" IconValue="{StaticResource MyProfile}">
                 <navigation:NavigationViewItem.ContentPage>
                     <pages:MyProfileView Name="MyProfile" />
@@ -67,8 +68,18 @@
                     <pages:GameShopView Name="Shop" />
                 </navigation:NavigationViewItem.ContentPage>
             </navigation:NavigationViewItem>
-            
-            <!-- TODO: add community page -->
+
+            <navigation:NavigationViewItem IconValue="{StaticResource Library}" Header="Library">
+                <navigation:NavigationViewItem.ContentPage>
+                    <pages:LibraryView Name="Library" />
+                </navigation:NavigationViewItem.ContentPage>
+            </navigation:NavigationViewItem>
+
+            <navigation:NavigationViewItem IconValue="{StaticResource Community}" Header="Community">
+                <navigation:NavigationViewItem.ContentPage>
+                    <!-- <pages:CommunityView Name="Community" /> -->
+                </navigation:NavigationViewItem.ContentPage>
+            </navigation:NavigationViewItem>
         </navigation:NavigationView>
     </Panel>
 </Window>

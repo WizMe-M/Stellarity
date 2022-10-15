@@ -38,6 +38,8 @@ public partial class MainView : ReactiveWindow<MainViewModel>
 
             var shopViewModel = new GameShopViewModel(accounting, ViewModel!, NavView.Navigator, dialog);
             await Shop.InitializeViewModelAsync(shopViewModel);
+
+            Library.ViewModel = new LibraryViewModel(NavView.Navigator);
         });
 
         InitializeComponent();
@@ -50,6 +52,8 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         MyProfile = this.GetControl<MyProfileView>(nameof(MyProfile));
         EditProfile = this.GetControl<EditProfileView>(nameof(EditProfile));
         Shop = this.GetControl<GameShopView>(nameof(Shop));
+        Library = this.GetControl<LibraryView>(nameof(Library));
+
         NavView = this.GetControl<NavigationView>(nameof(NavView));
         foreach (var logicalChild in NavView.GetLogicalChildren())
         {
