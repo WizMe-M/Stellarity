@@ -12,7 +12,7 @@ using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Wraps;
 
-public partial class LibraryGameViewModel : ViewModelBase, IAsyncImageLoader
+public partial class LibraryGameViewModel : ViewModelBase, IAsyncLoader
 {
     private readonly NavigationPublisher _navigator;
 

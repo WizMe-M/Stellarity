@@ -15,7 +15,7 @@ using Stellarity.Domain.Models;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
-public partial class EditProfileViewModel : ViewModelBase, IAsyncImageLoader
+public partial class EditProfileViewModel : ViewModelBase, IAsyncLoader
 {
     private byte[]? _previousAvatarData;
     private byte[]? _currentAvatarData;

@@ -1,13 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Avalonia.Media.Imaging;
-
 
 namespace Stellarity.Desktop.Basic;
 
 /// <summary>
 /// Represents async image loader
 /// </summary>
-public interface IAsyncImageLoader
+public interface IAsyncLoader
 {
     Task LoadAsync();
 }

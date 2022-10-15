@@ -13,7 +13,7 @@ using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
-public class LibraryViewModel : ViewModelBase, IAsyncImageLoader
+public class LibraryViewModel : ViewModelBase, IAsyncLoader
 {
     private readonly NavigationPublisher _navigator;
     private readonly Account _owner;
@@ -35,7 +35,7 @@ public class LibraryViewModel : ViewModelBase, IAsyncImageLoader
             .Select(game => new LibraryGameViewModel(game, _navigator));
         Library.AddRange(games);
 
-        foreach (IAsyncImageLoader game in Library)
+        foreach (IAsyncLoader game in Library)
             await game.LoadAsync();
     }
 }

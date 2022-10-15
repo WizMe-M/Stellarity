@@ -15,7 +15,7 @@ using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
-public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
+public partial class GameShopViewModel : ViewModelBase, IAsyncLoader
 {
     private readonly MainViewModel _windowOwner;
     private readonly NavigationPublisher _navigator;
@@ -40,7 +40,7 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncImageLoader
         var games = Game.GetAllShop();
         AllGames.AddRange(games.Select(g => new ShopGameViewModel(g, _navigator)));
 
-        foreach (IAsyncImageLoader asyncImageLoader in AllGames)
+        foreach (IAsyncLoader asyncImageLoader in AllGames)
             await asyncImageLoader.LoadAsync();
     }
 
