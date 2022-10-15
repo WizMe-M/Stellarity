@@ -10,6 +10,7 @@ namespace Stellarity.Desktop.Basic;
 /// </summary>
 public abstract class ExtUserControl : UserControl
 {
+    // TODO: Delete this and all references. Replace with RxUC
 }
 
 /// <summary>
