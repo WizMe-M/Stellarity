@@ -27,19 +27,20 @@ public partial class MainView : ReactiveWindow<MainViewModel>
                 .Bind<MainViewModel>()
                 .ToConstant(ViewModel!)
                 .InSingletonScope();
-
+            
             var myProfileViewModel = DiContainingService.Kernel.Get<MyProfileViewModel>();
             await MyProfile.InitializeViewModelAsync(myProfileViewModel);
-
+            
             var dialog = DiContainingService.Kernel.Get<IDialogService>();
             var accounting = DiContainingService.Kernel.Get<AccountingService>();
             var editProfileViewModel = new EditProfileViewModel(dialog, accounting, ViewModel!);
             await EditProfile.InitializeViewModelAsync(editProfileViewModel);
-
+            
             var shopViewModel = new GameShopViewModel(accounting, ViewModel!, NavView.Navigator, dialog);
             await Shop.InitializeViewModelAsync(shopViewModel);
-
+            
             Library.ViewModel = new LibraryViewModel(NavView.Navigator);
+            Community.ViewModel = new CommunityViewModel();
         });
 
         InitializeComponent();
@@ -53,7 +54,8 @@ public partial class MainView : ReactiveWindow<MainViewModel>
         EditProfile = this.GetControl<EditProfileView>(nameof(EditProfile));
         Shop = this.GetControl<GameShopView>(nameof(Shop));
         Library = this.GetControl<LibraryView>(nameof(Library));
-
+        Community = this.GetControl<CommunityView>(nameof(Community));
+        
         NavView = this.GetControl<NavigationView>(nameof(NavView));
         foreach (var logicalChild in NavView.GetLogicalChildren())
         {

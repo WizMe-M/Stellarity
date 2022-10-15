@@ -34,6 +34,7 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Ninject" Version="3.3.6" />
         <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
+        <PackageReference Include="Paginator.Avalonia" Version="1.0.0" />
         <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="5.5.0" />
         <PackageReference Include="ReactiveUI" Version="18.3.1" />
         <PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />

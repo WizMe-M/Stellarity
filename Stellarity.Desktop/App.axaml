@@ -23,5 +23,7 @@
         <StyleInclude Source="/TemplatedControls/Navigation/NavigationView.axaml" />
         <StyleInclude Source="/TemplatedControls/Navigation/NavigationViewItem.axaml" />
         <StyleInclude Source="/TemplatedControls/GameCard.axaml" />
+        
+        <StyleInclude Source="avares://Paginator.Avalonia/View/PaginatorControl.xaml" />
     </Application.Styles>
 </Application>

@@ -77,7 +77,7 @@
 
             <navigation:NavigationViewItem IconValue="{StaticResource Community}" Header="Community">
                 <navigation:NavigationViewItem.ContentPage>
-                    <!-- <pages:CommunityView Name="Community" /> -->
+                    <pages:CommunityView Name="Community" />
                 </navigation:NavigationViewItem.ContentPage>
             </navigation:NavigationViewItem>
         </navigation:NavigationView>

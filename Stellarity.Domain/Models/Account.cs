@@ -36,7 +36,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
 
-    public bool HasAvatar => Entity.AvatarGuid is { };
+    public bool HasAvatar => Entity.SingleImageId is { };
     public bool IsNicknameSet => Entity.Nickname != null;
 
     public static async Task<AuthorizationResult> AuthorizeAsync(string email, string password)
@@ -133,11 +133,11 @@ public class Account : SingleImageHolderModel<AccountEntity>
         if (!HasAvatar) return Array.Empty<byte>();
 
         var imageCacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-        var imageData = await imageCacheService.LoadImageAsync(Entity.AvatarGuid);
+        var imageData = await imageCacheService.LoadImageAsync(Entity.SingleImageId);
         if (imageData is null)
         {
             Entity.LoadAvatar();
-            imageData = Entity.Avatar!.Data;
+            imageData = Entity.SingleImageEntity!.Data;
         }
 
         return imageData;
@@ -155,5 +155,13 @@ public class Account : SingleImageHolderModel<AccountEntity>
     {
         await RefreshLibraryAsync();
         return Library.Any(g => g.Title == game.Title);
+    }
+
+    public static async Task<IEnumerable<Account>> GetAccountsAsync(int i, int accountsByTime)
+    {
+        var skipRows = i * accountsByTime;
+        var accountEntities = await AccountEntity.GetAccountsAsync(accountsByTime, skipRows);
+        var accounts = accountEntities.Select(entity => new Account(entity));
+        return accounts;
     }
 }

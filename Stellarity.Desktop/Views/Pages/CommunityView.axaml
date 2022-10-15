@@ -1,0 +1,30 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pc="clr-namespace:Paginator.Avalonia.View;assembly=Paginator.Avalonia"
+             xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
+             xmlns:items="clr-namespace:Stellarity.Desktop.Views.Items"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Stellarity.Desktop.Views.Pages.CommunityView"
+             x:CompileBindings="True" x:DataType="vm:CommunityViewModel">
+    <DockPanel>
+        <Button DockPanel.Dock="Top" Content="Зарегистрировать пользователя"
+                HorizontalAlignment="Left" />
+        <pc:PaginatorControl DockPanel.Dock="Bottom" PageCount="{Binding PageCount}" />
+
+        <ItemsControl Items="{Binding Users}" Margin="10">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" Spacing="8" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <items:AccountRowView Background="#66383838" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DockPanel>
+</UserControl>

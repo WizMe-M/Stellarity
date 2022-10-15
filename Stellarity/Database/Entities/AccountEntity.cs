@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Stellarity.Database.Entities;
 
@@ -165,5 +164,24 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         entity.About = about;
         context.Accounts.Update(entity);
         context.SaveChanges();
+    }
+
+    public static int GetAccountsCount(in int accountsByTime)
+    {
+        using var context = new StellarityContext();
+        var totalCount = context.Accounts.Count();
+        return totalCount / accountsByTime + 1;
+    }
+
+    public static async Task<IEnumerable<AccountEntity>> GetAccountsAsync(int accountsByTime, int skipRows)
+    {
+        await using var context = new StellarityContext();
+        var accounts = context.Accounts
+            .Include(entity => entity.Role)
+            .Include(entity => entity.SingleImageEntity)
+            .Include(entity => entity.CommentWhereIsProfile)
+            .Skip(skipRows).Take(accountsByTime);
+
+        return accounts.ToArray();
     }
 }
