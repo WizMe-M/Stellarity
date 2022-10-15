@@ -92,7 +92,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     }
 
     /// <returns>Does user satisfy game's purchasing requirements</returns>
-    public bool CheckCanPurchaseGame(Game game) => Balance < game.Cost;
+    public bool CheckCanPurchaseGame(Game game) => Balance >= game.Cost;
 
     /// <summary>
     /// Purchases specified game and add it to user's library
@@ -100,7 +100,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     /// <param name="game">Game that can be purchased by user - see <see cref="CheckCanPurchaseGame"/></param>
     public async Task PurchaseGameAsync(Game game)
     {
-        if (CheckCanPurchaseGame(game))
+        if (!CheckCanPurchaseGame(game))
             throw new InvalidOperationException("User can't purchase this game - not enough balance");
         await Entity.PurchaseGameAsync(game.Entity);
         Balance = Entity.Balance;
