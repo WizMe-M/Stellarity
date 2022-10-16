@@ -54,6 +54,14 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         return user is { };
     }
 
+    public static async Task<bool> ExistsAsync(string email, CancellationToken cancellationToken)
+    {
+        await using var context = new StellarityContext();
+        var user = await context.Accounts.FirstOrDefaultAsync(
+            account => account.Email == email, cancellationToken: cancellationToken);
+        return user is { };
+    }
+
     public static AccountEntity? Find(string email, string password)
     {
         using var context = new StellarityContext();
