@@ -51,10 +51,4 @@ public class Comment : DomainModel<CommentEntity>
     }
 
     public bool IsOwner(Account author) => Entity.AuthorId == author.Entity.Id;
-
-    public void Edit(string body)
-    {
-        Entity.UpdateBody(body);
-        Body = Entity.Body;
-    }
 }

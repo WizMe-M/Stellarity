@@ -6,7 +6,7 @@ public sealed class HashedPassword
 
     public string Password { get; }
 
-    public static HashedPassword FromEncrypted(string encryptedPassword) => new HashedPassword(encryptedPassword);
+    public static HashedPassword FromEncrypted(string encryptedPassword) => new(encryptedPassword);
 
     public static HashedPassword FromDecrypted(string passwordString)
     {

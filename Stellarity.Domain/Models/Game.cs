@@ -29,13 +29,6 @@ public class Game : SingleImageHolderModel<GameEntity>
         Cost = Entity.Cost;
     }
 
-    public void ChangeCover(Image newCover)
-    {
-        // todo: replace with SingleIHM.SetImageAsync(byte[], string);
-        // Entity.UpdateCover(newCover.Entity);
-        // Cover = new Image(Entity.Cover!);
-    }
-
     public static IEnumerable<Game> GetAllShop()
     {
         var gameEntities = GameEntity.GetAll();

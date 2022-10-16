@@ -1,10 +1,8 @@
-﻿using Ninject;
-using Stellarity.Database.Entities;
+﻿using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Cryptography;
 using Stellarity.Domain.Registration;
-using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
 
@@ -36,7 +34,6 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
 
-    public bool HasAvatar => Entity.SingleImageId is { };
     public bool IsNicknameSet => Entity.Nickname != null;
 
     public static async Task<AuthorizationResult> AuthorizeAsync(string email, string password)
@@ -117,22 +114,6 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
 
     public bool IsIdenticalWith(Account acc) => acc.Entity.Id == Entity.Id;
-    public bool IsMyProfile(Account profile) => profile.Entity.Id == Entity.Id;
-
-    public async Task<byte[]> GetAvatarAsync()
-    {
-        if (!HasAvatar) return Array.Empty<byte>();
-
-        var imageCacheService = DiContainingService.Kernel.Get<ImageCacheService>();
-        var imageData = await imageCacheService.LoadImageAsync(Entity.SingleImageId);
-        if (imageData is null)
-        {
-            Entity.LoadAvatar();
-            imageData = Entity.SingleImageEntity!.Data;
-        }
-
-        return imageData;
-    }
 
     public Task EditProfileInfoAsync(string nickname, string about)
     {
