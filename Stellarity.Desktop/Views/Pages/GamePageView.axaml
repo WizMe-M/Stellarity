@@ -37,13 +37,13 @@
 
                 <TextBlock Text="{Binding PurchaseDate, StringFormat='{}Purchased on {0:d}'}"
                            IsVisible="{Binding WasPurchased}" />
+
+                <Button Content="Перейти в библиотеку" IsVisible="{Binding WasPurchased}"
+                        Command="{Binding NavigateToLibraryCommand}" />
             </StackPanel>
 
             <Button DockPanel.Dock="Bottom" Content="Edit game" VerticalAlignment="Bottom"
                     IsVisible="{Binding User.CanEditGames}" />
-
-            <!-- TODO: navigate to my library -->
-            <Button Content="Перейти в библиотеку" IsVisible="False" />
         </DockPanel>
     </ScrollViewer>
 </UserControl>

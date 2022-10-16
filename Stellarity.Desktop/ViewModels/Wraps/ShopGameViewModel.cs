@@ -31,7 +31,7 @@ public partial class ShopGameViewModel : IAsyncLoader
     [RelayCommand]
     private void OpenGamePage()
     {
-        var view = new GamePageView(Instance);
+        var view = new GamePageView(Instance, _navigator);
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
     }
 

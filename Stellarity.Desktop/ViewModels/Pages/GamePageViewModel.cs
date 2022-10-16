@@ -10,15 +10,18 @@ using Ninject;
 using Stellarity.Avalonia.Extensions;
 using Stellarity.Avalonia.Models;
 using Stellarity.Avalonia.ViewModel;
+using Stellarity.Desktop.Views.Pages;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
 using Stellarity.Domain.Services;
+using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
 public partial class GamePageViewModel : ViewModelBase
 {
     private readonly Game _game;
+    private readonly NavigationPublisher _navigator;
 
     [ObservableProperty]
     private string _title = string.Empty;
@@ -41,9 +44,10 @@ public partial class GamePageViewModel : ViewModelBase
     [ObservableProperty]
     private DateTime? _purchaseDate;
 
-    public GamePageViewModel(Game game)
+    public GamePageViewModel(Game game, NavigationPublisher navigator)
     {
         _game = game;
+        _navigator = navigator;
         AddedInShop = _game.AddedInShopDate;
         Cover = ImagePlaceholder.GetBitmap();
         SetInfo();
@@ -71,6 +75,13 @@ public partial class GamePageViewModel : ViewModelBase
             await User.PurchaseGameAsync(_game);
             await UpdatePurchased();
         }
+    }
+
+    [RelayCommand]
+    private void NavigateToLibrary()
+    {
+        var view = new LibraryView { ViewModel = new LibraryViewModel(_navigator) };
+        _navigator.RaiseNavigated(this, NavigatedEventArgs.ReplaceLast(view));
     }
 
     private async Task UpdatePurchased()

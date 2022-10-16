@@ -11,9 +11,9 @@ public partial class GamePageView : ReactiveUserControl<GamePageViewModel>, ICon
 {
     public GamePageView() => AvaloniaXamlLoader.Load(this);
 
-    public GamePageView(Game game) : this()
+    public GamePageView(Game game, NavigationPublisher navigator) : this()
     {
-        ViewModel = new GamePageViewModel(game);
+        ViewModel = new GamePageViewModel(game, navigator);
         this.WhenActivated(async d => await ViewModel.UpdatePageAsync());
     }
 }

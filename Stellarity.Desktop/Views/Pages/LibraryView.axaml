@@ -7,31 +7,36 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Stellarity.Desktop.Views.Pages.LibraryView"
              x:CompileBindings="True" x:DataType="vm:LibraryViewModel">
-    <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <ItemsControl Items="{Binding Library}" Background="Transparent" Margin="0 20">
-            <ItemsControl.Styles>
-                <Style Selector="TextBlock">
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                </Style>
-            </ItemsControl.Styles>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Моя библиотека" FontWeight="Black"
+                   FontSize="38" HorizontalAlignment="Center" Margin="0 10 0 15" />
 
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ItemWidth="250" ItemHeight="300" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+            <ItemsControl Items="{Binding Library}" Background="Transparent" Margin="0 20">
+                <ItemsControl.Styles>
+                    <Style Selector="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                </ItemsControl.Styles>
 
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <items:GameCard
-                        Classes="purchased"
-                        Title="{Binding Game.Title}"
-                        PurchaseDateString="{Binding Game.PurchaseDate, StringFormat={}Приобретена {0:d}}"
-                        Cover="{Binding Cover}"
-                        Command="{Binding OpenGamePageCommand}"
-                        Margin="5 2" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel ItemWidth="250" ItemHeight="300" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <items:GameCard
+                            Classes="purchased"
+                            Title="{Binding Game.Title}"
+                            PurchaseDateString="{Binding Game.PurchaseDate, StringFormat={}Приобретена {0:d}}"
+                            Cover="{Binding Cover}"
+                            Command="{Binding OpenGamePageCommand}"
+                            Margin="5 2" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>

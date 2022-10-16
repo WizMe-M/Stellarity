@@ -39,7 +39,7 @@ public partial class LibraryGameViewModel : ViewModelBase, IAsyncLoader
     [RelayCommand]
     private void OpenGamePage()
     {
-        var view = new GamePageView(Game);
+        var view = new GamePageView(Game, _navigator);
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
     }
 }
