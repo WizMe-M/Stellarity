@@ -19,26 +19,26 @@ using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
-public partial class EditGameViewModel : ViewModelBase
+public partial class EditGameViewModel : ViewModelBase, IAsyncLoader
 {
     private readonly Game _game;
     private readonly MainViewModel _windowOwner;
     private readonly IDialogService _dialogService;
     private readonly NavigationPublisher _navigator;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private string _title = string.Empty;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private string _description = string.Empty;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private string _developer = string.Empty;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private decimal _cost;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private bool _free;
 
     [ObservableProperty]
@@ -48,13 +48,18 @@ public partial class EditGameViewModel : ViewModelBase
     {
         _game = game;
         _navigator = navigator;
+        Title = _game.Title;
+        Description = _game.Description;
+        Developer = _game.Developer;
+        Cost = _game.Cost;
+        Free = Cost == 0;
 
         _dialogService = DiContainingService.Kernel.Get<IDialogService>();
         _windowOwner = DiContainingService.Kernel.Get<MainViewModel>();
         Validator = GetValidator();
     }
 
-    public bool CanEdit => Validator is { IsValid: true };
+    public bool CanSaveChanges => Validator is { IsValid: true };
 
     [RelayCommand]
     private async Task SetCover()
@@ -76,8 +81,8 @@ public partial class EditGameViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanEdit))]
-    private async Task AddAsync()
+    [RelayCommand(CanExecute = nameof(CanSaveChanges))]
+    private async Task SaveChangesAsync()
     {
         if (Free) Cost = 0;
         Title = Title.Trim();
@@ -102,7 +107,7 @@ public partial class EditGameViewModel : ViewModelBase
             .NotEmpty()
             .MaxLength(25)
             .Must(async (title, token) => await GameValidation.NotExistsWithTitleAsync(title, token))
-            .WithMessage("Game with such already exists");
+            .WithMessage("Game with such title already exists");
 
         builder.RuleFor(vm => vm.Description)
             .NotEmpty();
@@ -115,5 +120,11 @@ public partial class EditGameViewModel : ViewModelBase
             .Between(0, 5000);
 
         return builder.Build(this);
+    }
+
+    public async Task LoadAsync()
+    {
+        var bitmap = await _game.GetImageBitmapAsync();
+        if (bitmap is { }) Cover = bitmap;
     }
 }

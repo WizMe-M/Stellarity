@@ -11,6 +11,6 @@ public partial class EditGameView : ReactiveUserControl<EditGameViewModel>, ICon
     public EditGameView()
     {
         AvaloniaXamlLoader.Load(this);
-        this.WhenActivated(async d => { });
+        this.WhenActivated(async d => { await ViewModel!.LoadAsync(); });
     }
 }

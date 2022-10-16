@@ -9,13 +9,17 @@
     <ScrollViewer VerticalScrollBarVisibility="Visible">
         <DockPanel>
             <TextBlock DockPanel.Dock="Top" Text="{Binding Title}" HorizontalAlignment="Center"
-                       FontWeight="Black" FontSize="28" Margin="0 40 0 20" />
+                       FontWeight="Black" FontSize="28" Margin="0 10 0 20" />
             <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="1.5"
                     Margin="20 10" Width="350" Height="400">
                 <Image Source="{Binding Cover}" Stretch="UniformToFill" />
             </Border>
 
             <StackPanel DockPanel.Dock="Top" Orientation="Vertical" Margin="40" Spacing="20">
+                <Button Content="Edit game" VerticalAlignment="Bottom"
+                        IsVisible="{Binding User.CanEditGames}"
+                        Command="{Binding NavigateToEditGameCommand}" />
+
                 <TextBlock Text="{Binding Developer, StringFormat={}Developed by {0}}"
                            FontSize="18" FontWeight="Normal" />
 
@@ -41,10 +45,6 @@
                 <Button Content="Перейти в библиотеку" IsVisible="{Binding WasPurchased}"
                         Command="{Binding NavigateToLibraryCommand}" />
             </StackPanel>
-
-            <Button DockPanel.Dock="Bottom" Content="Edit game" VerticalAlignment="Bottom"
-                    IsVisible="{Binding User.CanEditGames}"
-                    Command="{Binding NavigateToEditGameCommand}" />
         </DockPanel>
     </ScrollViewer>
 </UserControl>

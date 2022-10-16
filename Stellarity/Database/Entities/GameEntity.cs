@@ -56,9 +56,8 @@ public partial class GameEntity : SingleImageHolderEntity
 
     public static async Task<bool> ExistsAsync(string title, CancellationToken cancellationToken)
     {
-        var name = title.Trim();
         await using var context = new StellarityContext();
-        var game = await context.Games.FirstOrDefaultAsync(game => game.Title == name,
+        var game = await context.Games.FirstOrDefaultAsync(game => game.Title == title,
             cancellationToken: cancellationToken);
         return game is { };
     }
