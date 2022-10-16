@@ -43,7 +43,8 @@
             </StackPanel>
 
             <Button DockPanel.Dock="Bottom" Content="Edit game" VerticalAlignment="Bottom"
-                    IsVisible="{Binding User.CanEditGames}" />
+                    IsVisible="{Binding User.CanEditGames}"
+                    Command="{Binding NavigateToEditGameCommand}" />
         </DockPanel>
     </ScrollViewer>
 </UserControl>

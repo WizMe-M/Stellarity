@@ -84,6 +84,13 @@ public partial class GamePageViewModel : ViewModelBase
         _navigator.RaiseNavigated(this, NavigatedEventArgs.ReplaceLast(view));
     }
 
+    [RelayCommand]
+    private void NavigateToEditGame()
+    {
+        var view = new EditGameView { ViewModel = new EditGameViewModel(_game, _navigator) };
+        _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
+    }
+
     private async Task UpdatePurchased()
     {
         WasPurchased = await User.CheckGameWasPurchasedAsync(_game);

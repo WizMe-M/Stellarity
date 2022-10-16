@@ -2,13 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:templatedControls="clr-namespace:Stellarity.Desktop.TemplatedControls"
+             xmlns:tc="clr-namespace:Stellarity.Desktop.TemplatedControls"
+             xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Stellarity.Desktop.Views.Pages.EditGameView">
-    
-    
+             x:Class="Stellarity.Desktop.Views.Pages.EditGameView"
+             x:CompileBindings="True" x:DataType="vm:EditGameViewModel">
     <DockPanel>
-        <Button DockPanel.Dock="Bottom" Command="{Binding AddCommand}" 
+        <Button DockPanel.Dock="Bottom" Command="{Binding AddCommand}"
                 Content="Добавить" HorizontalAlignment="Right" Margin="20" />
 
         <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1">
@@ -16,17 +16,17 @@
             <TextBox Text="{Binding Developer}" Watermark="Разработчик" />
         </UniformGrid>
 
-        <templatedControls:ImageButton DockPanel.Dock="Left" Command="{Binding SetCoverCommand}"
-                       ImageSource="{Binding Cover}" Stretch="UniformToFill"
-                       Width="300" Height="300" Margin="5" VerticalAlignment="Top" />
+        <tc:ImageButton DockPanel.Dock="Left" Command="{Binding SetCoverCommand}"
+                        ImageSource="{Binding Cover}" Stretch="UniformToFill"
+                        Width="300" Height="300" Margin="5" VerticalAlignment="Top" />
 
         <DockPanel Dock="Top">
             <NumericUpDown DockPanel.Dock="Left" Value="{Binding Cost}" Watermark="Стоимость"
                            Increment=".01" Maximum="5000" Minimum="100" ParsingNumberStyle="Float"
-                           ShowButtonSpinner="False" ClipValueToMinMax="True" 
+                           ShowButtonSpinner="False" ClipValueToMinMax="True"
                            IsEnabled="{Binding !Free}"
                            Width="150" Margin="5 0 20 0" />
-            <CheckBox IsChecked="{Binding Free}" Content="Бесплатная" 
+            <CheckBox IsChecked="{Binding Free}" Content="Бесплатная"
                       IsThreeState="False" VerticalAlignment="Bottom" />
         </DockPanel>
         <TextBox Text="{Binding Description}" Watermark="Описание игры"

@@ -22,10 +22,8 @@ namespace Stellarity.Desktop.ViewModels.Pages;
 public partial class EditGameViewModel : ViewModelBase
 {
     private readonly Game _game;
-
     private readonly MainViewModel _windowOwner;
     private readonly IDialogService _dialogService;
-
     private readonly NavigationPublisher _navigator;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(AddCommand))]
@@ -46,12 +44,12 @@ public partial class EditGameViewModel : ViewModelBase
     [ObservableProperty]
     private Bitmap? _cover;
 
-    public EditGameViewModel(Game game, IDialogService dialogService, NavigationPublisher navigator)
+    public EditGameViewModel(Game game, NavigationPublisher navigator)
     {
         _game = game;
-        _dialogService = dialogService;
         _navigator = navigator;
 
+        _dialogService = DiContainingService.Kernel.Get<IDialogService>();
         _windowOwner = DiContainingService.Kernel.Get<MainViewModel>();
         Validator = GetValidator();
     }
