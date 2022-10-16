@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Stellarity.Database.Entities;
 
@@ -28,10 +27,6 @@ public partial class GameEntity : SingleImageHolderEntity
     // sets now() by default
     public DateTime AddDate { get; set; }
 
-    [NotMapped] public Guid? CoverGuid => SingleImageId;
-
-    [NotMapped] public ImageEntity? Cover => SingleImageEntity;
-
     public ICollection<LibraryEntity> Libraries { get; set; }
 
     public static IEnumerable<GameEntity> GetAll()
@@ -59,11 +54,12 @@ public partial class GameEntity : SingleImageHolderEntity
         return game;
     }
 
-    public static async Task<bool> ExistsAsync(string title)
+    public static async Task<bool> ExistsAsync(string title, CancellationToken cancellationToken)
     {
         var name = title.Trim();
         await using var context = new StellarityContext();
-        var game = await context.Games.FirstOrDefaultAsync(game => game.Title == name);
+        var game = await context.Games.FirstOrDefaultAsync(game => game.Title == name,
+            cancellationToken: cancellationToken);
         return game is { };
     }
 
@@ -76,14 +72,12 @@ public partial class GameEntity : SingleImageHolderEntity
     public void UpdateInfo(in string title, in string description, in string developer, in decimal cost)
     {
         using var context = new StellarityContext();
-        var entity = context.Entry(this).Entity;
-        entity.Title = title;
-        entity.Description = description;
-        entity.Developer = developer;
-        entity.Cost = cost;
-        context.Games.Update(entity);
+        context.Games.Attach(this);
+        Title = title;
+        Description = description;
+        Developer = developer;
+        Cost = cost;
+        context.Games.Update(this);
         context.SaveChanges();
-
-        Title = entity.Title;
     }
 }

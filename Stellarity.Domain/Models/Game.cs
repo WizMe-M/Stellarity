@@ -7,27 +7,13 @@ public class Game : SingleImageHolderModel<GameEntity>
 {
     protected Game(GameEntity entity) : base(entity)
     {
-        Title = Entity.Title;
-        Description = Entity.Description;
-        Developer = Entity.Developer;
-        Cost = Entity.Cost;
-        AddedInShopDate = Entity.AddDate;
     }
 
-    public string Title { get; private set; }
-    public string Description { get; private set; }
-    public string Developer { get; private set; }
-    public decimal Cost { get; private set; }
-    public DateTime AddedInShopDate { get; }
-
-    public void EditBasicInfo(in string title, in string description, in string developer, in decimal cost)
-    {
-        Entity.UpdateInfo(title, description, developer, cost);
-        Title = Entity.Title;
-        Description = Entity.Description;
-        Developer = Entity.Developer;
-        Cost = Entity.Cost;
-    }
+    public string Title => Entity.Title;
+    public string Description => Entity.Description;
+    public string Developer => Entity.Developer;
+    public decimal Cost => Entity.Cost;
+    public DateTime AddedInShopDate => Entity.AddDate;
 
     public static IEnumerable<Game> GetAllShop()
     {
@@ -41,5 +27,13 @@ public class Game : SingleImageHolderModel<GameEntity>
         var entity = await GameEntity.AddAsync(title, description, developer, cost);
         var game = new Game(entity);
         await game.SetImageAsync(coverData, entity.Title);
+    }
+
+    public async Task EditAsync(string title, string description, string developer, decimal cost, byte[]? coverData)
+    {
+        Entity.UpdateInfo(title, description, developer, cost);
+
+        if (coverData is { }) 
+            await SetImageAsync(coverData, title);
     }
 }
