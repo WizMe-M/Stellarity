@@ -1,18 +1,16 @@
-﻿using System.Threading.Tasks;
-using Avalonia.Markup.Xaml;
-using Stellarity.Desktop.Basic;
+﻿using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using ReactiveUI;
 using Stellarity.Desktop.ViewModels.Pages;
 using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.Views.Pages;
 
-public partial class EditProfileView : ExtUserControl<EditProfileViewModel>, IContentPage
+public partial class EditProfileView : ReactiveUserControl<EditProfileViewModel>, IContentPage
 {
-    public EditProfileView() => AvaloniaXamlLoader.Load(this);
-
-    public override async Task InitializeViewModelAsync(EditProfileViewModel viewModel)
+    public EditProfileView()
     {
-        await base.InitializeViewModelAsync(viewModel);
-        await viewModel.LoadAsync();
+        AvaloniaXamlLoader.Load(this);
+        this.WhenActivated(async d => await ViewModel!.LoadAsync());
     }
 }

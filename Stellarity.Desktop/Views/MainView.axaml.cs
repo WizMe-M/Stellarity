@@ -33,8 +33,7 @@ public partial class MainView : ReactiveWindow<MainViewModel>
             
             var dialog = DiContainingService.Kernel.Get<IDialogService>();
             var accounting = DiContainingService.Kernel.Get<AccountingService>();
-            var editProfileViewModel = new EditProfileViewModel(dialog, accounting, ViewModel!);
-            await EditProfile.InitializeViewModelAsync(editProfileViewModel);
+            EditProfile.ViewModel = new EditProfileViewModel(dialog, accounting, ViewModel!);
             
             var shopViewModel = new GameShopViewModel(accounting, ViewModel!, NavView.Navigator, dialog);
             await Shop.InitializeViewModelAsync(shopViewModel);

@@ -47,9 +47,7 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncLoader
     [RelayCommand]
     private void GoToAddGame()
     {
-        var view = new AddGameView();
-        var vm = new AddGameViewModel(_windowOwner, _dialog, _navigator);
-        view.InitializeViewModelAsync(vm);
+        var view = new AddGameView { ViewModel = new AddGameViewModel(_windowOwner, _dialog, _navigator) };
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
     }
 }
