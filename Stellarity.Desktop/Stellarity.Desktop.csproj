@@ -57,7 +57,7 @@
         <AdditionalFiles Include="TemplatedControls\GameCard.axaml" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Stellarity.Avalonia\Stellarity.Avalonia.csproj" />
+        <ProjectReference Include="..\Stellarity.Domain\Stellarity.Domain.csproj" />
         <ProjectReference Include="..\Stellarity\Stellarity.csproj" />
     </ItemGroup>
     <ItemGroup>

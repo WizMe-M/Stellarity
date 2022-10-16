@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Stellarity.Avalonia.Extensions;
-using Stellarity.Avalonia.ViewModel;
 using Stellarity.Desktop.Basic;
+using Stellarity.Desktop.Extensions;
 using Stellarity.Domain.Models;
 
 namespace Stellarity.Desktop.ViewModels.Wraps;

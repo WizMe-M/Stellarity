@@ -4,9 +4,9 @@ using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
-using Stellarity.Avalonia.Extensions;
-using Stellarity.Avalonia.Models;
 using Stellarity.Desktop.Basic;
+using Stellarity.Desktop.Extensions;
+using Stellarity.Desktop.Image;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
 

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using Stellarity.Avalonia.ViewModel;
+using Stellarity.Desktop.Basic;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Cryptography;
 

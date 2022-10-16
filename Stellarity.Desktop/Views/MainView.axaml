@@ -12,7 +12,7 @@
         Width="850" Height="600"
         MaxWidth="1600" MaxHeight="860"
 
-        Icon="avares://Stellarity.Avalonia/Assets/Images/stellaris-logo.ico"
+        Icon="../Assets/Images/stellaris-logo.ico"
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
 

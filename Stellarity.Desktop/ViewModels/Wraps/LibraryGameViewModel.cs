@@ -2,10 +2,8 @@
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Stellarity.Avalonia.Extensions;
-using Stellarity.Avalonia.Models;
-using Stellarity.Avalonia.ViewModel;
 using Stellarity.Desktop.Basic;
+using Stellarity.Desktop.Extensions;
 using Stellarity.Desktop.Views.Pages;
 using Stellarity.Domain.Models;
 using Stellarity.Navigation.Event;

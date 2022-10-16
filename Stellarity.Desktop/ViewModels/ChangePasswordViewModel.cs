@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveValidation;
 using ReactiveValidation.Extensions;
-using Stellarity.Avalonia.ViewModel;
+using Stellarity.Desktop.Basic;
 using Stellarity.Domain.Cryptography;
 using Stellarity.Domain.Validation;
 

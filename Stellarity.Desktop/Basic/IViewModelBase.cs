@@ -1,4 +1,4 @@
-﻿namespace Stellarity.Avalonia.ViewModel;
+﻿namespace Stellarity.Desktop.Basic;
 
 /// <summary>
 /// Empty view model base interface.

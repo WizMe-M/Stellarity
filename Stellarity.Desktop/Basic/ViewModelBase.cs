@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ReactiveValidation;
 
-namespace Stellarity.Avalonia.ViewModel;
+namespace Stellarity.Desktop.Basic;
 
 public class ViewModelBase : ObservableObject, IValidatableObject, IViewModelBase
 {

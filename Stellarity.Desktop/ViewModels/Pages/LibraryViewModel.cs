@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using DynamicData;
 using Ninject;
-using Stellarity.Avalonia.ViewModel;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.ViewModels.Wraps;
 using Stellarity.Domain.Authorization;

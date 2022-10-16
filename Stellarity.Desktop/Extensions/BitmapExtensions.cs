@@ -1,6 +1,7 @@
-﻿using Avalonia.Media.Imaging;
+﻿using System.IO;
+using Avalonia.Media.Imaging;
 
-namespace Stellarity.Avalonia.Extensions;
+namespace Stellarity.Desktop.Extensions;
 
 public static class BitmapExtensions
 {

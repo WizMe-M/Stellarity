@@ -9,7 +9,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Ninject;
 using ReactiveValidation;
 using ReactiveValidation.Extensions;
-using Stellarity.Avalonia.ViewModel;
+using Stellarity.Desktop.Basic;
 using Stellarity.Domain.Models;
 using Stellarity.Domain.Services;
 using Stellarity.Domain.Validation;

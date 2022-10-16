@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
 using HanumanInstitute.MvvmDialogs;
-using Stellarity.Avalonia.ViewModel;
 using Stellarity.Database.Entities;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.ViewModels.Wraps;

@@ -9,15 +9,15 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveValidation;
 using ReactiveValidation.Extensions;
-using Stellarity.Avalonia.Extensions;
-using Stellarity.Avalonia.Models;
-using Stellarity.Avalonia.ViewModel;
+using Stellarity.Desktop.Basic;
+using Stellarity.Desktop.Extensions;
+using Stellarity.Desktop.Image;
 using Stellarity.Domain.Models;
 using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
-public partial class AddGameViewModel : PageViewModel
+public partial class AddGameViewModel : ViewModelBase
 {
     /// <summary>
     /// Viewmodel to resolve view for <see cref="IDialogService"/>

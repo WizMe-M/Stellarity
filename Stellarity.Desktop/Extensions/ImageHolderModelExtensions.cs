@@ -1,9 +1,10 @@
-﻿using Avalonia.Media.Imaging;
-using Stellarity.Avalonia.Models;
+﻿using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using Stellarity.Database.Entities;
+using Stellarity.Desktop.Image;
 using Stellarity.Domain.Abstractions;
 
-namespace Stellarity.Avalonia.Extensions;
+namespace Stellarity.Desktop.Extensions;
 
 public static class ImageHolderModelExtensions
 {

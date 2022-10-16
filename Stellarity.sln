@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Desktop", "Stell
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Tests", "Stellarity.Tests\Stellarity.Tests.csproj", "{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Avalonia", "Stellarity.Avalonia\Stellarity.Avalonia.csproj", "{D545CC72-0370-4AAC-904C-5106CC1345C6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity", "Stellarity\Stellarity.csproj", "{BC8AF152-3636-44D1-A256-7354D1E95B20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stellarity.Domain", "Stellarity.Domain\Stellarity.Domain.csproj", "{9AA43674-BE9F-4AE7-BF0B-1EF4E87DD855}"
@@ -24,10 +22,6 @@ Global
 		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7E4745E-438A-42D9-B5B0-8DFF8DB90600}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D545CC72-0370-4AAC-904C-5106CC1345C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D545CC72-0370-4AAC-904C-5106CC1345C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D545CC72-0370-4AAC-904C-5106CC1345C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D545CC72-0370-4AAC-904C-5106CC1345C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC8AF152-3636-44D1-A256-7354D1E95B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
