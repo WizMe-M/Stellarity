@@ -58,24 +58,15 @@ public class Account : SingleImageHolderModel<AccountEntity>
         Library = games;
     }
 
-    public static RegistrationResult RegisterPlayer(string email, string password)
+    public static Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role)
     {
         var exists = AccountEntity.Exists(email);
-        if (exists) return RegistrationResult.Fail();
+        if (exists) return Task.FromResult(RegistrationResult.AlreadyExistsWithEmail());
 
-        var entity = AccountEntity.Register(email, password, (int)Roles.Player);
+        var hashedPassword = HashedPassword.FromDecrypted(password).Password;
+        var entity = AccountEntity.Register(email, hashedPassword, (int)role);
         var account = new Account(entity);
-        return RegistrationResult.Success(account);
-    }
-
-    public static RegistrationResult RegisterAdministrator(string email, string password)
-    {
-        var exists = AccountEntity.Exists(email);
-        if (exists) return RegistrationResult.Fail();
-
-        var entity = AccountEntity.Register(email, password, (int)Roles.Administrator);
-        var account = new Account(entity);
-        return RegistrationResult.Success(account);
+        return Task.FromResult(RegistrationResult.Success(account));
     }
 
     public void ApplySatisfiedPassword(in HashedPassword password)
