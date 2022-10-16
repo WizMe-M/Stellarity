@@ -201,4 +201,13 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
 
         return accounts.ToArray();
     }
+
+    public void SetBanStatus(bool banStatus)
+    {
+        using var context = new StellarityContext();
+        context.Accounts.Attach(this);
+        Deleted = banStatus;
+        context.Accounts.Update(this);
+        context.SaveChanges();
+    }
 }

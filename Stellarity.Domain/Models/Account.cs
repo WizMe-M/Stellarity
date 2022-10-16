@@ -15,13 +15,13 @@ public class Account : SingleImageHolderModel<AccountEntity>
         Password = HashedPassword.FromEncrypted(Entity.Password);
         About = Entity.About ?? "";
         Balance = Entity.Balance;
-        IsBanned = Entity.Deleted;
         RegistrationDate = Entity.RegistrationDate;
     }
 
     public bool CanAddGames => Role == Roles.Administrator;
     public bool CanEditGames => Role == Roles.Administrator;
     public bool CanAddUsers => Role == Roles.Administrator;
+    public bool CanBanUsers => Role == Roles.Administrator;
 
     public string Email { get; }
     public string Nickname { get; private set; }
@@ -29,7 +29,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public string About { get; private set; }
     public decimal Balance { get; private set; }
     public DateTime RegistrationDate { get; }
-    public bool IsBanned { get; private set; }
+    public bool IsBanned => Entity.Deleted;
     public Roles Role => (Roles)Entity.RoleId;
 
     public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
@@ -135,5 +135,10 @@ public class Account : SingleImageHolderModel<AccountEntity>
         var accountEntities = await AccountEntity.GetAccountsAsync(accountsByTime, skipRows);
         var accounts = accountEntities.Select(entity => new Account(entity));
         return accounts;
+    }
+
+    public void ToggleBan()
+    {
+        Entity.SetBanStatus(!IsBanned);
     }
 }
