@@ -9,7 +9,9 @@
              x:Class="Stellarity.Desktop.Views.Pages.CommunityView"
              x:CompileBindings="True" x:DataType="vm:CommunityViewModel">
     <DockPanel>
-        <Button DockPanel.Dock="Top" Content="Зарегистрировать пользователя"
+        <Button DockPanel.Dock="Top" Content="Зарегистрировать пользователя" 
+                Command="{Binding NavigateToRegisterUserCommand}"
+                IsVisible="{Binding User.CanAddUsers}"
                 HorizontalAlignment="Left" />
         <pc:PaginatorControl DockPanel.Dock="Bottom" PageCount="{Binding PageCount}"
                              PageNumb="{Binding CurrentPageNumber}"/>

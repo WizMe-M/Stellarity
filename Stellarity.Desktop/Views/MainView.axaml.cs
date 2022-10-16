@@ -40,7 +40,7 @@ public partial class MainView : ReactiveWindow<MainViewModel>
             await Shop.InitializeViewModelAsync(shopViewModel);
             
             Library.ViewModel = new LibraryViewModel(NavView.Navigator);
-            Community.ViewModel = new CommunityViewModel();
+            Community.ViewModel = new CommunityViewModel(NavView.Navigator);
         });
 
         InitializeComponent();

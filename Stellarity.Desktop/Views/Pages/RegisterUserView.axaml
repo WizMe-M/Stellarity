@@ -1,0 +1,42 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
+             xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="400"
+             x:Class="Stellarity.Desktop.Views.Pages.RegisterUserView"
+             x:CompileBindings="True" x:DataType="vm:RegisterUserViewModel">
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Padding" Value="15 7" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="CornerRadius" Value="8" />
+        </Style>
+    </UserControl.Styles>
+
+    <sg:SpacedGrid RowDefinitions="Auto Auto Auto *" ColumnDefinitions="* *"
+                   ColumnSpacing="20" RowSpacing="20" Margin="20">
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                   Text="Register user" FontSize="38" FontWeight="Black"
+                   HorizontalAlignment="Center" Margin="20" />
+        <TextBox Grid.Column="0" Grid.Row="1" Watermark="Email" Text="{Binding Email}" />
+        <TextBox Grid.Column="0" Grid.Row="2" Watermark="Password" Text="{Binding Password}" />
+        <ComboBox Grid.Column="1" Grid.Row="1" PlaceholderText="Choose user role" Width="200"
+                  Items="{Binding AvailableRoles}"
+                  SelectedItem="{Binding SelectedRole}" />
+
+        <Button Grid.Column="0" Grid.Row="3" Content="Register user"
+                Command="{Binding RegisterCommand}"
+                HorizontalAlignment="Right" />
+        <Button Grid.Column="1" Grid.Row="3" Content="Cancel"
+                Command="{Binding CancelCommand}"
+                HorizontalAlignment="Left" />
+    </sg:SpacedGrid>
+</UserControl>
