@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HanumanInstitute.MvvmDialogs;
 using Ninject;
 using Stellarity.Avalonia.ViewModel;
 using Stellarity.Database.Entities;
@@ -41,7 +42,8 @@ public partial class CommunityViewModel : ViewModelBase, IAsyncLoader
     [RelayCommand]
     private void NavigateToRegisterUser()
     {
-        var view = new RegisterUserView { ViewModel = new RegisterUserViewModel() };
+        var dialog = DiContainingService.Kernel.Get<IDialogService>();
+        var view = new RegisterUserView { ViewModel = new RegisterUserViewModel(_navigator, dialog) };
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
     }
 
