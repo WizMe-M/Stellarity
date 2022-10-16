@@ -49,7 +49,7 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
         builder.RuleFor(vm => vm.Input)
             .NotEmpty()
             .WithMessage("The password mustn't be empty string")
-            .Must(password => PasswordValidation.IsMatchPattern(password))
+            .Must(password => UserValidation.IsCorrectPassword(password))
             .WithMessage("The password must contain: 1 digit, 1 uppercase, 1 lowercase, 1 special symbol; " +
                          "and it's length should be at least 8 or more symbols")
             .MinLength(8)

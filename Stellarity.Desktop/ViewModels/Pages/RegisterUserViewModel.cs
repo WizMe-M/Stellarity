@@ -54,15 +54,15 @@ public partial class RegisterUserViewModel : ViewModelBase
             .WithMessage("Email mustn't be empty string")
             .MaxLength(320)
             .WithMessage("Email too long")
-            .Must(async (email, token) => await EmailValidation.NotExistsAsync(email, token))
+            .Must(async (email, token) => await UserValidation.NotExistsWithEmailAsync(email, token))
             .WithMessage("User with such email already exists")
-            .Must(email => EmailValidation.IsRealEmail(email))
+            .Must(email => UserValidation.IsRealEmail(email))
             .WithMessage("This email isn't valid. Correct format: {local}@{domain}");
 
         builder.RuleFor(vm => vm.Password)
             .NotEmpty()
             .WithMessage("The password mustn't be empty string")
-            .Matches(PasswordValidation.Pattern)
+            .Must(password => UserValidation.IsCorrectPassword(password))
             .WithMessage("The password must contain: 1 digit, 1 uppercase, 1 lowercase, 1 special symbol; " +
                          "and it's length should be at least 8 or more symbols")
             .MinLength(8)

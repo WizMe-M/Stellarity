@@ -1,8 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net.Mail;
+using System.Text.RegularExpressions;
+using Stellarity.Database.Entities;
 
 namespace Stellarity.Domain.Validation;
 
-public static class PasswordValidation
+public class UserValidation
 {
     /// <summary>
     /// <list type="bullet">
@@ -15,8 +17,13 @@ public static class PasswordValidation
     /// <item>Length at least 8 characters</item> 
     /// </list> 
     /// </summary>
-    public const string Pattern =
+    public const string PasswordPattern =
         @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*+\-=])(?!.*\s).{8,}$";
 
-    public static bool IsMatchPattern(in string input) => Regex.IsMatch(input, Pattern);
+    public static bool IsRealEmail(in string input) => MailAddress.TryCreate(input, out _);
+
+    public static async Task<bool> NotExistsWithEmailAsync(string input, CancellationToken token)
+        => !await AccountEntity.ExistsAsync(input, token);
+
+    public static bool IsCorrectPassword(in string input) => Regex.IsMatch(input, PasswordPattern);
 }
