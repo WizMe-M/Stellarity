@@ -6,6 +6,7 @@ using ReactiveValidation;
 using ReactiveValidation.Extensions;
 using Stellarity.Avalonia.ViewModel;
 using Stellarity.Domain.Cryptography;
+using Stellarity.Domain.Validation;
 
 namespace Stellarity.Desktop.ViewModels;
 
@@ -13,8 +14,6 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
 {
     public event EventHandler? RequestClose;
     public bool? DialogResult { get; private set; }
-
-    private const string PasswordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*+\-=])(?!.*\s).{8,}$";
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
     private string _input = string.Empty;
@@ -50,7 +49,7 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
         builder.RuleFor(vm => vm.Input)
             .NotEmpty()
             .WithMessage("The password mustn't be empty string")
-            .Matches(PasswordPattern)
+            .Must(password => PasswordValidation.IsMatchPattern(password))
             .WithMessage("The password must contain: 1 digit, 1 uppercase, 1 lowercase, 1 special symbol; " +
                          "and it's length should be at least 8 or more symbols")
             .MinLength(8)
