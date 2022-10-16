@@ -19,7 +19,6 @@ public class Account : SingleImageHolderModel<AccountEntity>
         Balance = Entity.Balance;
         IsBanned = Entity.Deleted;
         RegistrationDate = Entity.RegistrationDate;
-        Role = (Roles)Entity.RoleId;
     }
 
     public bool CanAddGames => Role == Roles.Administrator;
@@ -32,7 +31,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public decimal Balance { get; private set; }
     public DateTime RegistrationDate { get; }
     public bool IsBanned { get; private set; }
-    public Roles Role { get; }
+    public Roles Role => (Roles)Entity.RoleId;
 
     public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
 
