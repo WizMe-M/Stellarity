@@ -11,12 +11,11 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         Library = new HashSet<LibraryEntity>();
     }
 
-    public AccountEntity(string email, string password) : this()
+    public AccountEntity(string email, string password, int roleId) : this()
     {
         Email = email;
         Password = password;
-        Balance = 0;
-        RoleId = 1;
+        RoleId = roleId;
     }
 
     public int Id { get; set; }
@@ -85,14 +84,24 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     public static AccountEntity Register(string email, string password, int roleId)
     {
         using var context = new StellarityContext();
-        var gamer = new AccountEntity(email, password)
-        {
-            RoleId = roleId
-        };
+        var gamer = new AccountEntity(email, password, roleId);
         context.Accounts.Add(gamer);
         context.SaveChanges();
         context.Entry(gamer).Reference(u => u.Role).Load();
         return gamer;
+    }
+
+    public static async Task<AccountEntity> RegisterAsync(string email, string password, int roleId)
+    {
+        await using var context = new StellarityContext();
+        var user = new AccountEntity(email, password, roleId);
+        context.Accounts.Add(user);
+        await context.SaveChangesAsync();
+
+        await context.Entry(user)
+            .Reference(u => u.Role)
+            .LoadAsync();
+        return user;
     }
 
     public void UpdatePassword(string password)
