@@ -35,7 +35,6 @@
     </Window.Styles>
 
     <Panel Name="RootPanel">
-        <!-- TODO: не забыть посмотреть как будет выглядеть UI без прозрачности фона страницы и панели навигации -->
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black"
@@ -46,12 +45,11 @@
                 Height="40" Margin="40 0 0 0"
                 VerticalAlignment="Top" ZIndex="2" />
 
-        <!-- TODO: add 'exit' button with deleting authorization history -->
-        <!-- TODO: add balance and 'deposit' btn -->
-
         <navigation:NavigationView Name="NavView" Background="Transparent" Header="Stellarity"
                                    SelectedItem="{Binding #MyProfile}"
                                    ExitCommand="{Binding ExitCommand}">
+
+            <!-- TODO: сделать так, чтобы по умолчанию открывался мой профиль-->
             <navigation:NavigationViewItem Header="My profile" IconValue="{StaticResource MyProfile}">
                 <navigation:NavigationViewItem.ContentPage>
                     <pages:MyProfileView Name="MyProfile" />

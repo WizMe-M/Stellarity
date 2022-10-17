@@ -22,6 +22,8 @@
             </StackPanel>
         </DockPanel>
 
+        <!-- TODO: сделать сортировку и фильтрацию игр -->
+        <!-- TODO: сделать templated control с выводом по умолчанию для пустого списка -->
         <ScrollViewer VerticalScrollBarVisibility="Visible">
             <ItemsControl Items="{Binding AllGames}" Background="Transparent" Margin="0 20">
                 <ItemsControl.Styles>

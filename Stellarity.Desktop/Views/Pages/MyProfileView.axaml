@@ -5,7 +5,6 @@
              xmlns:converters="clr-namespace:Stellarity.Desktop.Converters"
              xmlns:tc="clr-namespace:Stellarity.Desktop.TemplatedControls"
              xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
-             xmlns:pages="clr-namespace:Stellarity.Desktop.Views.Pages"
              mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="600"
              x:Class="Stellarity.Desktop.Views.Pages.MyProfileView"
              x:DataType="vm:MyProfileViewModel" x:CompileBindings="True"
@@ -52,6 +51,7 @@
                             HorizontalAlignment="Right" HotKey="Ctrl+Enter" />
                 </DockPanel>
 
+                <!-- TODO: сделать templated control с выводом по умолчанию для пустого списка -->
                 <ItemsControl Items="{Binding Comments}" Margin="20 0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
