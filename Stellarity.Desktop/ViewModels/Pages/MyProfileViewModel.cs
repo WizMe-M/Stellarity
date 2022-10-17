@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -7,6 +8,7 @@ using DynamicData;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Extensions;
 using Stellarity.Desktop.Image;
+using Stellarity.Desktop.ViewModels.Wraps;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
 
@@ -37,15 +39,16 @@ public partial class MyProfileViewModel : ViewModelBase, IAsyncLoader
         Avatar = ImagePlaceholder.GetBitmap();
     }
 
-    public ObservableCollection<Comment> Comments { get; } = new();
+    public ObservableCollection<CommentViewModel> Comments { get; } = new();
 
-    public bool CanComment => !string.IsNullOrWhiteSpace(_commentText);
+    public bool CanComment => !string.IsNullOrWhiteSpace(CommentText);
 
     [RelayCommand(CanExecute = nameof(CanComment))]
     private async Task SendCommentAsync()
     {
-        User.LeaveComment(_commentText, User);
+        User.LeaveComment(CommentText, User);
         await RefreshComments();
+        CommentText = string.Empty;
     }
 
     public async Task LoadAsync()
@@ -61,8 +64,9 @@ public partial class MyProfileViewModel : ViewModelBase, IAsyncLoader
 
     private async Task RefreshComments()
     {
-        var comments = await User.GetComments();
         Comments.Clear();
-        Comments.AddRange(comments);
+        var comments = await User.GetComments();
+        foreach (var comment in comments) 
+            Comments.Add(new CommentViewModel(comment, User));
     }
 }

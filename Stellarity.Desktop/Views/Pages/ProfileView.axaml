@@ -3,15 +3,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:tc="clr-namespace:Stellarity.Desktop.TemplatedControls"
-             xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
              xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
              xmlns:converters="clr-namespace:Stellarity.Desktop.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Stellarity.Desktop.Views.Pages.ProfileView"
              x:CompileBindings="True" x:DataType="vm:ProfileViewModel">
     <UserControl.Resources>
-        <converters:CommentAlignmentConverter x:Key="AlignmentConverter" />
-        <converters:CommentCornerRadiusConverter x:Key="CornerRadiusConverter" />
+        <converters:CommentProfileIsMyOwnConverter x:Key="IsMyOwnConverter" />
     </UserControl.Resources>
 
     <Border Width="800" HorizontalAlignment="Center" BorderBrush="Black"
@@ -55,22 +53,17 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="10" BorderBrush="Black" BorderThickness="2"
-                                    Width="600" Background="Transparent"
-                                    HorizontalAlignment="{Binding Converter={StaticResource AlignmentConverter}}"
-                                    CornerRadius="{Binding Converter={StaticResource CornerRadiusConverter}}">
-
-                                <DockPanel Margin="10 5">
-                                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding Body}"
-                                               TextWrapping="Wrap" FontWeight="Normal" Margin="5" />
-                                    <tc:LineSeparator DockPanel.Dock="Bottom" Color="Black" Margin="5" />
-                                    <i:Icon DockPanel.Dock="Left" Value="{StaticResource User}" Margin="5" />
-                                    <TextBlock
-                                        Text="{Binding Author.Nickname, 
-                                        StringFormat={}{0} написал(-а):, TargetNullValue='Кто-то написал:'}"
-                                        FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                </DockPanel>
-                            </Border>
+                            <tc:ProfileComment
+                                Author="{Binding Author.Nickname, StringFormat='{}{0} написал:'}"
+                                CommentDate="{Binding CommentDate, StringFormat='{}{0:d}'}"
+                                CommentBody="{Binding CommentBody}">
+                                <tc:ProfileComment.IsMyOwn>
+                                    <MultiBinding Converter="{StaticResource IsMyOwnConverter}">
+                                        <Binding Path="Author" />
+                                        <Binding Path="Viewer" />
+                                    </MultiBinding>
+                                </tc:ProfileComment.IsMyOwn>
+                            </tc:ProfileComment>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

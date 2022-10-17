@@ -48,6 +48,8 @@
         <Compile Update="TemplatedControls\Navigation\NavigationView.cs">
             <DependentUpon>NavigationView.axaml</DependentUpon>
         </Compile>
+        <Compile Remove="Converters\CommentCornerRadiusConverter.cs" />
+        <Compile Remove="Converters\CommentAlignmentConverter.cs" />
     </ItemGroup>
     <ItemGroup>
         <AdditionalFiles Include="TemplatedControls\LineSeparator.axaml" />
@@ -55,6 +57,7 @@
         <AdditionalFiles Include="TemplatedControls\Navigation\NavigationView.axaml" />
         <AdditionalFiles Include="TemplatedControls\Navigation\NavigationViewItem.axaml" />
         <AdditionalFiles Include="TemplatedControls\GameCard.axaml" />
+        <AdditionalFiles Include="TemplatedControls\ProfileComment.axaml" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Stellarity.Domain\Stellarity.Domain.csproj" />

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
 using Ninject;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Extensions;
 using Stellarity.Desktop.Image;
+using Stellarity.Desktop.ViewModels.Wraps;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
 using Stellarity.Domain.Services;
@@ -45,15 +44,16 @@ public partial class ProfileViewModel : ViewModelBase, IAsyncLoader
         Avatar = ImagePlaceholder.GetBitmap();
     }
 
-    public ObservableCollection<Comment> Comments { get; } = new();
+    public ObservableCollection<CommentViewModel> Comments { get; } = new();
 
-    public bool CanComment => !string.IsNullOrWhiteSpace(_commentText);
+    public bool CanComment => !string.IsNullOrWhiteSpace(CommentText);
 
     [RelayCommand(CanExecute = nameof(CanComment))]
     private async Task SendCommentAsync()
     {
-        User.LeaveComment(_commentText, Profile);
+        User.LeaveComment(CommentText, Profile);
         await RefreshComments();
+        CommentText = string.Empty;
     }
 
     public async Task LoadAsync()
@@ -69,8 +69,9 @@ public partial class ProfileViewModel : ViewModelBase, IAsyncLoader
 
     private async Task RefreshComments()
     {
-        var comments = await Profile.GetComments();
         Comments.Clear();
-        Comments.AddRange(comments);
+        var comments = await Profile.GetComments();
+        foreach (var comment in comments) 
+            Comments.Add(new CommentViewModel(comment, User));
     }
 }

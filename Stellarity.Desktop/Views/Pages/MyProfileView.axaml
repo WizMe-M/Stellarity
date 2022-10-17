@@ -2,13 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
-             xmlns:converters1="clr-namespace:Stellarity.Desktop.Converters"
-             xmlns:templatedControls1="clr-namespace:Stellarity.Desktop.TemplatedControls"
-             xmlns:pages="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
+             xmlns:converters="clr-namespace:Stellarity.Desktop.Converters"
+             xmlns:tc="clr-namespace:Stellarity.Desktop.TemplatedControls"
+             xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
+             xmlns:pages="clr-namespace:Stellarity.Desktop.Views.Pages"
              mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="600"
              x:Class="Stellarity.Desktop.Views.Pages.MyProfileView"
-             x:DataType="pages:MyProfileViewModel" x:CompileBindings="True"
+             x:DataType="vm:MyProfileViewModel" x:CompileBindings="True"
              Background="Transparent">
     <UserControl.Resources>
         <RadialGradientBrush x:Key="RadialGradientBackgroundBrush" Radius=".5" Opacity=".3"
@@ -17,8 +17,7 @@
             <GradientStop Color="#f3be85" Offset="1" />
         </RadialGradientBrush>
 
-        <converters1:CommentAlignmentConverter x:Key="AlignmentConverter" />
-        <converters1:CommentCornerRadiusConverter x:Key="CornerRadiusConverter" />
+        <converters:CommentProfileIsMyOwnConverter x:Key="IsMyOwnConverter" />
     </UserControl.Resources>
 
     <Border Width="800" HorizontalAlignment="Center" Background="{StaticResource RadialGradientBackgroundBrush}"
@@ -29,7 +28,7 @@
                     <Border BorderBrush="Black" BorderThickness="1" Height="200" Width="200">
                         <Border.Background>
                             <ImageBrush Source="{Binding Avatar}"
-                                        Stretch="UniformToFill"/>
+                                        Stretch="UniformToFill" />
                         </Border.Background>
                     </Border>
                     <StackPanel Orientation="Vertical" Spacing="25" HorizontalAlignment="Center"
@@ -62,22 +61,17 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="10" BorderBrush="Black" BorderThickness="2"
-                                    Width="600" Background="Transparent"
-                                    HorizontalAlignment="{Binding Converter={StaticResource AlignmentConverter}}"
-                                    CornerRadius="{Binding Converter={StaticResource CornerRadiusConverter}}">
-
-                                <DockPanel Margin="10 5">
-                                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding Body}"
-                                               TextWrapping="Wrap" FontWeight="Normal" Margin="5" />
-                                    <templatedControls1:LineSeparator DockPanel.Dock="Bottom" Color="Black" Margin="5" />
-                                    <i:Icon DockPanel.Dock="Left" Value="{StaticResource User}" Margin="5" />
-                                    <TextBlock
-                                        Text="{Binding Author.Nickname, 
-                                        StringFormat={}{0} написал(-а):, TargetNullValue='Кто-то написал:'}"
-                                        FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                </DockPanel>
-                            </Border>
+                            <tc:ProfileComment
+                                Author="{Binding Author.Nickname, StringFormat='{}{0} написал:'}"
+                                CommentDate="{Binding CommentDate, StringFormat='{}{0:d}'}"
+                                CommentBody="{Binding CommentBody}">
+                                <tc:ProfileComment.IsMyOwn>
+                                    <MultiBinding Converter="{StaticResource IsMyOwnConverter}">
+                                        <Binding Path="Author" />
+                                        <Binding Path="Viewer" />
+                                    </MultiBinding>
+                                </tc:ProfileComment.IsMyOwn>
+                            </tc:ProfileComment>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

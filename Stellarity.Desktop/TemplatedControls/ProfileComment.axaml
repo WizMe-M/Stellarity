@@ -1,0 +1,48 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tc="using:Stellarity.Desktop.TemplatedControls"
+        xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia">
+    <Design.PreviewWith>
+        <Border Margin="10" Background="Gray">
+            <StackPanel Width="800">
+                <tc:ProfileComment />
+                <tc:ProfileComment IsMyOwn="True" />
+                <tc:ProfileComment Classes="my_own" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="tc|ProfileComment">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Margin="10" BorderBrush="Black" BorderThickness="2" Width="600" Background="Transparent"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <DockPanel Margin="10 5">
+                        <TextBlock DockPanel.Dock="Bottom" TextWrapping="Wrap" FontWeight="Normal"
+                                   Text="{TemplateBinding CommentBody}" Margin="5" />
+                        <tc:LineSeparator DockPanel.Dock="Bottom" Color="Black" Margin="5" />
+                        <i:Icon DockPanel.Dock="Left" Value="{StaticResource User}" Margin="5" />
+                        <TextBlock DockPanel.Dock="Left" Text="{TemplateBinding Author}" FontWeight="DemiBold"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <TextBlock Text="{TemplateBinding CommentDate}" FontWeight="Light"
+                                   HorizontalAlignment="Right" />
+                    </DockPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="CornerRadius" Value="10 10 10 0" />
+    </Style>
+
+    <Style Selector="tc|ProfileComment.my_own">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="CornerRadius" Value="10 10 0 10" />
+    </Style>
+
+    <Style Selector="tc|ProfileComment:my_own">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="CornerRadius" Value="10 10 0 10" />
+    </Style>
+</Styles>

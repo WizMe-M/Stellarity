@@ -19,10 +19,11 @@
         <FluentTheme Mode="Dark" />
         <StyleInclude Source="/TemplatedControls/LineSeparator.axaml" />
         <StyleInclude Source="/TemplatedControls/ImageButton.axaml" />
+        <StyleInclude Source="/TemplatedControls/GameCard.axaml" />
+        <StyleInclude Source="/TemplatedControls/ProfileComment.axaml" />
         <StyleInclude Source="/TemplatedControls/Navigation/NavigationView.axaml" />
         <StyleInclude Source="/TemplatedControls/Navigation/NavigationViewItem.axaml" />
-        <StyleInclude Source="/TemplatedControls/GameCard.axaml" />
-        
+
         <StyleInclude Source="avares://Paginator.Avalonia/View/PaginatorControl.xaml" />
     </Application.Styles>
 </Application>
