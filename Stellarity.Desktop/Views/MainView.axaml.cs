@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml;
@@ -61,5 +62,11 @@ public partial class MainView : ReactiveWindow<MainViewModel>
             if (logicalChild is not NavigationViewItem item) return;
             item.Initialize(NavView.Navigator);
         }
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        DiContainingService.Kernel.Unbind<MainViewModel>();
     }
 }
