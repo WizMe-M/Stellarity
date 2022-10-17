@@ -29,14 +29,6 @@ public partial class GameViewModel : ViewModelBase, IAsyncLoader
     }
 
     public Game Instance { get; }
-
-    [RelayCommand]
-    private void DepositOnBalance()
-    {
-        var dialogService = DiContainingService.Kernel.Get<IDialogService>();
-        // dialogService.CreateViewModel<>()
-        
-    }
     
     [RelayCommand]
     private void OpenGamePage()

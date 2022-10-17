@@ -15,9 +15,10 @@
 
             <StackPanel Orientation="Horizontal" Spacing="20" Margin="15 5"
                         VerticalAlignment="Center" HorizontalAlignment="Left">
-                <TextBlock Text="{Binding Authorized.Balance, StringFormat='{}Баланс: {0} руб.'}"
+                <TextBlock Text="{Binding Balance, StringFormat='{}Баланс: {0} руб.'}"
                            FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
-                <Button Content="Пополнить баланс" VerticalAlignment="Center" />
+                <Button Content="Пополнить баланс" VerticalAlignment="Center"
+                        Command="{Binding DepositOnBalanceCommand}"/>
             </StackPanel>
         </DockPanel>
 

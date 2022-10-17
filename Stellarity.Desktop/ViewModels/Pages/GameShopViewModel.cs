@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
 using HanumanInstitute.MvvmDialogs;
-using Stellarity.Database.Entities;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.ViewModels.Wraps;
 using Stellarity.Desktop.Views.Pages;
@@ -20,6 +20,9 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncLoader
     private readonly NavigationPublisher _navigator;
     private readonly IDialogService _dialog;
 
+    [ObservableProperty]
+    private decimal _balance;
+
     public GameShopViewModel(AccountingService accountingService, MainViewModel windowOwner,
         NavigationPublisher navigator, IDialogService dialogService)
     {
@@ -27,6 +30,7 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncLoader
         _navigator = navigator;
         _dialog = dialogService;
         Authorized = accountingService.AuthorizedUser!;
+        Balance = Authorized.Balance;
     }
 
     public ObservableCollection<GameViewModel> AllGames { get; } = new();
@@ -48,5 +52,15 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncLoader
     {
         var view = new AddGameView { ViewModel = new AddGameViewModel(_windowOwner, _dialog, _navigator) };
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
+    }
+
+    [RelayCommand]
+    private async Task DepositOnBalance()
+    {
+        var depositionViewModel = _dialog.CreateViewModel<DepositionViewModel>();
+        await _dialog.ShowDialogAsync(_windowOwner, depositionViewModel);
+        var depositionAmount = depositionViewModel.DepositionSum;
+        Authorized.Deposit(depositionAmount);
+        Balance = Authorized.Balance;
     }
 }

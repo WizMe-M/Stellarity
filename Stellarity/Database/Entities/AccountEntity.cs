@@ -117,8 +117,8 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         Balance += depositSum;
         using var context = new StellarityContext();
-        var user = context.Entry(this).Entity;
-        context.Accounts.Update(user);
+        context.Accounts.Attach(this);
+        context.Accounts.Update(this);
         context.SaveChanges();
     }
 
