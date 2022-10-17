@@ -1,0 +1,80 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:tc="clr-namespace:Stellarity.Desktop.TemplatedControls"
+             xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
+             xmlns:converters="clr-namespace:Stellarity.Desktop.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Stellarity.Desktop.Views.Pages.ProfileView"
+             x:CompileBindings="True" x:DataType="vm:ProfileViewModel">
+    <UserControl.Resources>
+        <converters:CommentAlignmentConverter x:Key="AlignmentConverter" />
+        <converters:CommentCornerRadiusConverter x:Key="CornerRadiusConverter" />
+    </UserControl.Resources>
+
+    <Border Width="800" HorizontalAlignment="Center" BorderBrush="Black"
+            BorderThickness="2 2 2 0" CornerRadius="10 10 0 0">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+            <StackPanel VerticalAlignment="Top" Spacing="10">
+                <DockPanel Margin="20">
+                    <Border BorderBrush="Black" BorderThickness="1" Height="200" Width="200">
+                        <Border.Background>
+                            <ImageBrush Source="{Binding Avatar}"
+                                        Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                    <StackPanel Orientation="Vertical" Spacing="25" HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="{Binding User.Email}" FontWeight="DemiBold" />
+                        <TextBlock Text="{Binding Nickname, TargetNullValue='Никнейм не указан'}"
+                                   FontWeight="Light" />
+                        <TextBlock Text="{Binding User.RegistrationDate, StringFormat={}Дата регистрации: {0:d}}" />
+                    </StackPanel>
+                </DockPanel>
+                <TextBlock Text="О себе:" Margin="50 0" HorizontalAlignment="Left" />
+                <Border BorderBrush="Black" BorderThickness="1" Margin="20 0" Padding="5">
+                    <TextBlock Text="{Binding AboutSelf, TargetNullValue='Информация о пользователе отсутствует'}"
+                               TextAlignment="Left" TextWrapping="Wrap" Height="100" HorizontalAlignment="Stretch" />
+                </Border>
+
+                <DockPanel Margin="20 30">
+                    <TextBox DockPanel.Dock="Top" Text="{Binding CommentText}"
+                             Watermark="Содержимое комментария" Height="90" TextWrapping="Wrap" AcceptsReturn="True" />
+                    <Button Command="{Binding SendCommentCommand}" Content="Отправить" Margin="5"
+                            HorizontalAlignment="Right" HotKey="Ctrl+Enter" />
+                </DockPanel>
+
+                <ItemsControl Items="{Binding Comments}" Margin="20 0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ReversibleStackPanel ReverseOrder="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="10" BorderBrush="Black" BorderThickness="2"
+                                    Width="600" Background="Transparent"
+                                    HorizontalAlignment="{Binding Converter={StaticResource AlignmentConverter}}"
+                                    CornerRadius="{Binding Converter={StaticResource CornerRadiusConverter}}">
+
+                                <DockPanel Margin="10 5">
+                                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding Body}"
+                                               TextWrapping="Wrap" FontWeight="Normal" Margin="5" />
+                                    <tc:LineSeparator DockPanel.Dock="Bottom" Color="Black" Margin="5" />
+                                    <i:Icon DockPanel.Dock="Left" Value="{StaticResource User}" Margin="5" />
+                                    <TextBlock
+                                        Text="{Binding Author.Nickname, 
+                                        StringFormat={}{0} написал(-а):, TargetNullValue='Кто-то написал:'}"
+                                        FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

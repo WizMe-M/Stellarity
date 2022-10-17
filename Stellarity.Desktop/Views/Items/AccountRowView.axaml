@@ -9,14 +9,15 @@
     <DockPanel Height="100">
         <Image DockPanel.Dock="Left" Width="80" Height="80" VerticalAlignment="Center" Margin="10"
                Source="{Binding Avatar}" />
-        
-        <Button DockPanel.Dock="Right" 
+
+        <Button DockPanel.Dock="Right"
                 IsVisible="{Binding CanBanUsers}"
-                Content="{Binding BanButtonString}" 
-                Command="{Binding ToggleBanCommand}" 
+                Content="{Binding BanButtonString}"
+                Command="{Binding ToggleBanCommand}"
                 Margin="10" />
-        
-        <Button DockPanel.Dock="Right" Content="Profile" Margin="10" />
+
+        <Button DockPanel.Dock="Right" Content="Profile" Margin="10"
+                Command="{Binding NavigateToProfileCommand}" />
 
         <TextBlock Text="{Binding User.Email}"
                    FontWeight="UltraBlack" FontSize="20" Margin="20"

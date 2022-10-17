@@ -64,7 +64,7 @@ public partial class CommunityViewModel : ViewModelBase, IAsyncLoader
         foreach (var account in users)
         {
             var banRight = !User.IsIdenticalWith(account) && User.CanBanUsers;
-            Users.Add(new AccountRowViewModel(account, banRight));
+            Users.Add(new AccountRowViewModel(account, banRight, _navigator));
         }
     }
 }
