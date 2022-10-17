@@ -50,7 +50,8 @@
         <!-- TODO: add balance and 'deposit' btn -->
 
         <navigation:NavigationView Name="NavView" Background="Transparent" Header="Stellarity"
-                                   SelectedItem="{Binding #MyProfile}">
+                                   SelectedItem="{Binding #MyProfile}"
+                                   ExitCommand="{Binding ExitCommand}">
             <navigation:NavigationViewItem Header="My profile" IconValue="{StaticResource MyProfile}">
                 <navigation:NavigationViewItem.ContentPage>
                     <pages:MyProfileView Name="MyProfile" />

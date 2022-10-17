@@ -6,4 +6,5 @@
     <system:String x:Key="Shop">mdi-cart-outline</system:String>
     <system:String x:Key="Library">mdi-controller</system:String>
     <system:String x:Key="Community">mdi-account-group</system:String>
+    <system:String x:Key="LogOut">mdi-logout-variant</system:String>
 </ResourceDictionary>

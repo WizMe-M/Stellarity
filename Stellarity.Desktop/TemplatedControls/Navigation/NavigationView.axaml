@@ -57,6 +57,15 @@
                                               IsChecked="{Binding #PART_SplitView.IsPaneOpen, Mode=TwoWay}"
                                               CornerRadius="0" i:Attached.Icon="mdi-menu" />
 
+                                <Button DockPanel.Dock="Bottom"
+                                        Width="{StaticResource NavigationViewCompactPaneLength}"
+                                        Height="{StaticResource NavigationViewCompactPaneLength}"
+                                        Margin="0" Padding="0" CornerRadius="0"
+                                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Center"
+                                        i:Attached.Icon="mdi-logout-variant"
+                                        Command="{TemplateBinding ExitCommand}" />
+
                                 <ItemsPresenter Name="PART_ItemsPresenter" Margin="0"
                                                 Items="{TemplateBinding Items}"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}"

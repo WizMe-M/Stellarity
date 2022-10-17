@@ -59,4 +59,11 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
         var authorizationHistory = new AuthorizationHistory(authorizedUserEmail, remember);
         await SaveAsync(_cacheFileName, authorizationHistory);
     }
+
+    public void LogOut()
+    {
+        ClearCache();
+        AuthorizedUser = null;
+        _authorizationHistory = null;
+    }
 }
