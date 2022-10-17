@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Stellarity.Desktop.Basic;
+using Stellarity.Desktop.Views;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Cryptography;
 
@@ -61,9 +62,12 @@ public partial class AuthorizationViewModel : ViewModelBase
         _dialogService.Close(this);
     }
 
+    [RelayCommand]
     private void ShowRegistration()
     {
-        // TODO: show registration view and close this
+        var registerPlayerViewModel = _dialogService.CreateViewModel<RegisterPlayerViewModel>();
+        _dialogService.Show<RegisterPlayerView>(this, registerPlayerViewModel);
+        _dialogService.Close(this);
     }
 
     public async Task TryAutoLogInAsync()

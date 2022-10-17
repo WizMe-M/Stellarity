@@ -8,8 +8,7 @@
         xmlns:viewModels="clr-namespace:Stellarity.Desktop.ViewModels"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
         x:Class="Stellarity.Desktop.Views.AuthorizationView"
-        x:DataType="viewModels:AuthorizationViewModel"
-        x:CompileBindings="True"
+        x:CompileBindings="True" x:DataType="viewModels:AuthorizationViewModel"
         Width="300" Height="400" CanResize="False"
         Icon="../Assets/Images/stellaris-logo.ico"
 
@@ -133,8 +132,9 @@
 
                 <Button Grid.Column="1" Grid.Row="0" Content="{x:Static locales:Resources.change_password}"
                         Command="{Binding ShowChangePasswordCommand}" />
-                <!-- TODO: make new VIEW and VIEWMODEL for user's registration -->
-                <Button Grid.Column="1" Grid.Row="1" Content="{x:Static locales:Resources.register}" />
+
+                <Button Grid.Column="1" Grid.Row="1" Content="{x:Static locales:Resources.register}"
+                        Command="{Binding ShowRegistrationCommand}" />
             </sg:SpacedGrid>
 
         </DockPanel>

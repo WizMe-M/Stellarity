@@ -17,9 +17,8 @@ public partial class MainViewModel : ViewModelBase
     {
         var dialogService = DiContainingService.Kernel.Get<IDialogService>();
         var accountingService = DiContainingService.Kernel.Get<AccountingService>();
-        var mainViewModel = DiContainingService.Kernel.Get<MainViewModel>();
 
-        var wantLogOut = await dialogService.ShowMessageBoxAsync(mainViewModel,
+        var wantLogOut = await dialogService.ShowMessageBoxAsync(this,
             "Do you really want to log out of your account?", "Confirm log out",
             MessageBoxButton.YesNo, MessageBoxImage.Information, false);
 
@@ -27,8 +26,8 @@ public partial class MainViewModel : ViewModelBase
         {
             accountingService.LogOut();
             var authorizationViewModel = dialogService.CreateViewModel<AuthorizationViewModel>();
-            dialogService.Show<AuthorizationView>(mainViewModel, authorizationViewModel);
-            dialogService.Close(mainViewModel);
+            dialogService.Show<AuthorizationView>(this, authorizationViewModel);
+            dialogService.Close(this);
         }
     }
 }

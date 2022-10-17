@@ -1,5 +1,6 @@
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Models;
+using Stellarity.Domain.Registration;
 using Stellarity.Domain.Services.Cache;
 
 namespace Stellarity.Domain.Authorization;
@@ -40,6 +41,16 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
         var accountEntity = AccountEntity.Find(_authorizationHistory!.UserEmail);
         if (accountEntity is { Deleted: false })
             AuthorizedUser = new Account(accountEntity);
+    }
+
+    public async Task<RegistrationResult> AccountPlayerRegistrationAsync(string email, string password)
+    {
+        var registrationResult = await Account.RegisterUserAsync(email, password, Roles.Player);
+        if (!registrationResult.IsSuccessful) return registrationResult;
+
+        AuthorizedUser = registrationResult.Account;
+        await SaveAuthorizationHistoryAsync(registrationResult.Account!.Email, true);
+        return registrationResult;
     }
 
     public async Task<AuthorizationResult> AccountAuthorizationAsync(string email, string password, bool remember)
