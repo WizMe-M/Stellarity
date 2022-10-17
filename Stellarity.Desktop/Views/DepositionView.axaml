@@ -1,0 +1,26 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels"
+        xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Stellarity.Desktop.Views.DepositionView"
+        x:CompileBindings="True" x:DataType="vm:DepositionViewModel"
+        
+        Width="300" SizeToContent="Height" CanResize="False"
+        Icon="../Assets/Images/stellaris-logo.ico"
+        ShowActivated="True" ShowInTaskbar="False"
+        WindowState="Normal" WindowStartupLocation="CenterOwner"
+        Title="Пополнить баланс">
+    <sg:SpacedGrid ColumnDefinitions="* *" RowDefinitions="* 2.5* *" ColumnSpacing="10" RowSpacing="10" Margin="5">
+        <TextBlock Grid.ColumnSpan="2" Text="{Binding $parent[Window].Title}" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <NumericUpDown Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" ParsingNumberStyle="Currency"
+                       Value="{Binding DepositionSum}" Minimum="1" Maximum="125000"
+                       Increment="0.01" Watermark="Sum of deposition" ClipValueToMinMax="True" CultureInfo="ru-RU"
+                       ShowButtonSpinner="False" VerticalAlignment="Top" />
+        <Button Grid.Column="0" Grid.Row="2" Command="{Binding ConfirmCommand}" Content="Пополнить" IsDefault="True" />
+        <Button Grid.Column="1" Grid.Row="2" Command="{Binding CancelCommand}" Content="Отмена" IsCancel="True" />
+    </sg:SpacedGrid>
+</Window>
