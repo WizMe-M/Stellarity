@@ -10,12 +10,6 @@ public class Account : SingleImageHolderModel<AccountEntity>
 {
     public Account(AccountEntity entity) : base(entity)
     {
-        Email = Entity.Email;
-        Nickname = Entity.Nickname ?? Entity.Email;
-        Password = HashedPassword.FromEncrypted(Entity.Password);
-        About = Entity.About ?? "";
-        Balance = Entity.Balance;
-        RegistrationDate = Entity.RegistrationDate;
     }
 
     public bool CanAddGames => Role == Roles.Administrator;
@@ -23,12 +17,12 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public bool CanAddUsers => Role == Roles.Administrator;
     public bool CanBanUsers => Role == Roles.Administrator;
 
-    public string Email { get; }
-    public string Nickname { get; private set; }
-    public HashedPassword Password { get; private set; }
-    public string About { get; private set; }
-    public decimal Balance { get; private set; }
-    public DateTime RegistrationDate { get; }
+    public string Email => Entity.Email;
+    public string Nickname => Entity.Nickname ?? Email;
+    public HashedPassword Password => HashedPassword.FromEncrypted(Entity.Password);
+    public string About => Entity.About ?? "";
+    public decimal Balance => Entity.Balance;
+    public DateTime RegistrationDate => Entity.RegistrationDate;
     public bool IsBanned => Entity.Deleted;
     public Roles Role => (Roles)Entity.RoleId;
 
@@ -55,46 +49,33 @@ public class Account : SingleImageHolderModel<AccountEntity>
         Library = games;
     }
 
-    public static Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role)
+    public static async Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role)
     {
         var exists = AccountEntity.Exists(email);
-        if (exists) return Task.FromResult(RegistrationResult.AlreadyExistsWithEmail());
+        if (exists) return RegistrationResult.AlreadyExistsWithEmail();
 
         var hashedPassword = HashedPassword.FromDecrypted(password).Password;
-        var entity = AccountEntity.Register(email, hashedPassword, (int)role);
+        var entity = await AccountEntity.RegisterAsync(email, hashedPassword, (int)role);
         var account = new Account(entity);
-        return Task.FromResult(RegistrationResult.Success(account));
+        return RegistrationResult.Success(account);
     }
 
-    public void ApplySatisfiedPassword(in HashedPassword password)
-    {
-        Entity.UpdatePassword(password.Password);
-        Password = HashedPassword.FromEncrypted(Entity.Password);
-    }
+    public bool IsIdenticalWith(Account acc) => acc.Entity.Id == Entity.Id;
 
-    /// <summary>
-    /// Deposits specified amount on user balance
-    /// </summary>
-    /// <param name="depositionAmount">Amount of deposition, that more than zero</param>
-    public void Deposit(decimal depositionAmount)
-    {
-        Entity.UpdateBalance(depositionAmount);
-        Balance = Entity.Balance;
-    }
-
-    /// <returns>Does user satisfy game's purchasing requirements</returns>
     public bool CheckCanPurchaseGame(Game game) => Balance >= game.Cost;
+    
+    public void ToggleBan() => Entity.SetBanStatus(!IsBanned);
 
-    /// <summary>
-    /// Purchases specified game and add it to user's library
-    /// </summary>
-    /// <param name="game">Game that can be purchased by user - see <see cref="CheckCanPurchaseGame"/></param>
+    public void ApplySatisfiedPassword(in HashedPassword password) => Entity.UpdatePassword(password.Password);
+
+    public void Deposit(decimal depositionAmount) => Entity.UpdateBalance(depositionAmount);
+
     public async Task PurchaseGameAsync(Game game)
     {
         if (!CheckCanPurchaseGame(game))
             throw new InvalidOperationException("User can't purchase this game - not enough balance");
+
         await Entity.PurchaseGameAsync(game.Entity);
-        Balance = Entity.Balance;
         await RefreshLibraryAsync();
     }
 
@@ -112,14 +93,9 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return comment;
     }
 
-
-    public bool IsIdenticalWith(Account acc) => acc.Entity.Id == Entity.Id;
-
     public Task EditProfileInfoAsync(string nickname, string about)
     {
         Entity.UpdateProfileInfo(nickname, about);
-        Nickname = nickname;
-        About = about;
         return Task.CompletedTask;
     }
 
@@ -135,10 +111,5 @@ public class Account : SingleImageHolderModel<AccountEntity>
         var accountEntities = await AccountEntity.GetAccountsAsync(accountsByTime, skipRows);
         var accounts = accountEntities.Select(entity => new Account(entity));
         return accounts;
-    }
-
-    public void ToggleBan()
-    {
-        Entity.SetBanStatus(!IsBanned);
     }
 }
