@@ -112,4 +112,14 @@ public class Account : SingleImageHolderModel<AccountEntity>
         var accounts = accountEntities.Select(entity => new Account(entity));
         return accounts;
     }
+
+    public static HashedPassword ChangePassword(string email, string password)
+    {
+        var entity = AccountEntity.Find(email);
+        if (entity is null) throw new InvalidOperationException("User with such email doesn't exist");
+        var account = new Account(entity);
+        var hashed = HashedPassword.FromDecrypted(password);
+        account.ApplySatisfiedPassword(hashed);
+        return account.Password;
+    }
 }

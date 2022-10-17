@@ -16,7 +16,7 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
     public bool? DialogResult { get; private set; }
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
-    private string _input = string.Empty;
+    private string _password = string.Empty;
 
     public ChangePasswordViewModel()
     {
@@ -28,15 +28,15 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
     public HashedPassword? NewPassword { get; private set; }
 
     [RelayCommand(CanExecute = nameof(IsPasswordCorrect))]
-    public void Confirm()
+    private void Confirm()
     {
-        NewPassword = HashedPassword.FromDecrypted(_input);
+        NewPassword = HashedPassword.FromDecrypted(_password);
         DialogResult = true;
         Close();
     }
 
     [RelayCommand]
-    public void Cancel()
+    private void Cancel()
     {
         DialogResult = false;
         Close();
@@ -46,7 +46,7 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
     {
         var builder = new ValidationBuilder<ChangePasswordViewModel>();
 
-        builder.RuleFor(vm => vm.Input)
+        builder.RuleFor(vm => vm.Password)
             .NotEmpty()
             .WithMessage("The password mustn't be empty string")
             .Must(password => UserValidation.IsCorrectPassword(password))
@@ -59,7 +59,6 @@ public partial class ChangePasswordViewModel : ViewModelBase, IModalDialogViewMo
 
         return builder.Build(this);
     }
-
 
     private void Close()
     {

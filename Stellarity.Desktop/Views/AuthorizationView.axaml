@@ -130,9 +130,9 @@
                            Text="{x:Static locales:Resources.forgot_password_q}" />
                 <TextBlock Grid.Column="0" Grid.Row="1" Classes="right question"
                            Text="{x:Static locales:Resources.have_not_account_q}" />
-                
-                <!-- TODO: make change password redirection -->
-                <Button Grid.Column="1" Grid.Row="0" Content="{x:Static locales:Resources.change_password}" />
+
+                <Button Grid.Column="1" Grid.Row="0" Content="{x:Static locales:Resources.change_password}"
+                        Command="{Binding ShowChangePasswordCommand}" />
                 <!-- TODO: make new VIEW and VIEWMODEL for user's registration -->
                 <Button Grid.Column="1" Grid.Row="1" Content="{x:Static locales:Resources.register}" />
             </sg:SpacedGrid>

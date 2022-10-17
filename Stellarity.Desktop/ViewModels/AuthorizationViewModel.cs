@@ -11,7 +11,7 @@ namespace Stellarity.Desktop.ViewModels;
 
 public partial class AuthorizationViewModel : ViewModelBase
 {
-    private readonly IDialogService _windowService = null!;
+    private readonly IDialogService _dialogService = null!;
     private readonly AccountingService _accountingService = null!;
 
     [ObservableProperty]
@@ -30,9 +30,9 @@ public partial class AuthorizationViewModel : ViewModelBase
         RememberMe = true;
     }
 
-    public AuthorizationViewModel(IDialogService windowService, AccountingService accountingService) : this()
+    public AuthorizationViewModel(IDialogService dialogService, AccountingService accountingService) : this()
     {
-        _windowService = windowService;
+        _dialogService = dialogService;
         _accountingService = accountingService;
     }
 
@@ -53,9 +53,12 @@ public partial class AuthorizationViewModel : ViewModelBase
         OpenMainView();
     }
 
-    private async Task ShowChangePassword()
+    [RelayCommand]
+    private void ShowChangePassword()
     {
-        // TODO: show dialog
+        var changePasswordViewModel = _dialogService.CreateViewModel<ChangePasswordForEmailViewModel>();
+        _dialogService.Show(this, changePasswordViewModel);
+        _dialogService.Close(this);
     }
 
     private void ShowRegistration()
@@ -80,12 +83,12 @@ public partial class AuthorizationViewModel : ViewModelBase
     }
 
     private Task ShowErrorAsync(string text, string title) =>
-        _windowService.ShowMessageBoxAsync(this, text, title, MessageBoxButton.Ok, MessageBoxImage.Error);
+        _dialogService.ShowMessageBoxAsync(this, text, title, MessageBoxButton.Ok, MessageBoxImage.Error);
 
     private void OpenMainView()
     {
-        var vm = _windowService.CreateViewModel<MainViewModel>();
-        _windowService.Show(this, vm);
-        _windowService.Close(this);
+        var vm = _dialogService.CreateViewModel<MainViewModel>();
+        _dialogService.Show(this, vm);
+        _dialogService.Close(this);
     }
 }
