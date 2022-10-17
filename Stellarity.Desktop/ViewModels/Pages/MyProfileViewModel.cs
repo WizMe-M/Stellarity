@@ -12,8 +12,7 @@ using Stellarity.Domain.Models;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 
-[ObservableObject]
-public partial class MyProfileViewModel : IAsyncLoader
+public partial class MyProfileViewModel : ViewModelBase, IAsyncLoader
 {
     [ObservableProperty]
     private Account _user = null!;
