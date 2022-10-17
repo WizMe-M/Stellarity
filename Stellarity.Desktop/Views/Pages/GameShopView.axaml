@@ -8,9 +8,18 @@
              x:Class="Stellarity.Desktop.Views.Pages.GameShopView"
              x:CompileBindings="True" x:DataType="pages:GameShopViewModel">
     <DockPanel>
-        <Button DockPanel.Dock="Top" Content="Добавить игру" Command="{Binding GoToAddGameCommand}"
-                IsVisible="{Binding Authorized.CanAddGames}"
-                HorizontalAlignment="Right" Margin="50 20" />
+        <DockPanel Dock="Top" Background="#66383838">
+            <Button DockPanel.Dock="Right" Content="Добавить игру" Command="{Binding GoToAddGameCommand}"
+                    IsVisible="{Binding Authorized.CanAddGames}"
+                    HorizontalAlignment="Right" Margin="50 20" />
+
+            <StackPanel Orientation="Horizontal" Spacing="20" Margin="15 5"
+                        VerticalAlignment="Center" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Authorized.Balance, StringFormat='{}Баланс: {0} руб.'}"
+                           FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
+                <Button Content="Пополнить баланс" VerticalAlignment="Center" />
+            </StackPanel>
+        </DockPanel>
 
         <ScrollViewer VerticalScrollBarVisibility="Visible">
             <ItemsControl Items="{Binding AllGames}" Background="Transparent" Margin="0 20">
@@ -28,7 +37,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <items:GameCard Title="{Binding Instance.Title}" 
+                        <items:GameCard Title="{Binding Instance.Title}"
                                         CostString="{Binding Instance.Cost, StringFormat={}{0} руб.}"
                                         Cover="{Binding Cover}"
                                         Command="{Binding OpenGamePageCommand}"
