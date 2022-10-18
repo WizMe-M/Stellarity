@@ -15,14 +15,11 @@ public partial class AuthorizationViewModel : ViewModelBase
     private readonly IDialogService _dialogService = null!;
     private readonly AccountingService _accountingService = null!;
 
-    [ObservableProperty]
-    private string _email = string.Empty;
+    [ObservableProperty] private string _email = string.Empty;
 
-    [ObservableProperty]
-    private string _password = string.Empty;
+    [ObservableProperty] private string _password = string.Empty;
 
-    [ObservableProperty]
-    private bool _rememberMe;
+    [ObservableProperty] private bool _rememberMe;
 
     private AuthorizationViewModel()
     {
@@ -47,7 +44,7 @@ public partial class AuthorizationViewModel : ViewModelBase
         var authorizationResult = await _accountingService.AccountAuthorizationAsync(Email, hashedPassword, RememberMe);
         if (!authorizationResult.IsSuccessful)
         {
-            await ShowErrorAsync(authorizationResult.Message, "Authorization error");
+            await ShowErrorAsync(authorizationResult.ErrorMessage!, "Authorization error");
             return;
         }
 

@@ -1,25 +1,24 @@
-﻿using Stellarity.Domain.Models;
+﻿using Stellarity.Domain.Abstractions;
+using Stellarity.Domain.Models;
 
 namespace Stellarity.Domain.Authorization;
 
-public class AuthorizationResult
+public class AuthorizationResult : Result
 {
-    private AuthorizationResult(Account? account = null, string message = "")
+    private AuthorizationResult(Account? account = null, string? errorMessage = null)
+        : base(errorMessage)
     {
         Account = account;
-        Message = message;
     }
 
     public Account? Account { get; }
 
-    public string Message { get; }
-
-    public bool IsSuccessful => Account is { };
+    public override bool IsSuccessful => Account is { };
 
     public static AuthorizationResult NoSuchUser() =>
-        new(message: "User with such email and/or password doesn't exist");
+        new(errorMessage: "User with such email and/or password doesn't exist");
 
-    public static AuthorizationResult UserWasBanned() => new(message: "This user was banned by administrator");
+    public static AuthorizationResult UserWasBanned() => new(errorMessage: "This user was banned by administrator");
 
     public static AuthorizationResult Success(Account account) => new(account);
 }
