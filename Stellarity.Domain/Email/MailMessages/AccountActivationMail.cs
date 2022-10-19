@@ -9,7 +9,7 @@ public class AccountActivationMail : MailTemplate
 
     private const string BodyTemplate = @"
 <p>Здравствуйте, <b>{0}</b>. Для подтверждения вашего аккаунта введите полученный код в приложении. 
-Если вы не делали этого, просто игнорируйте данное письмо.<p/>
+Если вы не делали этого, просто игнорируйте данное письмо.</p>
 <center>Код подтверждения: <b>{1}</b></center>";
 
     private readonly int _activationCode;

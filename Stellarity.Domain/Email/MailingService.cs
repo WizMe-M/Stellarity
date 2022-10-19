@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
 using Stellarity.Domain.Email.MailMessages;
@@ -21,10 +22,57 @@ public class MailingService
         _from = new MailAddress(SenderEmail, "Stellarity");
     }
 
-    public MailMessage GetActivationMail(in string receiverEmail, in int code)
+    public async Task<EmailDeliverResult> SendConfirmAccount(string email)
     {
-        var to = new MailAddress(receiverEmail);
+        var isEmailValid = MailAddress.TryCreate(email, out var to);
+        if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
+
+        var code = new Random().Next(100000, 999999);
+        var mail = GetActivationMail(to!, code);
+
+        try
+        {
+            await SendMailAsync(mail);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            return EmailDeliverResult.NotDelivered();
+        }
+
+        return EmailDeliverResult.Success();
+    }
+
+    public async Task<EmailDeliverResult> SendChangePassword(string email)
+    {
+        var isEmailValid = MailAddress.TryCreate(email, out var to);
+        if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
+
+        var code = new Random().Next(100000, 999999);
+        var mail = GetChangePasswordMail(to!, code);
+
+        try
+        {
+            await SendMailAsync(mail);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            return EmailDeliverResult.NotDelivered();
+        }
+
+        return EmailDeliverResult.Success();
+    }
+
+    public MailMessage GetActivationMail(in MailAddress to, in int code)
+    {
         var mailTemplate = new AccountActivationMail(_from, to, code);
+        return mailTemplate.GetMailMessage();
+    }
+
+    public MailMessage GetChangePasswordMail(in MailAddress to, in int code)
+    {
+        var mailTemplate = new ChangePasswordConfirmationMail(_from, to, code);
         return mailTemplate.GetMailMessage();
     }
 
