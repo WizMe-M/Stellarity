@@ -6,8 +6,12 @@ public static class DatabaseXmlReader
 {
     public static DatabaseConfiguration ParseXmlFile(string path)
     {
-        var config = new DatabaseConfiguration();
-        
+        var host = string.Empty;
+        var port = string.Empty;
+        var database = string.Empty;
+        var userId = string.Empty;
+        var password = string.Empty;
+
         var xml = new XmlDocument();
         xml.Load(path);
         var root = xml.DocumentElement!;
@@ -16,37 +20,19 @@ public static class DatabaseXmlReader
             switch (node.Name)
             {
                 case "server":
-                    config.Host = node.GetAttribute("host");
-                    config.Port = node.GetAttribute("port");
+                    host = node.GetAttribute(nameof(host));
+                    port = node.GetAttribute(nameof(port));
                     break;
                 case "database":
-                    config.Database = node.GetAttribute("name");
+                    database = node.GetAttribute(nameof(database));
                     break;
                 case "user_access":
-                    config.UserId = node.GetAttribute("user_id");
-                    config.Password = node.GetAttribute("password");
+                    userId = node.GetAttribute(nameof(userId));
+                    password = node.GetAttribute(nameof(password));
                     break;
             }
         }
 
-        return config;
-    }
-    
-    public class DatabaseConfiguration
-    {
-        public string Host { get; set; } = null!;
-        public string Port { get; set; } = null!;
-        public string Database { get; set; } = null!;
-        public string UserId { get; set; } = null!;
-        public string Password { get; set; } = null!;
-
-        /// <summary>
-        /// Converts <see cref="DatabaseConfiguration"/> into connection string
-        /// </summary>
-        /// <returns>Connection string</returns>
-        public override string ToString()
-        {
-            return $"Server={Host}; Port={Port}; Database={Database}; User ID={UserId}; Password={Password}";
-        }
+        return new DatabaseConfiguration(host, port, database, userId, password);
     }
 }

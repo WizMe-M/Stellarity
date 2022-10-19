@@ -26,35 +26,23 @@ internal sealed class StellarityContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (optionsBuilder.IsConfigured) return;
-        DatabaseXmlReader.DatabaseConfiguration config;
+        DatabaseConfiguration config;
         try
         {
-            config = DatabaseXmlReader.ParseXmlFile("B:\\database_config.xml");
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var path = Path.Join(currentDirectory, "config.xml");
+            config = DatabaseXmlReader.ParseXmlFile(path);
         }
         catch (FileNotFoundException)
         {
-            config = new DatabaseXmlReader.DatabaseConfiguration()
-            {
-                Host = "localhost",
-                Port = "5432",
-                Database = "Stellaris",
-                UserId = "postgres",
-                Password = "password"
-            };
+            config = DatabaseConfiguration.FromDefault();
         }
         catch (DirectoryNotFoundException)
         {
-            config = new DatabaseXmlReader.DatabaseConfiguration()
-            {
-                Host = "localhost",
-                Port = "5432",
-                Database = "Stellaris",
-                UserId = "postgres",
-                Password = "password"
-            };
+            config = DatabaseConfiguration.FromDefault();
         }
 
-        optionsBuilder.UseNpgsql(config.ToString());
+        optionsBuilder.UseNpgsql(connectionString: config.ToString());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
