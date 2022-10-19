@@ -45,6 +45,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     public ICollection<CommentEntity> CommentWhereIsAuthor { get; set; }
     public ICollection<CommentEntity> CommentWhereIsProfile { get; set; }
     public ICollection<LibraryEntity> Library { get; set; }
+    public ICollection<KeyEntity> Keys { get; set; }
 
     public static bool Exists(string email)
     {

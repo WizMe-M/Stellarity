@@ -153,6 +153,37 @@ internal sealed class StellarityContext : DbContext
                 .HasColumnName("name");
         });
 
+        modelBuilder.Entity<KeyEntity>(entity =>
+        {
+            entity.HasKey(e => e.KeyValue)
+                .HasName("pk_key");
+
+            entity.ToTable("key");
+
+            entity.Property(e => e.GameId)
+                .HasColumnName("game_id");
+
+            entity.Property(e => e.AccountId)
+                .HasColumnName("buyer_id");
+
+            entity.HasIndex(e => new { e.AccountId, e.GameId })
+                .IsUnique();
+
+            entity.Property(e => e.PurchaseDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("purchase_date")
+                .HasDefaultValueSql("now()");
+
+            entity.HasOne(d => d.Game)
+                .WithMany(p => p.Keys)
+                .HasForeignKey(d => d.GameId)
+                .HasConstraintName("fk_key_game");
+
+            entity.HasOne(d => d.Account)
+                .WithMany(p => p.Keys)
+                .HasForeignKey(d => d.AccountId)
+                .HasConstraintName("fk_key_user");
+        });
         modelBuilder.Entity<LibraryEntity>(entity =>
         {
             entity.HasKey(e => new { UserId = e.AccountId, e.GameId })

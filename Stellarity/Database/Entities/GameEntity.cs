@@ -28,6 +28,7 @@ public partial class GameEntity : SingleImageHolderEntity
     public DateTime AddDate { get; set; }
 
     public ICollection<LibraryEntity> Libraries { get; set; }
+    public ICollection<KeyEntity> Keys { get; set; }
 
     public static IEnumerable<GameEntity> GetAll()
     {
