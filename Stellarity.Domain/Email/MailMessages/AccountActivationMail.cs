@@ -12,10 +12,10 @@ public class AccountActivationMail : MailTemplate
 Если вы не делали этого, просто игнорируйте данное письмо.</p>
 <center>Код подтверждения: <b>{1}</b></center>";
 
-    private readonly int _activationCode;
+    private readonly string _activationCode;
     private readonly string _to;
 
-    public AccountActivationMail(MailAddress from, MailAddress to, int activationCode)
+    public AccountActivationMail(MailAddress from, MailAddress to, string activationCode)
         : base(Subject, Header, BodyTemplate, from, to)
     {
         _activationCode = activationCode;

@@ -22,12 +22,11 @@ public class MailingService
         _from = new MailAddress(SenderEmail, "Stellarity");
     }
 
-    public async Task<EmailDeliverResult> SendConfirmAccount(string email)
+    public async Task<EmailDeliverResult> SendConfirmAccount(string email, string code)
     {
         var isEmailValid = MailAddress.TryCreate(email, out var to);
         if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
 
-        var code = new Random().Next(100000, 999999);
         var mail = GetActivationMail(to!, code);
 
         try
@@ -43,12 +42,11 @@ public class MailingService
         return EmailDeliverResult.Success();
     }
 
-    public async Task<EmailDeliverResult> SendChangePassword(string email)
+    public async Task<EmailDeliverResult> SendChangePassword(string email, string code)
     {
         var isEmailValid = MailAddress.TryCreate(email, out var to);
         if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
 
-        var code = new Random().Next(100000, 999999);
         var mail = GetChangePasswordMail(to!, code);
 
         try
@@ -64,15 +62,41 @@ public class MailingService
         return EmailDeliverResult.Success();
     }
 
-    public MailMessage GetActivationMail(in MailAddress to, in int code)
+    public async Task<EmailDeliverResult> SendGameCheque(string email, string key)
+    {
+        var isEmailValid = MailAddress.TryCreate(email, out var to);
+        if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
+
+        var mail = GetGameChequeMail(to!, key);
+
+        try
+        {
+            await SendMailAsync(mail);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            return EmailDeliverResult.NotDelivered();
+        }
+
+        return EmailDeliverResult.Success();
+    }
+
+    public MailMessage GetActivationMail(in MailAddress to, in string code)
     {
         var mailTemplate = new AccountActivationMail(_from, to, code);
         return mailTemplate.GetMailMessage();
     }
 
-    public MailMessage GetChangePasswordMail(in MailAddress to, in int code)
+    public MailMessage GetChangePasswordMail(in MailAddress to, in string code)
     {
         var mailTemplate = new ChangePasswordConfirmationMail(_from, to, code);
+        return mailTemplate.GetMailMessage();
+    }
+
+    public MailMessage GetGameChequeMail(in MailAddress to, in string key)
+    {
+        var mailTemplate = new GameChequeMail(_from, to, key);
         return mailTemplate.GetMailMessage();
     }
 

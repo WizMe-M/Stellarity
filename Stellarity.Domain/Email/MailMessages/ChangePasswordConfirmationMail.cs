@@ -13,9 +13,9 @@ public class ChangePasswordConfirmationMail : MailTemplate
 <center>Код подтверждения: <b>{1}</b></center>";
 
     private readonly string _receiver;
-    private readonly int _confirmationCode;
+    private readonly string _confirmationCode;
 
-    public ChangePasswordConfirmationMail(MailAddress from, MailAddress to, int confirmationCode)
+    public ChangePasswordConfirmationMail(MailAddress from, MailAddress to, string confirmationCode)
         : base(Subject, Header, ChangePasswordTemplate, from, to)
     {
         _confirmationCode = confirmationCode;

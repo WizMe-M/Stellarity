@@ -10,15 +10,23 @@ public class MailTests
     public async Task SendActivationMail()
     {
         var service = new MailingService();
-
-        var result = await service.SendConfirmAccount(Receiver);
+        var code = new Random().Next(100000, 999999);
+        var result = await service.SendConfirmAccount(Receiver, code.ToString());
     }
 
     [Test]
     public async Task SendChangePasswordMail()
     {
         var service = new MailingService();
+        var code = new Random().Next(100000, 999999);
+        var result = await service.SendChangePassword(Receiver, code.ToString());
+    }
 
-        var result = await service.SendChangePassword(Receiver);
+    [Test]
+    public async Task SendGameChequeMail()
+    {
+        const string key = "AAAAA-BBBBB-CCCCC";
+        var service = new MailingService();
+        var result = await service.SendGameCheque(Receiver, key);
     }
 }
