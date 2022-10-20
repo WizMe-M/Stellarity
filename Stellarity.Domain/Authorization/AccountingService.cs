@@ -1,3 +1,4 @@
+using Stellarity.Database;
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Models;
 using Stellarity.Domain.Registration;

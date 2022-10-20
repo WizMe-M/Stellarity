@@ -1,4 +1,4 @@
-namespace Stellarity.Domain.Models;
+namespace Stellarity.Database;
 
 public enum Roles
 {

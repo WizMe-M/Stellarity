@@ -20,8 +20,8 @@ internal sealed class StellarityContext : DbContext
     public DbSet<GameEntity> Games { get; set; } = null!;
     public DbSet<ImageEntity> Images { get; set; } = null!;
     public DbSet<LibraryEntity> Libraries { get; set; } = null!;
-    public DbSet<RoleEntity> Roles { get; set; } = null!;
     public DbSet<AccountEntity> Accounts { get; set; } = null!;
+    public DbSet<KeyEntity> Keys { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -47,6 +47,8 @@ internal sealed class StellarityContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresEnum<Roles>();
+
         modelBuilder.Entity<CommentEntity>(entity =>
         {
             entity.ToTable("comments");
@@ -148,11 +150,15 @@ internal sealed class StellarityContext : DbContext
 
             entity.ToTable("key");
 
+            entity.Property(e => e.KeyValue)
+                .HasColumnName("key_value");
+
             entity.Property(e => e.GameId)
                 .HasColumnName("game_id");
 
             entity.Property(e => e.AccountId)
-                .HasColumnName("buyer_id");
+                .HasColumnName("buyer_id")
+                .IsRequired(false);
 
             entity.HasIndex(e => new { e.AccountId, e.GameId })
                 .IsUnique();
@@ -160,7 +166,7 @@ internal sealed class StellarityContext : DbContext
             entity.Property(e => e.PurchaseDate)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("purchase_date")
-                .HasDefaultValueSql("now()");
+                .IsRequired(false);
 
             entity.HasOne(d => d.Game)
                 .WithMany(p => p.Keys)
@@ -201,21 +207,6 @@ internal sealed class StellarityContext : DbContext
                 .HasConstraintName("fk_library_user");
         });
 
-        modelBuilder.Entity<RoleEntity>(entity =>
-        {
-            entity.ToTable("roles");
-
-            entity.HasIndex(e => e.Name, "uq_roles_name")
-                .IsUnique();
-
-            entity.Property(e => e.Id)
-                .HasColumnName("id");
-
-            entity.Property(e => e.Name)
-                .HasMaxLength(25)
-                .HasColumnName("name");
-        });
-
         modelBuilder.Entity<AccountEntity>(entity =>
         {
             entity.ToTable("users");
@@ -231,17 +222,20 @@ internal sealed class StellarityContext : DbContext
 
             entity.Property(e => e.About)
                 .HasMaxLength(250)
-                .HasColumnName("about");
+                .HasColumnName("about")
+                .IsRequired(false);
 
             entity.Property(e => e.SingleImageId)
                 .HasColumnName("avatar_guid");
 
             entity.Property(e => e.Balance)
                 .HasPrecision(10, 2)
-                .HasColumnName("balance");
+                .HasColumnName("balance")
+                .HasDefaultValue(0);
 
             entity.Property(e => e.Deleted)
-                .HasColumnName("deleted");
+                .HasColumnName("deleted")
+                .HasDefaultValue(false);
 
             entity.Property(e => e.Email)
                 .HasMaxLength(320)
@@ -249,7 +243,8 @@ internal sealed class StellarityContext : DbContext
 
             entity.Property(e => e.Nickname)
                 .HasMaxLength(20)
-                .HasColumnName("nickname");
+                .HasColumnName("nickname")
+                .IsRequired(false);
 
             entity.Property(e => e.Password)
                 .HasMaxLength(32)
@@ -260,30 +255,21 @@ internal sealed class StellarityContext : DbContext
                 .HasColumnName("registration_date")
                 .HasDefaultValueSql("now()");
 
-            entity.Property(e => e.RoleId)
-                .HasColumnName("role_id");
+            entity.Property(e => e.Role)
+                .HasColumnName("user_role")
+                .HasConversion<string>();
 
             entity.HasOne(d => d.SingleImageEntity)
                 .WithMany(p => p.Users)
                 .HasForeignKey(d => d.SingleImageId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("fk_users_avatar_guid");
-
-            entity.HasOne(d => d.Role)
-                .WithMany(p => p.Users)
-                .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasConstraintName("fk_users_role_id");
         });
-
-        modelBuilder.Entity<RoleEntity>().HasData(
-            new RoleEntity { Id = 1, Name = "Администратор" },
-            new RoleEntity { Id = 2, Name = "Игрок" });
 
         modelBuilder.Entity<AccountEntity>().HasData(new AccountEntity
         {
             Id = 1,
-            RoleId = 1,
+            Role = Roles.Administrator,
             Email = "admin@mail.ru",
             Nickname = "Stellarity.Desktop",
             Password = "P@ssw0rd"

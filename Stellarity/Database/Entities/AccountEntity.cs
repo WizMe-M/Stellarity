@@ -15,7 +15,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         Email = email;
         Password = password;
-        RoleId = roleId;
+        Role = (Roles)roleId;
     }
 
     public int Id { get; set; }
@@ -39,9 +39,8 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     /// </summary>
     public bool Deleted { get; set; }
 
-    public int RoleId { get; set; }
+    public Roles Role { get; set; }
 
-    public RoleEntity Role { get; set; } = null!;
     public ICollection<CommentEntity> CommentWhereIsAuthor { get; set; }
     public ICollection<CommentEntity> CommentWhereIsProfile { get; set; }
     public ICollection<LibraryEntity> Library { get; set; }
@@ -88,7 +87,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         var gamer = new AccountEntity(email, password, roleId);
         context.Accounts.Add(gamer);
         context.SaveChanges();
-        context.Entry(gamer).Reference(u => u.Role).Load();
         return gamer;
     }
 
@@ -98,10 +96,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         var user = new AccountEntity(email, password, roleId);
         context.Accounts.Add(user);
         await context.SaveChangesAsync();
-
-        await context.Entry(user)
-            .Reference(u => u.Role)
-            .LoadAsync();
         return user;
     }
 

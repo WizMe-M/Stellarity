@@ -1,10 +1,9 @@
-﻿using Ninject;
+﻿using Stellarity.Database;
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Cryptography;
 using Stellarity.Domain.Registration;
-using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
 
@@ -26,7 +25,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public decimal Balance => Entity.Balance;
     public DateTime RegistrationDate => Entity.RegistrationDate;
     public bool IsBanned => Entity.Deleted;
-    public Roles Role => (Roles)Entity.RoleId;
+    public Roles Role => Entity.Role;
 
     public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
 
