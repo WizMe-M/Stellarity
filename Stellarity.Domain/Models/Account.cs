@@ -63,7 +63,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public bool IsIdenticalWith(Account acc) => acc.Entity.Id == Entity.Id;
 
-    public bool CheckCanPurchaseGame(Game game) => Balance >= game.Cost;
+    public bool CheckCanPurchaseGame(Game game) => Balance >= game.Cost && game.HasFreeKeys;
     
     public void ToggleBan() => Entity.SetBanStatus(!IsBanned);
 

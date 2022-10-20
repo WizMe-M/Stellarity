@@ -15,6 +15,8 @@ public class Game : SingleImageHolderModel<GameEntity>
     public decimal Cost => Entity.Cost;
     public DateTime AddedInShopDate => Entity.AddDate;
 
+    public bool HasFreeKeys => Entity.HasFreeKeys();
+
     public static IEnumerable<Game> GetAllShop()
     {
         var gameEntities = GameEntity.GetAll();
