@@ -80,4 +80,8 @@ public partial class GameEntity : SingleImageHolderEntity
         context.Games.Update(this);
         context.SaveChanges();
     }
+
+    public bool HasFreeKeys() => KeyEntity.GetGameFreeKeys(Id).Any();
+
+    public KeyEntity? NextKeyOrDefault() => KeyEntity.NextKeyOrDefault(Id);
 }
