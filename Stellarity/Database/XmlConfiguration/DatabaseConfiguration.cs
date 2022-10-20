@@ -15,7 +15,7 @@ public class DatabaseConfiguration
 
     public static DatabaseConfiguration FromDefault()
     {
-        return new DatabaseConfiguration("localhost", "5432", "Stellaris", "postgres", "password");
+        return new DatabaseConfiguration("localhost", "5432", "Stellarity", "postgres", "password");
     }
 
     /// <summary>
