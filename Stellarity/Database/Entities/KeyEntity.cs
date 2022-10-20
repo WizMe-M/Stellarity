@@ -15,10 +15,22 @@ public sealed partial class KeyEntity : IEntity
     public DateTime? PurchaseDate { get; set; }
 
     public GameEntity Game { get; set; }
-    public AccountEntity Account { get; set; }
+    public AccountEntity? Account { get; set; }
 
     public static bool GameHasFreeKeys(int gameId) => GetGameFreeKeys(gameId).Any();
 
+#if DEBUG
+    public static IEnumerable<KeyEntity> GetAllGameKeys(int gameId)
+    {
+        using var context = new StellarityContext();
+        var keys = context.Keys
+            .Include(key => key.Game)
+            .Include(key => key.Account)
+            .Where(key => key.GameId == gameId);
+        return keys.ToArray();
+    }
+#endif
+    
     public static IEnumerable<KeyEntity> GetGameFreeKeys(int gameId)
     {
         using var context = new StellarityContext();

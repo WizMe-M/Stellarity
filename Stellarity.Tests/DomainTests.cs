@@ -38,4 +38,12 @@ public class DomainTests
         var acc = new Account(ent);
         await acc.LoadImageAsync();
     }
+
+    [Test]
+    public void GetKeys()
+    {
+        var gameId = 1;
+        var keysEntity = KeyEntity.GetAllGameKeys(gameId);
+        var keys = keysEntity.Select(entity => new Key(entity));
+    }
 }

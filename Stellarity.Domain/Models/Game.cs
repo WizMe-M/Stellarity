@@ -5,7 +5,7 @@ namespace Stellarity.Domain.Models;
 
 public class Game : SingleImageHolderModel<GameEntity>
 {
-    protected Game(GameEntity entity) : base(entity)
+    public Game(GameEntity entity) : base(entity)
     {
     }
 
