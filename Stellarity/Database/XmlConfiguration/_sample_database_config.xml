@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <database_configuration>
-    <server host="localhost" port="5432" />
-    <database name="Stellaris" />
-    <user_access user_id="postgres" password="password" />
+    <server host="localhost" port="5432"/>
+    <database database="Stellarity"/>
+    <user_access userId="postgres" password="password"/>
 </database_configuration>
