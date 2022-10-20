@@ -20,4 +20,9 @@ public class Key : DomainModel<KeyEntity>
     public bool IsPurchased { get; }
 
     public DateTime? PurchaseDate => Entity.PurchaseDate;
+
+    public static bool WasPurchased(Account account, Game game)
+    {
+        return KeyEntity.Exists(account.Entity.Id, game.Entity.Id);
+    }
 }

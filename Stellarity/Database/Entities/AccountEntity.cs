@@ -122,18 +122,16 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
             .LoadAsync();
     }
 
-    public async Task PurchaseGameAsync(GameEntity game)
+    public async Task PurchaseKeyForGameAsync(GameEntity game)
     {
         await using var context = new StellarityContext();
         context.Accounts.Attach(this);
         Balance -= game.Cost;
-        var lib = new LibraryEntity
-        {
-            AccountId = Id,
-            GameId = game.Id
-        };
-        context.Libraries.Add(lib);
         context.Accounts.Update(this);
+
+        var key = game.NextKeyOrDefault()!;
+        key.SetKeyPurchased(Id);
+        context.Keys.Update(key);
         await context.SaveChangesAsync();
     }
 
@@ -145,13 +143,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
             .Include(comment => comment.Profile)
             .Where(comment => comment.ProfileId == Id)
             .ToArrayAsync();
-    }
-
-    public void LoadAvatar()
-    {
-        using var context = new StellarityContext();
-        var entry = context.Accounts.Attach(this);
-        entry.Reference(entity => entity.SingleImageEntity).Load();
     }
 
     public void UpdateProfileInfo(string nickname, string about)

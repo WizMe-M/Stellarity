@@ -46,4 +46,14 @@ public class DomainTests
         var keysEntity = KeyEntity.GetAllGameKeys(gameId);
         var keys = keysEntity.Select(entity => new Key(entity));
     }
+
+    [Test]
+    public async Task AccountPurchaseKey()
+    {
+        var game = Game.GetAllShop().First();
+        var ent = AccountEntity.GetAdmin();
+        var acc = new Account(ent);
+        await acc.PurchaseGameAsync(game);
+        var keys = KeyEntity.GetUserPurchasedKeys(ent.Id);
+    }
 }

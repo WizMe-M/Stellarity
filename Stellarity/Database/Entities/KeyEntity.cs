@@ -47,7 +47,7 @@ public sealed partial class KeyEntity : IEntity
             .Include(key => key.Account)
             .Include(key => key.Game)
             .Where(key => key.AccountId == userId);
-        return keys;
+        return keys.ToArray();
     }
 
     public static KeyEntity? NextKeyOrDefault(int gameId)
@@ -86,11 +86,13 @@ public sealed partial class KeyEntity : IEntity
 
     public void SetKeyPurchased(int userId)
     {
-        using var context = new StellarityContext();
-        context.Keys.Attach(this);
         AccountId = userId;
         PurchaseDate = DateTime.Now;
-        context.Keys.Update(this);
-        context.SaveChanges();
+    }
+
+    public static bool Exists(int accountId, int gameId)
+    {
+        using var context = new StellarityContext();
+        return context.Keys.Any(key => key.AccountId == accountId && key.GameId == gameId);
     }
 }

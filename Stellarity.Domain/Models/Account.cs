@@ -29,7 +29,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
 
-    public bool IsNicknameSet => Entity.Nickname != null;
+    public bool IsNicknameSet => Entity.Nickname is { };
 
     public static async Task<AuthorizationResult> AuthorizeAsync(string email, string password)
     {
@@ -44,6 +44,8 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public async Task RefreshLibraryAsync()
     {
+        // TODO: load? may it be direct query
+        // TODO: keys instead of library
         await Entity.LoadLibraryAsync();
         var games = Entity.Library.Select(library =>
             new LibraryGame(library.Game, library.PurchaseDate));
@@ -63,8 +65,11 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public bool IsIdenticalWith(Account acc) => acc.Entity.Id == Entity.Id;
 
-    public bool CheckCanPurchaseGame(Game game) => Balance >= game.Cost && game.HasFreeKeys;
-    
+    public bool CheckCanPurchaseGame(Game game) => 
+        !HasPurchasedGame(game) && game.HasFreeKeys && Balance >= game.Cost;
+
+    private bool HasPurchasedGame(Game game) => Key.WasPurchased(this, game);
+
     public void ToggleBan() => Entity.SetBanStatus(!IsBanned);
 
     public void ApplySatisfiedPassword(in HashedPassword password) => Entity.UpdatePassword(password.Password);
@@ -74,9 +79,10 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public async Task PurchaseGameAsync(Game game)
     {
         if (!CheckCanPurchaseGame(game))
-            throw new InvalidOperationException("User can't purchase this game - not enough balance");
+            throw new InvalidOperationException("Can't purchase this game");
 
-        await Entity.PurchaseGameAsync(game.Entity);
+        await Entity.PurchaseKeyForGameAsync(game.Entity);
+        // TODO: notify game cheque mailing
         await RefreshLibraryAsync();
     }
 
