@@ -1,6 +1,8 @@
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Stellarity.Database;
 using Stellarity.Desktop.Ninject;
 using Stellarity.Desktop.Views;
 using Stellarity.Domain.Services;
@@ -17,7 +19,7 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // Task.Run(StellarisContext.CreateDatabaseAsync);
+        Task.Run(async () => await DatabaseInitializer.CreateDbAsync());
         DiContainingService.Initialize(new DialogServiceModule());
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
