@@ -60,4 +60,22 @@ public class DatabaseTests
         key?.SetKeyPurchased(userId);
         Assert.That(key is { AccountId: { } });
     }
+
+    [Test]
+    public void ImportKeys()
+    {
+        var gameId = 1;
+        var keys = new (int gameId, string keyValue)[]
+        {
+            (gameId, "AAAAA-AAAAA-AAAAA"),
+            (gameId, "AAAAA-AAAAA-BBBBB"),
+            (gameId, "AAAAA-AAAAA-CCCCC"),
+            (gameId, "AAAAA-BBBBB-CCCCC"),
+            (gameId, "AAAAA-12345-CCCCC")
+        };
+        
+        KeyEntity.ImportKeys(keys);
+        var keyCount = KeyEntity.GetGameFreeKeys(gameId).Count();
+        Assert.That(keyCount, Is.EqualTo(4));
+    }
 }

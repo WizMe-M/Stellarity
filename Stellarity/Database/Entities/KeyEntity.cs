@@ -56,6 +56,22 @@ public sealed partial class KeyEntity : IEntity
         return true;
     }
 
+    public static void ImportKeys(IEnumerable<(int gameId, string keyValue)> imported)
+    {
+        using var context = new StellarityContext();
+        
+        foreach (var newKey in imported)
+        {
+            var containsSuchKey = context.Keys.Any(key => key.KeyValue == newKey.keyValue);
+            if (containsSuchKey) continue;
+            
+            var key = new KeyEntity { KeyValue = newKey.keyValue, GameId = newKey.gameId };
+            context.Keys.Add(key);
+        }
+        
+        context.SaveChanges();
+    }
+
     public void SetKeyPurchased(int userId)
     {
         using var context = new StellarityContext();
