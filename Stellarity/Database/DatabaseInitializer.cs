@@ -4,9 +4,9 @@ namespace Stellarity.Database;
 
 public static class DatabaseInitializer
 {
-    public static Task CreateDbAsync()
+    public static void CreateDb()
     {
         using var context = new StellarityContext();
-        return context.Database.MigrateAsync();
+        context.Database.Migrate();
     }
 }

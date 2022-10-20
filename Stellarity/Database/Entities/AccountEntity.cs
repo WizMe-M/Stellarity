@@ -15,7 +15,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         Email = email;
         Password = password;
-        RoleId = roleId;
+        Role = (Roles)roleId;
     }
 
     public int Id { get; set; }
@@ -23,25 +23,12 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     public string? Nickname { get; set; }
     public string Password { get; set; } = null!;
     public string? About { get; set; }
-
-    /// <summary>
-    /// Sets by default on 0
-    /// </summary>
     public decimal Balance { get; set; }
-
-    /// <summary>
-    /// Sets by default on current datetime
-    /// </summary>
     public DateTime RegistrationDate { get; set; }
+    public bool Banned { get; set; }
+    public bool Activated { get; set; }
+    public Roles Role { get; set; }
 
-    /// <summary>
-    /// Sets by default on false
-    /// </summary>
-    public bool Deleted { get; set; }
-
-    public int RoleId { get; set; }
-
-    public RoleEntity Role { get; set; } = null!;
     public ICollection<CommentEntity> CommentWhereIsAuthor { get; set; }
     public ICollection<CommentEntity> CommentWhereIsProfile { get; set; }
     public ICollection<LibraryEntity> Library { get; set; }
@@ -88,7 +75,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         var gamer = new AccountEntity(email, password, roleId);
         context.Accounts.Add(gamer);
         context.SaveChanges();
-        context.Entry(gamer).Reference(u => u.Role).Load();
         return gamer;
     }
 
@@ -98,10 +84,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         var user = new AccountEntity(email, password, roleId);
         context.Accounts.Add(user);
         await context.SaveChangesAsync();
-
-        await context.Entry(user)
-            .Reference(u => u.Role)
-            .LoadAsync();
         return user;
     }
 
@@ -207,7 +189,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         using var context = new StellarityContext();
         context.Accounts.Attach(this);
-        Deleted = banStatus;
+        Banned = banStatus;
         context.Accounts.Update(this);
         context.SaveChanges();
     }

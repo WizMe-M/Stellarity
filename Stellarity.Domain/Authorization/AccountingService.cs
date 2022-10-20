@@ -1,3 +1,4 @@
+using Stellarity.Database;
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Models;
 using Stellarity.Domain.Registration;
@@ -39,7 +40,7 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
     private void AutoLogIn()
     {
         var accountEntity = AccountEntity.Find(_authorizationHistory!.UserEmail);
-        if (accountEntity is { Deleted: false })
+        if (accountEntity is { Banned: false })
             AuthorizedUser = new Account(accountEntity);
     }
 

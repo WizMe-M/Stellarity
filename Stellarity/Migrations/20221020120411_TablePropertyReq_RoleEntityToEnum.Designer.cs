@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Stellarity.Database;
@@ -11,9 +12,10 @@ using Stellarity.Database;
 namespace Stellarity.Migrations
 {
     [DbContext(typeof(StellarityContext))]
-    partial class StellarityContextModelSnapshot : ModelSnapshot
+    [Migration("20221020120411_TablePropertyReq_RoleEntityToEnum")]
+    partial class TablePropertyReq_RoleEntityToEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,12 +39,6 @@ namespace Stellarity.Migrations
                         .HasColumnType("character varying(250)")
                         .HasColumnName("about");
 
-                    b.Property<bool>("Activated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("activated");
-
                     b.Property<decimal>("Balance")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(10, 2)
@@ -50,11 +46,11 @@ namespace Stellarity.Migrations
                         .HasDefaultValue(0m)
                         .HasColumnName("balance");
 
-                    b.Property<bool>("Banned")
+                    b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false)
-                        .HasColumnName("banned");
+                        .HasColumnName("deleted");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -104,9 +100,8 @@ namespace Stellarity.Migrations
                         new
                         {
                             Id = 1,
-                            Activated = false,
                             Balance = 0m,
-                            Banned = false,
+                            Deleted = false,
                             Email = "admin@mail.ru",
                             Nickname = "Stellarity.Desktop",
                             Password = "P@ssw0rd",
