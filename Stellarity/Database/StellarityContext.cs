@@ -178,6 +178,7 @@ internal sealed class StellarityContext : DbContext
                 .HasForeignKey(d => d.AccountId)
                 .HasConstraintName("fk_key_user");
         });
+
         modelBuilder.Entity<LibraryEntity>(entity =>
         {
             entity.HasKey(e => new { UserId = e.AccountId, e.GameId })
@@ -233,8 +234,12 @@ internal sealed class StellarityContext : DbContext
                 .HasColumnName("balance")
                 .HasDefaultValue(0);
 
-            entity.Property(e => e.Deleted)
-                .HasColumnName("deleted")
+            entity.Property(e => e.Banned)
+                .HasColumnName("banned")
+                .HasDefaultValue(false);
+
+            entity.Property(e => e.Activated)
+                .HasColumnName("activated")
                 .HasDefaultValue(false);
 
             entity.Property(e => e.Email)

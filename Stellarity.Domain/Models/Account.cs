@@ -24,7 +24,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public string About => Entity.About ?? "";
     public decimal Balance => Entity.Balance;
     public DateTime RegistrationDate => Entity.RegistrationDate;
-    public bool IsBanned => Entity.Deleted;
+    public bool IsBanned => Entity.Banned;
     public Roles Role => Entity.Role;
 
     public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
@@ -35,7 +35,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     {
         var entity = AccountEntity.Find(email, password);
         if (entity is null) return AuthorizationResult.NoSuchUser();
-        if (entity.Deleted) return AuthorizationResult.UserWasBanned();
+        if (entity.Banned) return AuthorizationResult.UserWasBanned();
 
         var account = new Account(entity);
         await account.RefreshLibraryAsync();
