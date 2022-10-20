@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -19,7 +18,7 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Task.Run(async () => await DatabaseInitializer.CreateDbAsync());
+        DatabaseInitializer.CreateDb();
         DiContainingService.Initialize(new DialogServiceModule());
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
