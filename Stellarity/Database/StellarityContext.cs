@@ -276,8 +276,8 @@ internal sealed class StellarityContext : DbContext
             Id = 1,
             Role = Roles.Administrator,
             Email = "admin@mail.ru",
-            Nickname = "Stellarity.Desktop",
-            Password = "P@ssw0rd"
+            Nickname = "Stellar",
+            Password = "161EBD7D45089B3446EE4E0D86DBCF92"
         });
     }
 }

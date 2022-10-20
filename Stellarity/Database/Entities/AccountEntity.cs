@@ -53,7 +53,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         using var context = new StellarityContext();
         return context.Accounts
-            .Include(user => user.Role)
             .Include(user => user.SingleImageEntity)
             .Include(user => user.Library)
             .FirstOrDefault(user => user.Email == email && user.Password == password);
@@ -63,7 +62,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         using var context = new StellarityContext();
         return context.Accounts
-            .Include(user => user.Role)
             .Include(user => user.SingleImageEntity)
             .Include(user => user.Library)
             .FirstOrDefault(user => user.Email == email);
@@ -177,7 +175,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         await using var context = new StellarityContext();
         var accounts = context.Accounts
-            .Include(entity => entity.Role)
             .Include(entity => entity.SingleImageEntity)
             .Include(entity => entity.CommentWhereIsProfile)
             .Skip(skipRows).Take(accountsByTime);
