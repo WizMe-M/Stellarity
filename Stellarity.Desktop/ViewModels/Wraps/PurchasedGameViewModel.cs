@@ -34,7 +34,7 @@ public partial class PurchasedGameViewModel : ViewModelBase, IAsyncLoader
     [RelayCommand]
     private void OpenGamePage()
     {
-        var view = new GamePageView(GameKey.Game, _navigator);
-        _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
+        var view = new GamePageView(GameKey, _navigator);
+        _navigator.RaiseNavigated(this, NavigatedEventArgs.ClearAndPush(view));
     }
 }

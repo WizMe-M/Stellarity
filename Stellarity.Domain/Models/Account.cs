@@ -86,14 +86,15 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public bool CheckHasPurchasedGame(Game game) => Key.WasPurchased(this, game);
 
-    public async Task PurchaseGameAsync(Game game)
+    public async Task<Key> PurchaseGameAsync(Game game)
     {
         if (!CheckCanPurchaseGame(game))
             throw new InvalidOperationException("Can't purchase this game");
 
-        await Entity.PurchaseKeyForGameAsync(game.Entity);
+        var purchasedKey = await Entity.PurchaseKeyForGameAsync(game.Entity);
         // TODO: notify game cheque mailing
         await RefreshLibraryAsync();
+        return new Key(purchasedKey);
     }
 
     public void ToggleBan() => Entity.SetBanStatus(!IsBanned);

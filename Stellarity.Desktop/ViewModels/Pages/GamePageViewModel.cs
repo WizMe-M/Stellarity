@@ -49,9 +49,14 @@ public partial class GamePageViewModel : ViewModelBase
         User = accountingService.AuthorizedUser!;
     }
 
-    public GamePageViewModel(Key gameKey, NavigationPublisher navigator)
+    public GamePageViewModel(Key gameKey, NavigationPublisher navigator) : this(gameKey.Game, navigator)
     {
+        if (gameKey is { IsPurchased: false })
+            throw new NotSupportedException("This ctor is available for purchased keys only");
+
         // TODO: use this ctor for purchased games
+        PurchaseDate = gameKey.PurchaseDate;
+        WasPurchased = gameKey.IsPurchased;
     }
 
     public Account User { get; }
@@ -70,8 +75,9 @@ public partial class GamePageViewModel : ViewModelBase
 
         if (result == true)
         {
-            await User.PurchaseGameAsync(_game);
-            await UpdatePurchased();
+            var key = await User.PurchaseGameAsync(_game);
+            var view = new GamePageView(key, _navigator);
+            _navigator.RaiseNavigated(this, NavigatedEventArgs.ReplaceLast(view));
         }
     }
 
@@ -89,21 +95,10 @@ public partial class GamePageViewModel : ViewModelBase
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
     }
 
-    private async Task UpdatePurchased()
-    {
-        WasPurchased = User.CheckHasPurchasedGame(_game);
-        if (WasPurchased)
-        {
-            var purchased = User.Library.First(g => g.Title == _game.Title);
-            PurchaseDate = purchased.PurchaseDate;
-        }
-    }
-
     public async Task UpdatePageAsync()
     {
         SetInfo();
         await UpdateCover();
-        await UpdatePurchased();
     }
 
     private void SetInfo()

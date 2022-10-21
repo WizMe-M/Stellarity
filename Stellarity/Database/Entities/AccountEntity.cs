@@ -113,7 +113,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
 
     public Task<IEnumerable<KeyEntity>> GetPurchasedKeys() => Task.FromResult(KeyEntity.GetUserPurchasedKeys(Id));
 
-    public async Task PurchaseKeyForGameAsync(GameEntity game)
+    public async Task<KeyEntity> PurchaseKeyForGameAsync(GameEntity game)
     {
         await using var context = new StellarityContext();
         context.Accounts.Attach(this);
@@ -124,6 +124,8 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         key.SetKeyPurchased(Id);
         context.Keys.Update(key);
         await context.SaveChangesAsync();
+
+        return key;
     }
 
     public async Task<IEnumerable<CommentEntity>> LoadProfileCommentsAsync()
