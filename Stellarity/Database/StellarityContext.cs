@@ -19,7 +19,6 @@ internal sealed class StellarityContext : DbContext
     public DbSet<CommentEntity> Comments { get; set; } = null!;
     public DbSet<GameEntity> Games { get; set; } = null!;
     public DbSet<ImageEntity> Images { get; set; } = null!;
-    public DbSet<LibraryEntity> Libraries { get; set; } = null!;
     public DbSet<AccountEntity> Accounts { get; set; } = null!;
     public DbSet<KeyEntity> Keys { get; set; } = null!;
 
@@ -177,35 +176,6 @@ internal sealed class StellarityContext : DbContext
                 .WithMany(p => p.Keys)
                 .HasForeignKey(d => d.AccountId)
                 .HasConstraintName("fk_key_user");
-        });
-
-        modelBuilder.Entity<LibraryEntity>(entity =>
-        {
-            entity.HasKey(e => new { UserId = e.AccountId, e.GameId })
-                .HasName("pk_library");
-
-            entity.ToTable("library");
-
-            entity.Property(e => e.AccountId)
-                .HasColumnName("user_id");
-
-            entity.Property(e => e.GameId)
-                .HasColumnName("game_id");
-
-            entity.Property(e => e.PurchaseDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("purchase_date")
-                .HasDefaultValueSql("now()");
-
-            entity.HasOne(d => d.Game)
-                .WithMany(p => p.Libraries)
-                .HasForeignKey(d => d.GameId)
-                .HasConstraintName("fk_library_game");
-
-            entity.HasOne(d => d.Account)
-                .WithMany(p => p.Library)
-                .HasForeignKey(d => d.AccountId)
-                .HasConstraintName("fk_library_user");
         });
 
         modelBuilder.Entity<AccountEntity>(entity =>

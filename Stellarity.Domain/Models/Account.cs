@@ -27,7 +27,6 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public bool IsBanned => Entity.Banned;
     public Roles Role => Entity.Role;
 
-    public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
     public IEnumerable<Key> Keys { get; private set; } = ArraySegment<Key>.Empty;
 
     public bool IsNicknameSet => Entity.Nickname is { };

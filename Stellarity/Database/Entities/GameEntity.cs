@@ -6,7 +6,6 @@ public partial class GameEntity : SingleImageHolderEntity
 {
     public GameEntity()
     {
-        Libraries = new HashSet<LibraryEntity>();
     }
 
     private GameEntity(string title, string description, string developer, decimal cost)
@@ -27,7 +26,6 @@ public partial class GameEntity : SingleImageHolderEntity
     // sets now() by default
     public DateTime AddDate { get; set; }
 
-    public ICollection<LibraryEntity> Libraries { get; set; }
     public ICollection<KeyEntity> Keys { get; set; }
 
     public static GameEntity[] GetAll()

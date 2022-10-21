@@ -8,7 +8,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     {
         CommentWhereIsAuthor = new HashSet<CommentEntity>();
         CommentWhereIsProfile = new HashSet<CommentEntity>();
-        Library = new HashSet<LibraryEntity>();
     }
 
     public AccountEntity(string email, string password, int roleId) : this()
@@ -31,7 +30,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
 
     public ICollection<CommentEntity> CommentWhereIsAuthor { get; set; }
     public ICollection<CommentEntity> CommentWhereIsProfile { get; set; }
-    public ICollection<LibraryEntity> Library { get; set; }
     public ICollection<KeyEntity> Keys { get; set; }
 
     public static bool Exists(string email)
@@ -54,7 +52,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         using var context = new StellarityContext();
         return context.Accounts
             .Include(user => user.SingleImageEntity)
-            .Include(user => user.Library)
+            .Include(user => user.Keys)
             .FirstOrDefault(user => user.Email == email && user.Password == password);
     }
 
@@ -63,7 +61,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         using var context = new StellarityContext();
         return context.Accounts
             .Include(user => user.SingleImageEntity)
-            .Include(user => user.Library)
+            .Include(user => user.Keys)
             .FirstOrDefault(user => user.Email == email);
     }
 
