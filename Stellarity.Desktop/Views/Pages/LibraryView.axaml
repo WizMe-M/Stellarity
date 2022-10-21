@@ -30,8 +30,8 @@
                     <DataTemplate>
                         <items:GameCard
                             Classes="purchased"
-                            Title="{Binding Game.Title}"
-                            PurchaseDateString="{Binding Game.PurchaseDate, StringFormat={}Приобретена {0:d}}"
+                            Title="{Binding GameKey.Game.Title}"
+                            PurchaseDateString="{Binding GameKey.PurchaseDate, StringFormat={}Приобретена {0:d}}"
                             Cover="{Binding Cover}"
                             Command="{Binding OpenGamePageCommand}"
                             Margin="5 2" />

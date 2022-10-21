@@ -28,8 +28,17 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public Roles Role => Entity.Role;
 
     public IEnumerable<LibraryGame> Library { get; private set; } = ArraySegment<LibraryGame>.Empty;
+    public IEnumerable<Key> Keys { get; private set; } = ArraySegment<Key>.Empty;
 
     public bool IsNicknameSet => Entity.Nickname is { };
+
+    public static async Task<IEnumerable<Account>> GetAccountsAsync(int i, int accountsByTime)
+    {
+        var skipRows = i * accountsByTime;
+        var accountEntities = await AccountEntity.GetAccountsAsync(accountsByTime, skipRows);
+        var accounts = accountEntities.Select(entity => new Account(entity));
+        return accounts;
+    }
 
     public static async Task<AuthorizationResult> AuthorizeAsync(string email, string password)
     {
@@ -42,14 +51,11 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return AuthorizationResult.Success(account);
     }
 
-    public async Task RefreshLibraryAsync()
+    public async Task<IEnumerable<Key>> RefreshLibraryAsync()
     {
-        // TODO: load? may it be direct query
-        // TODO: keys instead of library
-        await Entity.LoadLibraryAsync();
-        var games = Entity.Library.Select(library =>
-            new LibraryGame(library.Game, library.PurchaseDate));
-        Library = games;
+        var keys = await Entity.GetPurchasedKeys();
+        Keys = keys.Select(entity => new Key(entity));
+        return Keys;
     }
 
     public static async Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role)
@@ -63,18 +69,22 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return RegistrationResult.Success(account);
     }
 
+    public static HashedPassword ChangePassword(string email, string password)
+    {
+        var entity = AccountEntity.Find(email);
+        if (entity is null) throw new InvalidOperationException("User with such email doesn't exist");
+        var account = new Account(entity);
+        var hashed = HashedPassword.FromDecrypted(password);
+        account.ApplySatisfiedPassword(hashed);
+        return account.Password;
+    }
+
     public bool IsIdenticalWith(Account acc) => acc.Entity.Id == Entity.Id;
 
-    public bool CheckCanPurchaseGame(Game game) => 
-        !HasPurchasedGame(game) && game.HasFreeKeys && Balance >= game.Cost;
+    public bool CheckCanPurchaseGame(Game game) =>
+        !CheckHasPurchasedGame(game) && game.HasFreeKeys && Balance >= game.Cost;
 
-    private bool HasPurchasedGame(Game game) => Key.WasPurchased(this, game);
-
-    public void ToggleBan() => Entity.SetBanStatus(!IsBanned);
-
-    public void ApplySatisfiedPassword(in HashedPassword password) => Entity.UpdatePassword(password.Password);
-
-    public void Deposit(decimal depositionAmount) => Entity.UpdateBalance(depositionAmount);
+    public bool CheckHasPurchasedGame(Game game) => Key.WasPurchased(this, game);
 
     public async Task PurchaseGameAsync(Game game)
     {
@@ -85,6 +95,18 @@ public class Account : SingleImageHolderModel<AccountEntity>
         // TODO: notify game cheque mailing
         await RefreshLibraryAsync();
     }
+
+    public void ToggleBan() => Entity.SetBanStatus(!IsBanned);
+
+    public void ApplySatisfiedPassword(in HashedPassword password) => Entity.UpdatePassword(password.Password);
+
+    public Task EditProfileInfoAsync(string nickname, string about)
+    {
+        Entity.UpdateProfileInfo(nickname, about);
+        return Task.CompletedTask;
+    }
+
+    public void Deposit(decimal depositionAmount) => Entity.UpdateBalance(depositionAmount);
 
     public async Task<IEnumerable<Comment>> GetComments()
     {
@@ -98,35 +120,5 @@ public class Account : SingleImageHolderModel<AccountEntity>
             ? Comment.SendOnMyProfile(commentText, profile)
             : Comment.SendOnOtherProfile(commentText, profile, this);
         return comment;
-    }
-
-    public Task EditProfileInfoAsync(string nickname, string about)
-    {
-        Entity.UpdateProfileInfo(nickname, about);
-        return Task.CompletedTask;
-    }
-
-    public async Task<bool> CheckGameWasPurchasedAsync(Game game)
-    {
-        await RefreshLibraryAsync();
-        return Library.Any(g => g.Title == game.Title);
-    }
-
-    public static async Task<IEnumerable<Account>> GetAccountsAsync(int i, int accountsByTime)
-    {
-        var skipRows = i * accountsByTime;
-        var accountEntities = await AccountEntity.GetAccountsAsync(accountsByTime, skipRows);
-        var accounts = accountEntities.Select(entity => new Account(entity));
-        return accounts;
-    }
-
-    public static HashedPassword ChangePassword(string email, string password)
-    {
-        var entity = AccountEntity.Find(email);
-        if (entity is null) throw new InvalidOperationException("User with such email doesn't exist");
-        var account = new Account(entity);
-        var hashed = HashedPassword.FromDecrypted(password);
-        account.ApplySatisfiedPassword(hashed);
-        return account.Password;
     }
 }

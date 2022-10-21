@@ -10,34 +10,31 @@ using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Wraps;
 
-public partial class LibraryGameViewModel : ViewModelBase, IAsyncLoader
+public partial class PurchasedGameViewModel : ViewModelBase, IAsyncLoader
 {
     private readonly NavigationPublisher _navigator;
 
-    [ObservableProperty]
-    private Bitmap? _cover;
+    [ObservableProperty] private Bitmap? _cover;
 
-    public LibraryGameViewModel(LibraryGame game, NavigationPublisher navigator)
+    public PurchasedGameViewModel(Key gameKey, NavigationPublisher navigator)
     {
-        Game = game;
+        GameKey = gameKey;
         _navigator = navigator;
-        Cover = Game.GetImageBitmapOrDefault();
+        Cover = GameKey.Game.GetImageBitmapOrDefault();
     }
 
-    public LibraryGame Game { get; }
-
+    public Key GameKey { get; }
 
     public async Task LoadAsync()
     {
-        var bitmap = await Game.GetImageBitmapAsync();
+        var bitmap = await GameKey.Game.GetImageBitmapAsync();
         if (bitmap is { }) Cover = bitmap;
     }
-
 
     [RelayCommand]
     private void OpenGamePage()
     {
-        var view = new GamePageView(Game, _navigator);
+        var view = new GamePageView(GameKey.Game, _navigator);
         _navigator.RaiseNavigated(this, NavigatedEventArgs.Push(view));
     }
 }

@@ -1,7 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using DynamicData;
 using Ninject;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.ViewModels.Wraps;
@@ -16,7 +15,7 @@ public class LibraryViewModel : ViewModelBase, IAsyncLoader
 {
     private readonly NavigationPublisher _navigator;
     private readonly Account _owner;
-    
+
     public LibraryViewModel(NavigationPublisher navigator)
     {
         _navigator = navigator;
@@ -24,17 +23,23 @@ public class LibraryViewModel : ViewModelBase, IAsyncLoader
         _owner = accountingService.AuthorizedUser!;
     }
 
-    public ObservableCollection<LibraryGameViewModel> Library { get; } = new();
+    public ObservableCollection<PurchasedGameViewModel> Library { get; } = new();
 
     public async Task LoadAsync()
     {
-        await _owner.RefreshLibraryAsync();
+        var keys = await _owner.RefreshLibraryAsync();
         Library.Clear();
-        var games = _owner.Library
-            .Select(game => new LibraryGameViewModel(game, _navigator));
-        Library.AddRange(games);
+        await foreach (var libraryItem in KeysToLibrary(keys))
+            Library.Add(libraryItem);
+    }
 
-        foreach (IAsyncLoader game in Library)
+    private async IAsyncEnumerable<PurchasedGameViewModel> KeysToLibrary(IEnumerable<Key> keys)
+    {
+        foreach (var key in keys)
+        {
+            var game = new PurchasedGameViewModel(key, _navigator);
             await game.LoadAsync();
+            yield return game;
+        }
     }
 }

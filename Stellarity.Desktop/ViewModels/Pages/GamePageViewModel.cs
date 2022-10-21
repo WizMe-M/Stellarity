@@ -23,26 +23,19 @@ public partial class GamePageViewModel : ViewModelBase
     private readonly Game _game;
     private readonly NavigationPublisher _navigator;
 
-    [ObservableProperty]
-    private string _title = string.Empty;
+    [ObservableProperty] private string _title = string.Empty;
 
-    [ObservableProperty]
-    private decimal _cost;
+    [ObservableProperty] private decimal _cost;
 
-    [ObservableProperty]
-    private string _description = string.Empty;
+    [ObservableProperty] private string _description = string.Empty;
 
-    [ObservableProperty]
-    private string _developer = string.Empty;
+    [ObservableProperty] private string _developer = string.Empty;
 
-    [ObservableProperty]
-    private Bitmap _cover = null!;
+    [ObservableProperty] private Bitmap _cover = null!;
 
-    [ObservableProperty]
-    private bool _wasPurchased;
+    [ObservableProperty] private bool _wasPurchased;
 
-    [ObservableProperty]
-    private DateTime? _purchaseDate;
+    [ObservableProperty] private DateTime? _purchaseDate;
 
     public GamePageViewModel(Game game, NavigationPublisher navigator)
     {
@@ -54,6 +47,11 @@ public partial class GamePageViewModel : ViewModelBase
 
         var accountingService = DiContainingService.Kernel.Get<AccountingService>();
         User = accountingService.AuthorizedUser!;
+    }
+
+    public GamePageViewModel(Key gameKey, NavigationPublisher navigator)
+    {
+        // TODO: use this ctor for purchased games
     }
 
     public Account User { get; }
@@ -93,7 +91,7 @@ public partial class GamePageViewModel : ViewModelBase
 
     private async Task UpdatePurchased()
     {
-        WasPurchased = await User.CheckGameWasPurchasedAsync(_game);
+        WasPurchased = User.CheckHasPurchasedGame(_game);
         if (WasPurchased)
         {
             var purchased = User.Library.First(g => g.Title == _game.Title);

@@ -111,16 +111,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     }
 #endif
 
-    public async Task LoadLibraryAsync()
-    {
-        await using var context = new StellarityContext();
-        var entry = context.Accounts.Attach(this);
-        await entry
-            .Collection(account => account.Library)
-            .Query().OfType<LibraryEntity>()
-            .Include(library => library.Game)
-            .LoadAsync();
-    }
+    public Task<IEnumerable<KeyEntity>> GetPurchasedKeys() => Task.FromResult(KeyEntity.GetUserPurchasedKeys(Id));
 
     public async Task PurchaseKeyForGameAsync(GameEntity game)
     {
