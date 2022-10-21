@@ -40,7 +40,7 @@ public sealed partial class KeyEntity : IEntity
         return keys.ToArray();
     }
 
-    public static IEnumerable<KeyEntity> GetUserPurchasedKeys(int userId)
+    public static KeyEntity[] GetUserPurchasedKeys(int userId)
     {
         using var context = new StellarityContext();
         var keys = context.Keys

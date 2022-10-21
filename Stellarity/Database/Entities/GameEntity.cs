@@ -30,11 +30,14 @@ public partial class GameEntity : SingleImageHolderEntity
     public ICollection<LibraryEntity> Libraries { get; set; }
     public ICollection<KeyEntity> Keys { get; set; }
 
-    public static IEnumerable<GameEntity> GetAll()
+    public static GameEntity[] GetAll()
     {
         using var context = new StellarityContext();
-        var games = context.Games.ToArray();
-        return games.OrderByDescending(game => game.AddDate).ThenBy(game => game.Title);
+        var games = context
+            .Games.OrderByDescending(game => game.AddDate)
+            .ThenBy(game => game.Title)
+            .ToArray();
+        return games;
     }
 
     public static void Add(string name, string description, string developer, decimal cost)

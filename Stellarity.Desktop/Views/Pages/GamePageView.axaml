@@ -42,11 +42,11 @@
                 <TextBlock Text="{Binding GameKey.PurchaseDate, StringFormat='{}Приобретена {0:d}', FallbackValue=''}"
                            IsVisible="{Binding IsPurchased}" />
 
-                <TextBlock Text="Ваш ключ:" FontSize="18" FontWeight="DemiBold" HorizontalAlignment="Center"
+                <TextBlock Text="Ваш ключ:" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"
                            IsVisible="{Binding IsPurchased}" />
 
                 <TextBlock Text="{Binding GameKey.Value, FallbackValue=''}" 
-                           HorizontalAlignment="Center" FontWeight="Bold"
+                           HorizontalAlignment="Center" FontWeight="DemiBold"
                            IsVisible="{Binding IsPurchased}" />
 
                 <Button Content="Перейти в библиотеку" IsVisible="{Binding IsPurchased}"

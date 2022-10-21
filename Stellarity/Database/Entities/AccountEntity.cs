@@ -111,7 +111,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     }
 #endif
 
-    public Task<IEnumerable<KeyEntity>> GetPurchasedKeys() => Task.FromResult(KeyEntity.GetUserPurchasedKeys(Id));
+    public IEnumerable<KeyEntity> GetPurchasedKeys() => KeyEntity.GetUserPurchasedKeys(Id);
 
     public async Task<KeyEntity> PurchaseKeyForGameAsync(GameEntity game)
     {
@@ -173,5 +173,22 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         Banned = banStatus;
         context.Accounts.Update(this);
         context.SaveChanges();
+    }
+
+    public IEnumerable<GameEntity> GetNotPurchasedGames()
+    {
+        var keys = KeyEntity.GetUserPurchasedKeys(Id);
+        var games = GameEntity.GetAll();
+        if (!keys.Any())
+        {
+            foreach (var gameEntity in games)
+                yield return gameEntity;
+        }
+
+        foreach (var game in games)
+        {
+            if (keys.All(key => key.GameId != game.Id))
+                yield return game;
+        }
     }
 }

@@ -20,8 +20,7 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncLoader
     private readonly NavigationPublisher _navigator;
     private readonly IDialogService _dialog;
 
-    [ObservableProperty]
-    private decimal _balance;
+    [ObservableProperty] private decimal _balance;
 
     public GameShopViewModel(AccountingService accountingService, MainViewModel windowOwner,
         NavigationPublisher navigator, IDialogService dialogService)
@@ -40,8 +39,8 @@ public partial class GameShopViewModel : ViewModelBase, IAsyncLoader
     public async Task LoadAsync()
     {
         AllGames.Clear();
-        var games = Game.GetAllShop();
-        AllGames.AddRange(games.Select(g => new GameViewModel(g, _navigator)));
+        var notPurchased = Authorized.GetNotPurchasedGames();
+        AllGames.AddRange(notPurchased.Select(g => new GameViewModel(g, _navigator)));
 
         foreach (IAsyncLoader asyncImageLoader in AllGames)
             await asyncImageLoader.LoadAsync();

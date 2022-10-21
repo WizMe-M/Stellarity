@@ -51,11 +51,11 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return AuthorizationResult.Success(account);
     }
 
-    public async Task<IEnumerable<Key>> RefreshLibraryAsync()
+    public Task<IEnumerable<Key>> RefreshLibraryAsync()
     {
-        var keys = await Entity.GetPurchasedKeys();
+        var keys = Entity.GetPurchasedKeys();
         Keys = keys.Select(entity => new Key(entity));
-        return Keys;
+        return Task.FromResult(Keys);
     }
 
     public static async Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role)
@@ -122,4 +122,6 @@ public class Account : SingleImageHolderModel<AccountEntity>
             : Comment.SendOnOtherProfile(commentText, profile, this);
         return comment;
     }
+
+    public IEnumerable<Game> GetNotPurchasedGames() => Entity.GetNotPurchasedGames().Select(game => new Game(game));
 }
