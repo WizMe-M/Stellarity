@@ -9,7 +9,6 @@ using ReactiveValidation.Extensions;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Views;
 using Stellarity.Domain.Authorization;
-using Stellarity.Domain.Models;
 using Stellarity.Domain.Services;
 using Stellarity.Domain.Validation;
 
@@ -64,17 +63,14 @@ public partial class RegisterPlayerViewModel : ViewModelBase
     {
         var accountingService = DiContainingService.Kernel.Get<AccountingService>();
         var registrationResult = await accountingService.AccountPlayerRegistrationAsync(Email, Password);
-        Email = string.Empty;
-        Password = string.Empty;
+
         if (registrationResult.IsSuccessful)
         {
-            var mainViewModel = _dialogService.CreateViewModel<MainViewModel>();
-            _dialogService.Show<MainView>(this, mainViewModel);
-            _dialogService.Close(this);
+            ShowAuthorization();
             return;
         }
 
-        await _dialogService.ShowMessageBoxAsync(this, registrationResult.ErrorMessage,
+        await _dialogService.ShowMessageBoxAsync(this, registrationResult.ErrorMessage!,
             "Ошибка регистрации", MessageBoxButton.Ok, MessageBoxImage.Error);
     }
 

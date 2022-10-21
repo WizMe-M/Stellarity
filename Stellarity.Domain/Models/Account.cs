@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Ninject;
 using Stellarity.Database;
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
@@ -27,6 +28,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
     public decimal Balance => Entity.Balance;
     public DateTime RegistrationDate => Entity.RegistrationDate;
     public bool IsBanned => Entity.Banned;
+    public bool IsActivated => Entity.Activated;
     public Roles Role => Entity.Role;
 
     public IEnumerable<Key> Keys { get; private set; } = ArraySegment<Key>.Empty;
@@ -46,6 +48,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
         var entity = AccountEntity.Find(email, password);
         if (entity is null) return AuthorizationResult.NoSuchUser();
         if (entity.Banned) return AuthorizationResult.UserWasBanned();
+        if (!entity.Activated) return AuthorizationResult.UserIsNotActivated();
 
         var account = new Account(entity);
         await account.RefreshLibraryAsync();
@@ -126,4 +129,10 @@ public class Account : SingleImageHolderModel<AccountEntity>
     }
 
     public IEnumerable<Game> GetNotPurchasedGames() => Entity.GetNotPurchasedGames().Select(game => new Game(game));
+
+    public static void Activate(string email)
+    {
+        var account = AccountEntity.Find(email);
+        account?.SetActivatedStatus(true);
+    }
 }

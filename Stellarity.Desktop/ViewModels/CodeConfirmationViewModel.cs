@@ -16,7 +16,8 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
 {
     public event EventHandler? RequestClose;
 
-    [ObservableProperty] private string _input = string.Empty;
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
+    private string _input = string.Empty;
 
     private int _code;
     private string _email = null!;
@@ -26,7 +27,6 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
     public CodeConfirmationViewModel()
     {
         Validator = GetValidator();
-        SendConfirmationCodeAsync().Wait();
     }
 
     public bool? DialogResult { get; private set; }
@@ -41,6 +41,7 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
         {
             EmailTypes.ActivateUser => (mail, code) => mailing.SendConfirmAccount(mail, code),
             EmailTypes.ConfirmPasswordChange => (mail, code) => mailing.SendChangePassword(mail, code),
+            _ => throw new NotSupportedException()
         };
     }
 
@@ -64,6 +65,7 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
     [RelayCommand]
     private async Task SendConfirmationCodeAsync()
     {
+        GenerateCode();
         await _sendConfirmation(_email, _code.ToString());
     }
 

@@ -7,6 +7,8 @@ using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Views;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Cryptography;
+using Stellarity.Domain.Email;
+using Stellarity.Domain.Models;
 
 namespace Stellarity.Desktop.ViewModels;
 
@@ -45,6 +47,24 @@ public partial class AuthorizationViewModel : ViewModelBase
         if (!authorizationResult.IsSuccessful)
         {
             await ShowErrorAsync(authorizationResult.ErrorMessage!, "Authorization error");
+
+            var codeConfirmationViewModel = _dialogService.CreateViewModel<CodeConfirmationViewModel>();
+            codeConfirmationViewModel.InitializeMailing(Email, EmailTypes.ActivateUser);
+
+            var isConfirmed =
+                await _dialogService.ShowDialogAsync<CodeConfirmationView>(this, codeConfirmationViewModel);
+
+            if (isConfirmed is true)
+            {
+                Account.Activate(_email);
+                // await _accountingService.AccountAuthorizationAsync(Email, Password, RememberMe);
+            }
+
+            await _dialogService.ShowMessageBoxAsync(this,
+                "Sorry, we couldn't activate your account. For the" +
+                "\nIf you doesn't see code in inbox, see folder spam or check your email was inputted correctly",
+                "Error", MessageBoxButton.Ok, MessageBoxImage.Error);
+
             return;
         }
 
@@ -75,6 +95,11 @@ public partial class AuthorizationViewModel : ViewModelBase
         {
             OpenMainView();
             return;
+        }
+
+        if (_accountingService.AuthorizedUser is { IsActivated: false })
+        {
+            await ShowErrorAsync("User isn't activated", "Authorization error");
         }
 
         if (_accountingService.AuthorizedUser is { IsBanned: true })

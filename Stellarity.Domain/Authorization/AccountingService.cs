@@ -20,7 +20,7 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
     public Account? AuthorizedUser { get; private set; }
 
     public bool IsAutoLogIn => _authorizationHistory is { RememberLastAuthorizedUser: true }
-                               && AuthorizedUser is { IsBanned: false };
+                               && AuthorizedUser is { IsBanned: false, IsActivated: true };
 
     public bool HaveAuthHistory => _authorizationHistory is { };
 
@@ -50,7 +50,7 @@ public class AccountingService : CachingBaseService<AuthorizationHistory>
         if (!registrationResult.IsSuccessful) return registrationResult;
 
         AuthorizedUser = registrationResult.Account;
-        await SaveAuthorizationHistoryAsync(registrationResult.Account!.Email, true);
+        await SaveAuthorizationHistoryAsync(registrationResult.Account!.Email, false);
         return registrationResult;
     }
 

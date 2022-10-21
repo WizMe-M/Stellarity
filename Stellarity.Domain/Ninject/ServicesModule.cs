@@ -1,5 +1,8 @@
 using Ninject.Modules;
 using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Email;
+using Stellarity.Domain.Email.MailMessages;
+using Stellarity.Domain.Services;
 using Stellarity.Domain.Services.Cache;
 
 namespace Stellarity.Domain.Ninject;
@@ -13,6 +16,8 @@ public class ServicesModule : NinjectModule
         Kernel.Bind<Cacher>().ToSelf().InSingletonScope();
         Kernel.Bind<AccountingService>().ToSelf().InSingletonScope()
             .OnActivation(InitializeOnActivation);
+        Kernel.Bind<MailingService>().ToSelf().InSingletonScope();
+        Kernel.Bind<GameChequeSenderService>().ToSelf().InSingletonScope();
     }
 
     private static async void InitializeOnActivation(AccountingService service) => await service.InitializeAsync();

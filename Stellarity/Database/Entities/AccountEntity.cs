@@ -189,4 +189,13 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
                 yield return game;
         }
     }
+
+    public void SetActivatedStatus(bool status)
+    {
+        using var context = new StellarityContext();
+        context.Accounts.Attach(this);
+        Activated = status;
+        context.Accounts.Update(this);
+        context.SaveChanges();
+    }
 }

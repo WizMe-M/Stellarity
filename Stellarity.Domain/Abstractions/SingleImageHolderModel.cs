@@ -22,7 +22,7 @@ public class SingleImageHolderModel<TEntity> : DomainModel<TEntity>
     public async Task<byte[]?> GetImageBytesAsync()
     {
         if (!HasImage) return null;
-        if (ImageLoaded) return _singleImage!.ImageBinaryData;
+        if (ImageLoaded) return _singleImage?.ImageBinaryData ?? Entity.SingleImageEntity?.Data;
 
         await LoadImageAsync();
         return _singleImage?.ImageBinaryData;

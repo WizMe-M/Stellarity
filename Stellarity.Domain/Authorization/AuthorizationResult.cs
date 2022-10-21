@@ -18,6 +18,8 @@ public class AuthorizationResult : Result
     public static AuthorizationResult NoSuchUser() =>
         new(errorMessage: "User with such email and/or password doesn't exist");
 
+    public static AuthorizationResult UserIsNotActivated() => new(errorMessage: "This user wasn't activated yet");
+
     public static AuthorizationResult UserWasBanned() => new(errorMessage: "This user was banned by administrator");
 
     public static AuthorizationResult Success(Account account) => new(account);
