@@ -30,7 +30,7 @@ public sealed partial class KeyEntity : IEntity
         return keys.ToArray();
     }
 #endif
-    
+
     public static IEnumerable<KeyEntity> GetGameFreeKeys(int gameId)
     {
         using var context = new StellarityContext();
@@ -53,7 +53,9 @@ public sealed partial class KeyEntity : IEntity
     public static KeyEntity? NextKeyOrDefault(int gameId)
     {
         using var context = new StellarityContext();
-        return context.Keys.FirstOrDefault(key => key.GameId == gameId && key.AccountId == null);
+        return context.Keys
+            .Include(key => key.Game)
+            .FirstOrDefault(key => key.GameId == gameId && key.AccountId == null);
     }
 
     public static bool TryAddKey(int gameId, string value)
@@ -71,16 +73,16 @@ public sealed partial class KeyEntity : IEntity
     public static void ImportKeys(IEnumerable<(int gameId, string keyValue)> imported)
     {
         using var context = new StellarityContext();
-        
+
         foreach (var newKey in imported)
         {
             var containsSuchKey = context.Keys.Any(key => key.KeyValue == newKey.keyValue);
             if (containsSuchKey) continue;
-            
+
             var key = new KeyEntity { KeyValue = newKey.keyValue, GameId = newKey.gameId };
             context.Keys.Add(key);
         }
-        
+
         context.SaveChanges();
     }
 

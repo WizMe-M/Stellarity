@@ -33,10 +33,6 @@ public partial class GamePageViewModel : ViewModelBase
 
     [ObservableProperty] private Bitmap _cover = null!;
 
-    [ObservableProperty] private bool _wasPurchased;
-
-    [ObservableProperty] private DateTime? _purchaseDate;
-
     public GamePageViewModel(Game game, NavigationPublisher navigator)
     {
         _game = game;
@@ -46,7 +42,7 @@ public partial class GamePageViewModel : ViewModelBase
         SetInfo();
 
         var accountingService = DiContainingService.Kernel.Get<AccountingService>();
-        User = accountingService.AuthorizedUser!;
+        Visitor = accountingService.AuthorizedUser!;
     }
 
     public GamePageViewModel(Key gameKey, NavigationPublisher navigator) : this(gameKey.Game, navigator)
@@ -55,15 +51,17 @@ public partial class GamePageViewModel : ViewModelBase
             throw new NotSupportedException("This ctor is available for purchased keys only");
 
         // TODO: use this ctor for purchased games
-        PurchaseDate = gameKey.PurchaseDate;
-        WasPurchased = gameKey.IsPurchased;
+        GameKey = gameKey;
     }
 
-    public Account User { get; }
+    public Account Visitor { get; }
 
     public DateTime AddedInShop { get; }
 
-    public bool CanPurchase => User.CheckCanPurchaseGame(_game);
+    public bool IsPurchased => GameKey is { IsPurchased: true };
+    public Key? GameKey { get; }
+
+    public bool CanPurchase => !IsPurchased && Visitor.CheckCanPurchaseGame(_game);
 
     [RelayCommand(CanExecute = nameof(CanPurchase))]
     private async Task PurchaseAsync()
@@ -75,7 +73,7 @@ public partial class GamePageViewModel : ViewModelBase
 
         if (result == true)
         {
-            var key = await User.PurchaseGameAsync(_game);
+            var key = await Visitor.PurchaseGameAsync(_game);
             var view = new GamePageView(key, _navigator);
             _navigator.RaiseNavigated(this, NavigatedEventArgs.ReplaceLast(view));
         }

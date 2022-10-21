@@ -17,7 +17,7 @@
 
             <StackPanel DockPanel.Dock="Top" Orientation="Vertical" Margin="40" Spacing="20">
                 <Button Content="Edit game" VerticalAlignment="Bottom"
-                        IsVisible="{Binding User.CanEditGames}"
+                        IsVisible="{Binding Visitor.CanEditGames}"
                         Command="{Binding NavigateToEditGameCommand}" />
 
                 <TextBlock Text="{Binding Developer, StringFormat={}Developed by {0}}"
@@ -36,13 +36,20 @@
 
                 <Button Content="{Binding Cost, StringFormat='{}Приобрести за {0:0} руб.'}"
                         Command="{Binding PurchaseCommand}"
-                        IsVisible="{Binding !WasPurchased}"
+                        IsVisible="{Binding !IsPurchased}"
                         HorizontalAlignment="Center" />
 
-                <TextBlock Text="{Binding PurchaseDate, StringFormat='{}Purchased on {0:d}'}"
-                           IsVisible="{Binding WasPurchased}" />
+                <TextBlock Text="{Binding GameKey.PurchaseDate, StringFormat='{}Приобретена {0:d}', FallbackValue=''}"
+                           IsVisible="{Binding IsPurchased}" />
 
-                <Button Content="Перейти в библиотеку" IsVisible="{Binding WasPurchased}"
+                <TextBlock Text="Ваш ключ:" FontSize="18" FontWeight="DemiBold" HorizontalAlignment="Center"
+                           IsVisible="{Binding IsPurchased}" />
+
+                <TextBlock Text="{Binding GameKey.Value, FallbackValue=''}" 
+                           HorizontalAlignment="Center" FontWeight="Bold"
+                           IsVisible="{Binding IsPurchased}" />
+
+                <Button Content="Перейти в библиотеку" IsVisible="{Binding IsPurchased}"
                         Command="{Binding NavigateToLibraryCommand}" />
             </StackPanel>
         </DockPanel>
