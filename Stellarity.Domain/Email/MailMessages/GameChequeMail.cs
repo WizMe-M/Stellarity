@@ -1,4 +1,5 @@
 using System.Net.Mail;
+using Stellarity.Domain.Models;
 
 namespace Stellarity.Domain.Email.MailMessages;
 
@@ -8,28 +9,26 @@ public class GameChequeMail : MailTemplate
     private const string Header = "<center><h1>Чек на покупку игры</h1></center>";
 
     private const string BodyTemplate = @"
-<p>Здравствуйте, <b>{0}</b>. Для подтверждения вашего аккаунта введите полученный код в приложении. 
-Если вы не делали этого, просто игнорируйте данное письмо.</p>
-<center>Код подтверждения: <b>{1}</b></center>";
+<p>Здравствуйте, <b>{0}</b>. Вы получили это письмо, потому что совершили покупку в Stellarity.</p>
+<p>Дата приобретения: <b>{1}</b><br/>
+Название: <b>{2}</b><br/>
+Цена: {3} руб.
+НДС: {4}% ({5} руб.)</p>
+<center>Ваш ключ: <b>{6}</b></center>";
 
-    private readonly string _to;
+    private readonly PurchaseCheque _cheque;
 
-    /// <summary>
-    /// Валидный ключ от игры
-    /// </summary>
-    private readonly string _key;
-
-    public GameChequeMail(MailAddress from, MailAddress to, string key)
+    public GameChequeMail(MailAddress from, MailAddress to, PurchaseCheque cheque)
         : base(Subject, Header, BodyTemplate, from, to)
     {
-        _key = key;
-        _to = to.Address;
+        _cheque = cheque;
     }
 
     public override MailMessage GetMailMessage()
     {
         var mail = InitMailMessage();
-        var mainText = CreateMainTextFromTemplate(_to, _key);
+        var mainText = CreateMainTextFromTemplate(_cheque.BuyerEmail, _cheque.PurchaseDate,
+            _cheque.Title, _cheque.Total, PurchaseCheque.VatPercent, _cheque.VatFromTotal, _cheque.KeyValue);
         mail.Body = AppendMailPartsToMainText(mainText);
         return mail;
     }

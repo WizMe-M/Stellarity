@@ -1,4 +1,7 @@
+using Stellarity.Database.Entities;
 using Stellarity.Domain.Email;
+using Stellarity.Domain.Models;
+using Stellarity.Domain.Services;
 
 namespace Stellarity.Tests;
 
@@ -25,8 +28,9 @@ public class MailTests
     [Test]
     public async Task SendGameChequeMail()
     {
-        const string key = "AAAAA-BBBBB-CCCCC";
-        var service = new MailingService();
-        var result = await service.SendGameCheque(Receiver, key);
+        var key = new Key(KeyEntity.GetUserPurchasedKeys(1)[0]);
+        var mailingService = new MailingService();
+        var chequeSender = new GameChequeSenderService(mailingService);
+        await chequeSender.SendAsync(Receiver, key);
     }
 }

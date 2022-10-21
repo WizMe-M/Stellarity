@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
 using Stellarity.Domain.Email.MailMessages;
+using Stellarity.Domain.Models;
 
 namespace Stellarity.Domain.Email;
 
@@ -62,12 +63,12 @@ public class MailingService
         return EmailDeliverResult.Success();
     }
 
-    public async Task<EmailDeliverResult> SendGameCheque(string email, string key)
+    public async Task<EmailDeliverResult> SendGameCheque(string email, PurchaseCheque cheque)
     {
         var isEmailValid = MailAddress.TryCreate(email, out var to);
         if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
 
-        var mail = GetGameChequeMail(to!, key);
+        var mail = GetGameChequeMail(to!, cheque);
 
         try
         {
@@ -94,9 +95,9 @@ public class MailingService
         return mailTemplate.GetMailMessage();
     }
 
-    public MailMessage GetGameChequeMail(in MailAddress to, in string key)
+    public MailMessage GetGameChequeMail(in MailAddress to, in PurchaseCheque cheque)
     {
-        var mailTemplate = new GameChequeMail(_from, to, key);
+        var mailTemplate = new GameChequeMail(_from, to, cheque);
         return mailTemplate.GetMailMessage();
     }
 
