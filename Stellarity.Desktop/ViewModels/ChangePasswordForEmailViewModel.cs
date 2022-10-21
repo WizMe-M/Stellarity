@@ -10,6 +10,7 @@ using Stellarity.Database.Entities;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Views;
 using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Email;
 using Stellarity.Domain.Models;
 using Stellarity.Domain.Services;
 using Stellarity.Domain.Validation;
@@ -44,8 +45,21 @@ public partial class ChangePasswordForEmailViewModel : ViewModelBase
         {
             Email = string.Empty;
             Password = string.Empty;
-            await _dialogService.ShowMessageBoxAsync(this, "User with such email doesn't exist", 
+            await _dialogService.ShowMessageBoxAsync(this, "User with such email doesn't exist",
                 "Error", MessageBoxButton.Ok, MessageBoxImage.Error);
+            return;
+        }
+
+        var confirmationViewModel = _dialogService.CreateViewModel<CodeConfirmationViewModel>();
+        confirmationViewModel.InitializeMailing(Email, EmailTypes.ConfirmPasswordChange);
+        var confirmationResult = await _dialogService.ShowDialogAsync(this, confirmationViewModel);
+        if (confirmationResult is not true)
+        {
+            Password = string.Empty;
+            await _dialogService.ShowMessageBoxAsync(this,
+                "Sorry, we can't change password without email confirmation." +
+                "\nIf you doesn't see code in inbox, see folders spam or check your email was inputted correctly",
+                "Error", MessageBoxButton.Ok, MessageBoxImage.Warning);
             return;
         }
 

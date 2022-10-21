@@ -7,7 +7,6 @@ using Ninject;
 using ReactiveValidation;
 using ReactiveValidation.Extensions;
 using Stellarity.Desktop.Basic;
-using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Email;
 using Stellarity.Domain.Services;
 
@@ -21,21 +20,29 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
 
     private int _code;
     private string _email = null!;
-    private readonly MailingService _mailing;
+
+    private Func<string, string, Task<EmailDeliverResult>> _sendConfirmation = null!;
 
     public CodeConfirmationViewModel()
     {
         Validator = GetValidator();
-        _mailing = DiContainingService.Kernel.Get<MailingService>();
         SendConfirmationCodeAsync().Wait();
     }
-
 
     public bool? DialogResult { get; private set; }
 
     public bool CanConfirm => Validator is { IsValid: true };
 
-    public void InitializeEmail(string email) => _email = email;
+    public void InitializeMailing(string email, EmailTypes type)
+    {
+        _email = email;
+        var mailing = DiContainingService.Kernel.Get<MailingService>();
+        _sendConfirmation = type switch
+        {
+            EmailTypes.ActivateUser => (mail, code) => mailing.SendConfirmAccount(mail, code),
+            EmailTypes.ConfirmPasswordChange => (mail, code) => mailing.SendChangePassword(mail, code),
+        };
+    }
 
     private IObjectValidator GetValidator()
     {
@@ -57,7 +64,7 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
     [RelayCommand]
     private async Task SendConfirmationCodeAsync()
     {
-        await _mailing.SendChangePassword(_email, _code.ToString());
+        await _sendConfirmation(_email, _code.ToString());
     }
 
     [RelayCommand(CanExecute = nameof(CanConfirm))]
