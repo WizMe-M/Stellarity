@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels"
+        xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+        x:Class="Stellarity.Desktop.Views.CodeConfirmationView"
+        x:CompileBindings="True" x:DataType="vm:CodeConfirmationViewModel"
+        CanResize="False" Width="400" MinHeight="300"
+        SizeToContent="Height"
+        Title="Подтверждение по коду">
+    <sg:SpacedGrid ColumnDefinitions="* *" RowDefinitions="* 0.5* Auto *" ColumnSpacing="20" RowSpacing="10">
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Введите код" FontWeight="Bold" FontSize="20"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" />
+        
+        <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="Код будет выслан на вашу почту" 
+                   FontWeight="UltraLight" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+        <MaskedTextBox Grid.Column="0" Grid.Row="2" Mask="000000" Text="{Binding Input}"
+                       HorizontalContentAlignment="Center" FontSize="16" 
+                       HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" />
+
+        <Button Grid.Column="1" Grid.Row="2" Content="Отправить код"
+                Command="{Binding SendConfirmationCodeCommand}"
+                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" />
+
+        <Button Grid.Column="0" Grid.Row="3" Content="Подтвердить" 
+                Command="{Binding ConfirmCommand}"
+                HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20" />
+
+        <Button Grid.Column="1" Grid.Row="3" Content="Отмена" Click="Cancel_OnClick"
+                HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" />
+    </sg:SpacedGrid>
+</Window>
