@@ -50,7 +50,6 @@ public partial class GamePageViewModel : ViewModelBase
         if (gameKey is { IsPurchased: false })
             throw new NotSupportedException("This ctor is available for purchased keys only");
 
-        // TODO: use this ctor for purchased games
         GameKey = gameKey;
     }
 

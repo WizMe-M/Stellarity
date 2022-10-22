@@ -181,6 +181,7 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         {
             foreach (var gameEntity in games)
                 yield return gameEntity;
+            yield break;
         }
 
         foreach (var game in games)
