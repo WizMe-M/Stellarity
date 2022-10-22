@@ -5,7 +5,7 @@ namespace Stellarity.Domain.Email;
 public class EmailDeliverResult : Result
 {
     private EmailDeliverResult(string? errorMessage = null)
-        : base(errorMessage)
+        : base(errorMessage, 0)
     {
     }
 

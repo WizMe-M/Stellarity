@@ -6,7 +6,7 @@ namespace Stellarity.Domain.Registration;
 public class RegistrationResult : Result
 {
     private RegistrationResult(Account? acc = null, string errorMessage = "")
-        : base(errorMessage)
+        : base(errorMessage, 0)
 
     {
         Account = acc;
