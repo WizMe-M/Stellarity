@@ -4,29 +4,16 @@ namespace Stellarity.Database.Entities;
 
 public partial class GameEntity : SingleImageHolderEntity
 {
-    public GameEntity()
-    {
-    }
-
-    private GameEntity(string title, string description, string developer, decimal cost)
-    {
-        Title = title;
-        Description = description;
-        Developer = developer;
-        Cost = cost;
-    }
-
     public int Id { get; set; }
     public string Title { get; set; } = null!;
-    public string Description { get; set; }
+    public string Description { get; set; } = null!;
     public string Developer { get; set; } = null!;
 
     public decimal Cost { get; set; }
 
-    // sets now() by default
     public DateTime AddDate { get; set; }
 
-    public ICollection<KeyEntity> Keys { get; set; }
+    public ICollection<KeyEntity> Keys { get; set; } = null!;
 
     public static GameEntity[] GetAll()
     {
@@ -38,19 +25,17 @@ public partial class GameEntity : SingleImageHolderEntity
         return games;
     }
 
-    public static void Add(string name, string description, string developer, decimal cost)
-    {
-        using var context = new StellarityContext();
-        var game = new GameEntity(name, description, developer, cost);
-        context.Games.Add(game);
-        context.SaveChanges();
-    }
-
-    public static async Task<GameEntity> AddAsync(string name, string description, string developer,
+    public static async Task<GameEntity> AddAsync(string title, string description, string developer,
         decimal cost)
     {
         await using var context = new StellarityContext();
-        var game = new GameEntity(name, description, developer, cost);
+        var game = new GameEntity
+        {
+            Title = title,
+            Description = description,
+            Developer = developer,
+            Cost = cost
+        };
         await context.Games.AddAsync(game);
         await context.SaveChangesAsync();
         return game;

@@ -23,8 +23,7 @@ public partial class RegisterUserViewModel : ViewModelBase
     private readonly NavigationPublisher _navigator;
     private readonly IDialogService _dialogService;
 
-    [ObservableProperty]
-    private Roles _selectedRole;
+    [ObservableProperty] private Roles _selectedRole;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(RegisterCommand))]
     private string _email = string.Empty;
@@ -86,7 +85,7 @@ public partial class RegisterUserViewModel : ViewModelBase
         else
         {
             var mainViewModel = DiContainingService.Kernel.Get<MainViewModel>();
-            await _dialogService.ShowMessageBoxAsync(mainViewModel, registrationResult.ErrorMessage,
+            await _dialogService.ShowMessageBoxAsync(mainViewModel, registrationResult.ErrorMessage!,
                 "Error", MessageBoxButton.Ok, MessageBoxImage.Error);
         }
     }

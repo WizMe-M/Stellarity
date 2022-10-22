@@ -4,19 +4,6 @@ namespace Stellarity.Database.Entities;
 
 public sealed partial class AccountEntity : SingleImageHolderEntity
 {
-    public AccountEntity()
-    {
-        CommentWhereIsAuthor = new HashSet<CommentEntity>();
-        CommentWhereIsProfile = new HashSet<CommentEntity>();
-    }
-
-    public AccountEntity(string email, string password, int roleId) : this()
-    {
-        Email = email;
-        Password = password;
-        Role = (Roles)roleId;
-    }
-
     public int Id { get; set; }
     public string Email { get; set; } = null!;
     public string? Nickname { get; set; }
@@ -28,9 +15,9 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
     public bool Activated { get; set; }
     public Roles Role { get; set; }
 
-    public ICollection<CommentEntity> CommentWhereIsAuthor { get; set; }
-    public ICollection<CommentEntity> CommentWhereIsProfile { get; set; }
-    public ICollection<KeyEntity> Keys { get; set; }
+    public ICollection<CommentEntity> CommentWhereIsAuthor { get; set; } = null!;
+    public ICollection<CommentEntity> CommentWhereIsProfile { get; set; } = null!;
+    public ICollection<KeyEntity> Keys { get; set; } = null!;
 
     public static bool Exists(string email)
     {
@@ -65,19 +52,15 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
             .FirstOrDefault(user => user.Email == email);
     }
 
-    public static AccountEntity Register(string email, string password, int roleId)
-    {
-        using var context = new StellarityContext();
-        var gamer = new AccountEntity(email, password, roleId);
-        context.Accounts.Add(gamer);
-        context.SaveChanges();
-        return gamer;
-    }
-
     public static async Task<AccountEntity> RegisterAsync(string email, string password, int roleId)
     {
         await using var context = new StellarityContext();
-        var user = new AccountEntity(email, password, roleId);
+        var user = new AccountEntity
+        {
+            Email = email,
+            Password = password,
+            Role = (Roles)roleId
+        };
         context.Accounts.Add(user);
         await context.SaveChangesAsync();
         return user;
@@ -100,14 +83,6 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
         context.Accounts.Update(this);
         context.SaveChanges();
     }
-
-#if DEBUG
-    public static AccountEntity GetAdmin()
-    {
-        using var context = new StellarityContext();
-        return context.Accounts.First(account => account.Id == 1);
-    }
-#endif
 
     public IEnumerable<KeyEntity> GetPurchasedKeys() => KeyEntity.GetUserPurchasedKeys(Id);
 
