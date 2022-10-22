@@ -12,9 +12,9 @@ public class GameChequeSenderService
         _mailingService = mailingService;
     }
 
-    public async Task SendAsync(string email, Key key)
+    public async Task<EmailDeliverResult> SendAsync(string email, Key key)
     {
         var cheque = new PurchaseCheque(key);
-        await _mailingService.SendGameCheque(email, cheque);
+        return await _mailingService.SendPurchaseChequeAsync(email, cheque);
     }
 }

@@ -54,7 +54,7 @@ public partial class AuthorizationViewModel : ViewModelBase
              if (authorizationResult.ErrorCode is not (int)AuthErrorCodes.UserNotActivated) return;
 
             var codeConfirmationViewModel = _dialogService.CreateViewModel<CodeConfirmationViewModel>();
-            codeConfirmationViewModel.InitializeMailing(Email, EmailTypes.ActivateUser);
+            codeConfirmationViewModel.InitializeMailing(Email, EmailType.AccountActivation);
 
             var isConfirmed =
                 await _dialogService.ShowDialogAsync<CodeConfirmationView>(this, codeConfirmationViewModel);

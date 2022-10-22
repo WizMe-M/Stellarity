@@ -1,4 +1,3 @@
-using System.Net.Mail;
 using System.Text;
 using MimeKit;
 
@@ -6,52 +5,42 @@ namespace Stellarity.Domain.Email.MailMessages;
 
 public abstract class MailTemplate
 {
-    private const string Footer = "<center><p>Спасибо, что пользуетесь нашим сервисом</p></center>";
+    public const string StandardFooter = "<center><p>Спасибо, что пользуетесь нашим сервисом</p></center>";
 
-    private readonly string _subject;
-    private readonly string _header;
-    private readonly string _mailTemplate;
-
-    private readonly MailAddress _from;
-    private readonly MailAddress _to;
-
-    protected MailTemplate()
+    protected MailTemplate(string subject, string header, string footer = StandardFooter)
     {
+        To = new Email("unknown", "undefined@mail"); 
+    
+        Subject = subject;
+        Header = header;
+        Footer = footer;
     }
 
-    protected MailTemplate(string subject, string header, string mailTemplate, MailAddress from, MailAddress to)
-    {
-        _subject = subject;
-        _header = header;
-        _mailTemplate = mailTemplate;
-        _from = from;
-        _to = to;
-    }
+    protected Email To { get; private set; }
 
-    protected MailMessage InitMailMessage()
-    {
-        var mail = new MailMessage(_from, _to)
-        {
-            IsBodyHtml = true,
-            Subject = _subject
-        };
+    public string Subject { get; }
+    public string Header { get; }
+    public string Footer { get; }
 
+    public abstract MimeMessage CreateMime<TArgument>(Email from, Email to, TArgument basicArgument);
+
+    protected MimeMessage InstantiateFromEmails(Email from, Email to)
+    {
+        To = to;
+        
+        var mail = new MimeMessage();
+        mail.Subject = Subject;
+        mail.From.Add(new MailboxAddress(from.Name, from.Address));
+        mail.To.Add(new MailboxAddress(to.Name, to.Address));
         return mail;
     }
 
-    protected string AppendMailPartsToMainText(string body)
+    protected string ComposeMailParts(string mainText)
     {
         var builder = new StringBuilder(4);
-        builder.Append(_header);
-        builder.Append(body);
+        builder.Append(Header);
+        builder.Append(mainText);
         builder.Append(Footer);
         return builder.ToString();
-    }
-
-    protected string CreateMainTextFromTemplate(params object[] args) => string.Format(_mailTemplate, args);
-
-    public MimeMessage CreateMime(string email)
-    {
-        return new MimeMessage { To = { new MailboxAddress("", email) }};
     }
 }

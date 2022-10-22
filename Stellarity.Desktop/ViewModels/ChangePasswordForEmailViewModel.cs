@@ -51,7 +51,7 @@ public partial class ChangePasswordForEmailViewModel : ViewModelBase
         }
 
         var confirmationViewModel = _dialogService.CreateViewModel<CodeConfirmationViewModel>();
-        confirmationViewModel.InitializeMailing(Email, EmailTypes.ConfirmPasswordChange);
+        confirmationViewModel.InitializeMailing(Email, EmailType.PasswordChange);
         var confirmationResult = await _dialogService.ShowDialogAsync(this, confirmationViewModel);
         if (confirmationResult is not true)
         {

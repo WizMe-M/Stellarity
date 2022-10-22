@@ -15,107 +15,57 @@ public class MailingService
     public const int SmtpPort = 465;
     public const bool SmtpUseSsl = true;
 
-    private MailTemplate _mailTemplate = null!;
-    private Func<string, MimeMessage> _createMimeMessage;
+    private readonly Email _sender = new("Stellarity", SenderEmail);
 
-    public bool Validate(string email) => EmailValidator.Validate(email);
+    #region external methods
 
-    public async Task<EmailDeliverResult> SendEmailAsync(string email, string subject, string message)
+    public Task<EmailDeliverResult> SendAccountActivationCodeAsync(string email, int code) =>
+        SendEmailAsync(email, EmailType.AccountActivation, code);
+
+    public Task<EmailDeliverResult> SendChangePasswordConfirmationCodeAsync(string email, int code) =>
+        SendEmailAsync(email, EmailType.PasswordChange, code);
+
+    public Task<EmailDeliverResult> SendPurchaseChequeAsync(string email, PurchaseCheque cheque) =>
+        SendEmailAsync(email, EmailType.PurchaseCheque, cheque);
+
+    #endregion
+
+    #region internal methods
+
+    public async Task<EmailDeliverResult> SendEmailAsync<TArgument>(string email, EmailType type, TArgument argument)
     {
-        if(Validate(email) == false) return EmailDeliverResult.NotValidEmail();
-        
-        var emailMessage = new MimeMessage();
+        if (Validate(email) == false) return EmailDeliverResult.NotValidEmail();
+        var to = new Email(email, email);
 
-        emailMessage.From.Add(new MailboxAddress("Stellarity", SenderEmail));
-        emailMessage.To.Add(new MailboxAddress("", email));
-        emailMessage.Subject = subject;
-        emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+        var mailTemplate = SelectTemplate(type);
+        var mail = mailTemplate.CreateMime(_sender, to, argument);
+        await SendMimeAsync(mail);
+
+        return EmailDeliverResult.Success();
+    }
+
+    public static bool Validate(string email) => EmailValidator.Validate(email);
+
+    private static MailTemplate SelectTemplate(EmailType type)
+    {
+        return type switch
         {
-            Text = message
+            EmailType.AccountActivation => new AccountActivationMail(),
+            EmailType.PasswordChange => new ChangePasswordConfirmationMail(),
+            EmailType.PurchaseCheque => new GameChequeMail(),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
-
-        using (var client = new SmtpClient())
-        {
-            await client.ConnectAsync(SmtpHost, SmtpPort, SmtpUseSsl);
-            await client.AuthenticateAsync(SenderEmail, SenderPassword);
-            await client.SendAsync(emailMessage);
-
-            await client.DisconnectAsync(true);
-        }
-
-        return EmailDeliverResult.Success();
     }
 
-    public void SetEmailTemplate(EmailTypes type)
+    private static async Task SendMimeAsync(MimeMessage mime)
     {
-        _mailTemplate = type switch
-        {
-            EmailTypes.ActivateUser => new AccountActivationMail(),
-            EmailTypes.ConfirmPasswordChange => new ChangePasswordConfirmationMail(),
-            _ => throw new NotSupportedException()
-        };
-        _createMimeMessage = _mailTemplate.CreateMime;
-    }
-    
-    
+        using var client = new SmtpClient();
+        await client.ConnectAsync(SmtpHost, SmtpPort, SmtpUseSsl);
+        await client.AuthenticateAsync(SenderEmail, SenderPassword);
+        await client.SendAsync(mime);
 
-    public async Task<EmailDeliverResult> SendConfirmAccount(string email, string code)
-    {
-        // var isEmailValid = MailAddress.TryCreate(email, out var to);
-        // if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
-        //
-        // var mail = GetMail(to!, code);
-        //
-        // try
-        // {
-        //     await SendMailAsync(mail);
-        // }
-        // catch (Exception e)
-        // {
-        //     Debug.WriteLine(e);
-        //     return EmailDeliverResult.NotDelivered();
-        // }
-
-        return EmailDeliverResult.Success();
+        await client.DisconnectAsync(true);
     }
 
-    public async Task<EmailDeliverResult> SendChangePassword(string email, string code)
-    {
-        // var isEmailValid = MailAddress.TryCreate(email, out var to);
-        // if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
-        //
-        // var mail = GetChangePasswordMail(to!, code);
-        //
-        // try
-        // {
-        //     await SendMailAsync(mail);
-        // }
-        // catch (Exception e)
-        // {
-        //     Debug.WriteLine(e);
-        //     return EmailDeliverResult.NotDelivered();
-        // }
-
-        return EmailDeliverResult.Success();
-    }
-
-    public async Task<EmailDeliverResult> SendGameCheque(string email, PurchaseCheque cheque)
-    {
-        // var isEmailValid = MailAddress.TryCreate(email, out var to);
-        // if (!isEmailValid) return EmailDeliverResult.NotValidEmail();
-        //
-        // var mail = GetGameChequeMail(to!, cheque);
-        //
-        // try
-        // {
-        //     await SendMailAsync(mail);
-        // }
-        // catch (Exception e)
-        // {
-        //     Debug.WriteLine(e);
-        //     return EmailDeliverResult.NotDelivered();
-        // }
-
-        return EmailDeliverResult.Success();
-    }
+    #endregion
 }

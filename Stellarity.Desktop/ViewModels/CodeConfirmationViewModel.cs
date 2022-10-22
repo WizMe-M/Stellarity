@@ -22,7 +22,7 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
     private int _code;
     private string _email = null!;
 
-    private Func<string, string, Task<EmailDeliverResult>> _sendConfirmation = null!;
+    private Func<string, int, Task<EmailDeliverResult>> _sendConfirmation = null!;
 
     public CodeConfirmationViewModel()
     {
@@ -33,14 +33,15 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
 
     public bool CanConfirm => Validator is { IsValid: true };
 
-    public void InitializeMailing(string email, EmailTypes type)
+    public void InitializeMailing(string email, EmailType type)
     {
         _email = email;
         var mailing = DiContainingService.Kernel.Get<MailingService>();
         _sendConfirmation = type switch
         {
-            EmailTypes.ActivateUser => (mail, code) => mailing.SendConfirmAccount(mail, code),
-            EmailTypes.ConfirmPasswordChange => (mail, code) => mailing.SendChangePassword(mail, code),
+            EmailType.AccountActivation => (mail, code) => mailing.SendAccountActivationCodeAsync(mail, code),
+            EmailType.PasswordChange => (mail, code) => mailing.SendChangePasswordConfirmationCodeAsync(mail, code),
+            EmailType.PurchaseCheque => throw new NotSupportedException(),
             _ => throw new NotSupportedException()
         };
     }
@@ -66,7 +67,7 @@ public partial class CodeConfirmationViewModel : ViewModelBase, IModalDialogView
     private async Task SendConfirmationCodeAsync()
     {
         GenerateCode();
-        await _sendConfirmation(_email, _code.ToString());
+        await _sendConfirmation(_email, _code);
     }
 
     [RelayCommand(CanExecute = nameof(CanConfirm))]

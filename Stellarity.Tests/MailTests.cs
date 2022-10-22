@@ -1,5 +1,6 @@
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Email;
+using Stellarity.Domain.Email.MailMessages;
 using Stellarity.Domain.Models;
 using Stellarity.Domain.Services;
 
@@ -10,10 +11,32 @@ public class MailTests
     private const string Receiver = "timkin.moxim@mail.ru";
 
     [Test]
-    public async Task EmailValid()
+    public void MailTemplates()
+    {
+        TestDelegate CreateCommonBase()
+        {
+            return () =>
+            {
+                const EmailType type = EmailType.AccountActivation;
+
+                MailTemplate commonBase = type switch
+                {
+                    EmailType.AccountActivation => new AccountActivationMail(),
+                    EmailType.PasswordChange => new ChangePasswordConfirmationMail(),
+                    EmailType.PurchaseCheque => new GameChequeMail(),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            };
+        }
+
+        Assert.DoesNotThrow(CreateCommonBase());
+    }
+
+    [Test]
+    public void EmailValid()
     {
         var service = new MailingService();
-        var result = service.Validate(Receiver);
+        var result = MailingService.Validate(Receiver);
         Assert.That(result, Is.True);
     }
 
@@ -21,9 +44,7 @@ public class MailTests
     public async Task SendMail()
     {
         var service = new MailingService();
-        
-        var result = await service.SendEmailAsync(Receiver, "Test", "<p>paragraph<br/> new line</p> <center>M</center>");
-        
+        var result = await service.SendEmailAsync(Receiver, EmailType.AccountActivation, 42);
         Assert.That(result.IsSuccessful);
     }
 
@@ -32,7 +53,8 @@ public class MailTests
     {
         var service = new MailingService();
         var code = new Random().Next(100000, 999999);
-        var result = await service.SendConfirmAccount(Receiver, code.ToString());
+        var result = await service.SendAccountActivationCodeAsync(Receiver, code);
+        Assert.That(result.IsSuccessful);
     }
 
     [Test]
@@ -40,7 +62,8 @@ public class MailTests
     {
         var service = new MailingService();
         var code = new Random().Next(100000, 999999);
-        var result = await service.SendChangePassword(Receiver, code.ToString());
+        var result = await service.SendChangePasswordConfirmationCodeAsync(Receiver, code);
+        Assert.That(result.IsSuccessful);
     }
 
     [Test]
@@ -49,6 +72,7 @@ public class MailTests
         var key = new Key(KeyEntity.GetUserPurchasedKeys(1)[0]);
         var mailingService = new MailingService();
         var chequeSender = new GameChequeSenderService(mailingService);
-        await chequeSender.SendAsync(Receiver, key);
+        var result = await chequeSender.SendAsync(Receiver, key);
+        Assert.That(result.IsSuccessful);
     }
 }
