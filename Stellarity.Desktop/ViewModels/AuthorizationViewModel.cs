@@ -17,14 +17,11 @@ public partial class AuthorizationViewModel : ViewModelBase
     private readonly IDialogService _dialogService = null!;
     private readonly AccountingService _accountingService = null!;
 
-    [ObservableProperty]
-    private string _email = string.Empty;
+    [ObservableProperty] private string _email = string.Empty;
 
-    [ObservableProperty]
-    private string _password = string.Empty;
+    [ObservableProperty] private string _password = string.Empty;
 
-    [ObservableProperty]
-    private bool _rememberMe;
+    [ObservableProperty] private bool _rememberMe;
 
     private AuthorizationViewModel()
     {
@@ -51,7 +48,7 @@ public partial class AuthorizationViewModel : ViewModelBase
         {
             await ShowErrorAsync(authorizationResult.ErrorMessage!, "Authorization error");
 
-             if (authorizationResult.ErrorCode is not (int)AuthErrorCodes.UserNotActivated) return;
+            if (authorizationResult.ErrorCode is not (int)AuthErrorCodes.UserNotActivated) return;
 
             var codeConfirmationViewModel = _dialogService.CreateViewModel<CodeConfirmationViewModel>();
             codeConfirmationViewModel.InitializeMailing(Email, EmailType.AccountActivation);
@@ -62,7 +59,7 @@ public partial class AuthorizationViewModel : ViewModelBase
             if (isConfirmed is true)
             {
                 Account.Activate(_email);
-                // await _accountingService.AccountAuthorizationAsync(Email, Password, RememberMe);
+                return;
             }
 
             await _dialogService.ShowMessageBoxAsync(this,
