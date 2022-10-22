@@ -10,6 +10,24 @@ public class MailTests
     private const string Receiver = "timkin.moxim@mail.ru";
 
     [Test]
+    public async Task EmailValid()
+    {
+        var service = new MailingService();
+        var result = service.Validate(Receiver);
+        Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public async Task SendMail()
+    {
+        var service = new MailingService();
+        
+        var result = await service.SendEmailAsync(Receiver, "Test", "<p>paragraph<br/> new line</p> <center>M</center>");
+        
+        Assert.That(result.IsSuccessful);
+    }
+
+    [Test]
     public async Task SendActivationMail()
     {
         var service = new MailingService();

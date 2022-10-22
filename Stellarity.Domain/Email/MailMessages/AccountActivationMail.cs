@@ -15,6 +15,10 @@ public class AccountActivationMail : MailTemplate
     private readonly string _activationCode;
     private readonly string _to;
 
+    public AccountActivationMail()
+    {
+    }
+
     public AccountActivationMail(MailAddress from, MailAddress to, string activationCode)
         : base(Subject, Header, BodyTemplate, from, to)
     {
@@ -22,7 +26,7 @@ public class AccountActivationMail : MailTemplate
         _to = to.Address;
     }
 
-    public override MailMessage GetMailMessage()
+    public virtual MailMessage GetMailMessage()
     {
         var mail = InitMailMessage();
         var mainText = CreateMainTextFromTemplate(_to, _activationCode);

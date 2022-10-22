@@ -15,6 +15,10 @@ public class ChangePasswordConfirmationMail : MailTemplate
     private readonly string _receiver;
     private readonly string _confirmationCode;
 
+    public ChangePasswordConfirmationMail()
+    {
+    }
+
     public ChangePasswordConfirmationMail(MailAddress from, MailAddress to, string confirmationCode)
         : base(Subject, Header, ChangePasswordTemplate, from, to)
     {
@@ -22,7 +26,7 @@ public class ChangePasswordConfirmationMail : MailTemplate
         _receiver = to.Address;
     }
 
-    public override MailMessage GetMailMessage()
+    public virtual MailMessage GetMailMessage()
     {
         var mail = InitMailMessage();
         var mainText = CreateMainTextFromTemplate(_receiver, _confirmationCode);

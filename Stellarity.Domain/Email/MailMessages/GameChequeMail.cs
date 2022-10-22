@@ -24,7 +24,7 @@ public class GameChequeMail : MailTemplate
         _cheque = cheque;
     }
 
-    public override MailMessage GetMailMessage()
+    public virtual MailMessage GetMailMessage()
     {
         var mail = InitMailMessage();
         var mainText = CreateMainTextFromTemplate(_cheque.BuyerEmail, _cheque.PurchaseDate,

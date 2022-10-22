@@ -1,5 +1,6 @@
 using System.Net.Mail;
 using System.Text;
+using MimeKit;
 
 namespace Stellarity.Domain.Email.MailMessages;
 
@@ -14,6 +15,10 @@ public abstract class MailTemplate
     private readonly MailAddress _from;
     private readonly MailAddress _to;
 
+    protected MailTemplate()
+    {
+    }
+
     protected MailTemplate(string subject, string header, string mailTemplate, MailAddress from, MailAddress to)
     {
         _subject = subject;
@@ -22,8 +27,6 @@ public abstract class MailTemplate
         _from = from;
         _to = to;
     }
-
-    public abstract MailMessage GetMailMessage();
 
     protected MailMessage InitMailMessage()
     {
@@ -46,4 +49,9 @@ public abstract class MailTemplate
     }
 
     protected string CreateMainTextFromTemplate(params object[] args) => string.Format(_mailTemplate, args);
+
+    public MimeMessage CreateMime(string email)
+    {
+        return new MimeMessage { To = { new MailboxAddress("", email) }};
+    }
 }
