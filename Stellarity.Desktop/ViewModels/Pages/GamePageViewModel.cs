@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
@@ -23,15 +24,20 @@ public partial class GamePageViewModel : ViewModelBase
     private readonly Game _game;
     private readonly NavigationPublisher _navigator;
 
-    [ObservableProperty] private string _title = string.Empty;
+    [ObservableProperty]
+    private string _title = string.Empty;
 
-    [ObservableProperty] private decimal _cost;
+    [ObservableProperty]
+    private decimal _cost;
 
-    [ObservableProperty] private string _description = string.Empty;
+    [ObservableProperty]
+    private string _description = string.Empty;
 
-    [ObservableProperty] private string _developer = string.Empty;
+    [ObservableProperty]
+    private string _developer = string.Empty;
 
-    [ObservableProperty] private Bitmap _cover = null!;
+    [ObservableProperty]
+    private Bitmap _cover = null!;
 
     public GamePageViewModel(Game game, NavigationPublisher navigator)
     {
@@ -76,6 +82,27 @@ public partial class GamePageViewModel : ViewModelBase
             var view = new GamePageView(key, _navigator);
             _navigator.RaiseNavigated(this, NavigatedEventArgs.ReplaceLast(view));
         }
+    }
+
+    [RelayCommand]
+    private async Task ImportAsync()
+    {
+        var dialogService = DiContainingService.Kernel.Get<IDialogService>();
+        var windowOwner = DiContainingService.Kernel.Get<MainViewModel>();
+
+        var settings = new OpenFileDialogSettings
+        {
+            Title = "Импортировать ключи",
+            AllowMultiple = false,
+            Filters = new List<FileFilter>
+            {
+                new("Excel Book", "xlsx"),
+                new("CSV File", "csv")
+            }
+        };
+        var path = await dialogService.ShowOpenFileDialogAsync(windowOwner, settings);
+        if (path is not { }) return;
+        await _game.ImportKeysAsync(path);
     }
 
     [RelayCommand]

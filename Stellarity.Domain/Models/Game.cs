@@ -42,7 +42,7 @@ public class Game : SingleImageHolderModel<GameEntity>
             await SetImageAsync(coverData, title);
     }
 
-    public async Task ImportKeys(string filePath)
+    public async Task ImportKeysAsync(string filePath)
     {
         var importService = DiContainingService.Kernel.Get<KeyImportService>();
         var keys = importService.ImportFrom(filePath);
