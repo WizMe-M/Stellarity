@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Stellarity.Desktop.ViewModels.Pages"
+             xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Stellarity.Desktop.Views.Pages.GamePageView"
              x:CompileBindings="True" x:DataType="vm:GamePageViewModel">
@@ -14,11 +15,17 @@
                     Margin="20 10" Width="350" Height="400">
                 <Image Source="{Binding Cover}" Stretch="UniformToFill" />
             </Border>
-
-            <StackPanel DockPanel.Dock="Top" Orientation="Vertical" Margin="40" Spacing="20">
-                <Button Content="Edit game" VerticalAlignment="Bottom"
+            
+            <sg:SpacedGrid DockPanel.Dock="Top" RowDefinitions="*" ColumnDefinitions="* *" ColumnSpacing="20">
+                <Button Grid.Column="0" Content="Редактировать страницу" HorizontalAlignment="Left"
                         IsVisible="{Binding Visitor.CanEditGames}"
                         Command="{Binding NavigateToEditGameCommand}" />
+                    
+                <Button Grid.Column="1" Content="Импортировать ключи" HorizontalAlignment="Right"
+                        Command="{Binding ImportCommand}" />
+            </sg:SpacedGrid>
+
+            <StackPanel DockPanel.Dock="Top" Orientation="Vertical" Margin="40" Spacing="20">
 
                 <TextBlock Text="{Binding Developer, StringFormat={}Developed by {0}}"
                            FontSize="18" FontWeight="Normal" />
@@ -45,7 +52,7 @@
                 <TextBlock Text="Ваш ключ:" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"
                            IsVisible="{Binding IsPurchased}" />
 
-                <TextBlock Text="{Binding GameKey.Value, FallbackValue=''}" 
+                <TextBlock Text="{Binding GameKey.Value, FallbackValue=''}"
                            HorizontalAlignment="Center" FontWeight="DemiBold"
                            IsVisible="{Binding IsPurchased}" />
 
