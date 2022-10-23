@@ -21,11 +21,11 @@ public class KeyImportService
     private static ImportFileType GetFileType(string path)
     {
         var file = new FileInfo(path);
-        var ext = file.Extension;
+        var ext = file.Extension[1..];
         return ext switch
         {
-            ".xls" or ".xlsx" => ImportFileType.Excel,
-            ".csv" => ImportFileType.Csv,
+            "xlsx" => ImportFileType.Excel,
+            "csv" => ImportFileType.Csv,
             _ => throw new NotSupportedException()
         };
     }
@@ -44,7 +44,7 @@ public class KeyImportService
     {
         using TextReader textReader = new StreamReader(path);
         using var reader = new CsvReader(textReader, CultureInfo.CurrentCulture);
-        var records = reader.GetRecords<ImportKey>() ?? ArraySegment<ImportKey>.Empty;
+        var records = reader.GetRecords<ImportKey>().ToArray();
         return records;
     }
 
@@ -54,20 +54,24 @@ public class KeyImportService
 
         var file = new FileInfo(path);
         using var xl = new ExcelPackage(file);
-        var sheet = xl.Workbook.Worksheets[1];
+        var sheet = xl.Workbook.Worksheets.FirstOrDefault();
+        if (sheet is null) return ArraySegment<ImportKey>.Empty;
+
         var rowCount = sheet.Dimension.End.Row;
+        var keys = new ImportKey[rowCount];
         for (var row = 1; row <= rowCount; row++)
         {
             var value = sheet.Cells[row, 1].Value?.ToString() ?? string.Empty;
-            var key = new ImportKey(value);
-            yield return key;
+            keys[row - 1] = new ImportKey(value);
         }
+
+        return keys;
     }
 
     private static IEnumerable<ImportKey> OptimizeImported(IEnumerable<ImportKey> import)
     {
         var nonDuplicates = import.Distinct();
         var nonEmpty = nonDuplicates.Where(key => key.Value != string.Empty);
-        return nonEmpty;
+        return nonEmpty.ToArray();
     }
 }
