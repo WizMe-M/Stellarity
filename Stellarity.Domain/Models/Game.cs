@@ -1,5 +1,8 @@
-﻿using Stellarity.Database.Entities;
+﻿using Ninject;
+using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
+using Stellarity.Domain.Import;
+using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
 
@@ -37,5 +40,12 @@ public class Game : SingleImageHolderModel<GameEntity>
 
         if (coverData is { }) 
             await SetImageAsync(coverData, title);
+    }
+
+    public async Task ImportKeys(string filePath)
+    {
+        var importService = DiContainingService.Kernel.Get<KeyImportService>();
+        var keys = importService.ImportFrom(filePath);
+        await Key.ImportAsync(keys, Entity.Id);
     }
 }

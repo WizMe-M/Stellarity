@@ -1,5 +1,6 @@
 ﻿using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
+using Stellarity.Domain.Import;
 
 namespace Stellarity.Domain.Models;
 
@@ -13,7 +14,6 @@ public class Key : DomainModel<KeyEntity>
         IsPurchased = true;
     }
 
-
     public string Value => Entity.KeyValue;
     public Game Game { get; }
     public Account? Buyer { get; }
@@ -21,8 +21,13 @@ public class Key : DomainModel<KeyEntity>
 
     public DateTime? PurchaseDate => Entity.PurchaseDate;
 
-    public static bool WasPurchased(Account account, Game game)
+    public static bool WasPurchased(Account account, Game game) => 
+        KeyEntity.Exists(account.Entity.Id, game.Entity.Id);
+
+    public static Task ImportAsync(IEnumerable<ImportKey> keys, int gameId)
     {
-        return KeyEntity.Exists(account.Entity.Id, game.Entity.Id);
+        var import = keys.Select(key => (gameId, key.Value));
+        KeyEntity.ImportKeys(import);
+        return Task.CompletedTask;
     }
 }
