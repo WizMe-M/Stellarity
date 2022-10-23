@@ -56,16 +56,19 @@ public partial class AuthorizationViewModel : ViewModelBase
             var isConfirmed =
                 await _dialogService.ShowDialogAsync<CodeConfirmationView>(this, codeConfirmationViewModel);
 
-            if (isConfirmed is true)
+            switch (isConfirmed)
             {
-                Account.Activate(_email);
-                return;
+                case null:
+                case false:
+                    await _dialogService.ShowMessageBoxAsync(this,
+                        "Sorry, activation process wasn't finished.\n" +
+                        "If you doesn't see code in inbox, look into folder spam or check was your email inputted correctly",
+                        "Error", MessageBoxButton.Ok, MessageBoxImage.Error);
+                    break;
+                case true:
+                    Account.Activate(_email);
+                    break;
             }
-
-            await _dialogService.ShowMessageBoxAsync(this,
-                "Sorry, we couldn't activate your account. For the" +
-                "\nIf you doesn't see code in inbox, see folder spam or check your email was inputted correctly",
-                "Error", MessageBoxButton.Ok, MessageBoxImage.Error);
 
             return;
         }
