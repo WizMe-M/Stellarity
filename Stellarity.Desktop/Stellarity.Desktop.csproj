@@ -79,7 +79,4 @@
         <AvaloniaResource Include="Assets\Images\placeholder.png" />
         <AvaloniaResource Include="Assets\Images\stellaris-logo.ico" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Styles" />
-    </ItemGroup>
 </Project>
