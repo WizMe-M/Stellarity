@@ -103,6 +103,8 @@ public partial class GamePageViewModel : ViewModelBase
         var path = await dialogService.ShowOpenFileDialogAsync(windowOwner, settings);
         if (path is not { }) return;
         await _game.ImportKeysAsync(path);
+        
+        PurchaseCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]
