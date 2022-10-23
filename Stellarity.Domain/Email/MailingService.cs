@@ -1,5 +1,6 @@
 using EmailValidation;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using MimeKit;
 using Stellarity.Domain.Email.MailMessages;
 using Stellarity.Domain.Models;
@@ -8,14 +9,19 @@ namespace Stellarity.Domain.Email;
 
 public class MailingService
 {
-    public const string SenderEmail = "noreply.stellarity@mail.ru";
-    public const string SenderPassword = "UrWsnkJFHZ9FcubvYJZv";
+    private readonly string _senderEmail;
+    private readonly string _senderPassword;
 
-    public const string SmtpHost = "smtp.mail.ru";
-    public const int SmtpPort = 465;
-    public const bool SmtpUseSsl = true;
+    private const string SmtpHost = "smtp.mail.ru";
+    private const int SmtpPort = 465;
 
-    private readonly Email _sender = new("Stellarity", SenderEmail);
+    private readonly Email _sender;
+
+    public MailingService()
+    {
+        (_senderEmail, _senderPassword) = LoadSender();
+        _sender = new Email("Stellarity", _senderEmail);
+    }
 
     #region external methods
 
@@ -31,6 +37,15 @@ public class MailingService
     #endregion
 
     #region internal methods
+
+    private static (string email, string password) LoadSender()
+    {
+        var currentDirectory = Directory.GetCurrentDirectory();
+        var path = Path.Join(currentDirectory, "sender.txt");
+        var data = File.ReadAllText(path);
+        var sender = data.Split(' ');
+        return (sender[0], sender[1]);
+    }
 
     public async Task<EmailDeliverResult> SendEmailAsync<TArgument>(string email, EmailType type, TArgument argument)
     {
@@ -57,11 +72,11 @@ public class MailingService
         };
     }
 
-    private static async Task SendMimeAsync(MimeMessage mime)
+    private async Task SendMimeAsync(MimeMessage mime)
     {
         using var client = new SmtpClient();
-        await client.ConnectAsync(SmtpHost, SmtpPort, SmtpUseSsl);
-        await client.AuthenticateAsync(SenderEmail, SenderPassword);
+        await client.ConnectAsync(SmtpHost, SmtpPort, SecureSocketOptions.SslOnConnect);
+        await client.AuthenticateAsync(_senderEmail, _senderPassword);
         await client.SendAsync(mime);
 
         await client.DisconnectAsync(true);
