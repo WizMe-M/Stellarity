@@ -38,14 +38,21 @@ public class Game : SingleImageHolderModel<GameEntity>
     {
         Entity.UpdateInfo(title, description, developer, cost);
 
-        if (coverData is { }) 
+        if (coverData is { })
             await SetImageAsync(coverData, title);
     }
 
     public async Task ImportKeysAsync(string filePath)
     {
         var importService = DiContainingService.Kernel.Get<KeyImportService>();
-        var keys = importService.ImportFrom(filePath);
-        await Key.ImportAsync(keys, Entity.Id);
+        try
+        {
+            var keys = importService.ImportFrom(filePath);
+            await Key.ImportAsync(keys, Entity.Id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 }
