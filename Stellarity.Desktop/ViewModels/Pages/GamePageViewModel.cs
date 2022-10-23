@@ -90,6 +90,11 @@ public partial class GamePageViewModel : ViewModelBase
         var dialogService = DiContainingService.Kernel.Get<IDialogService>();
         var windowOwner = DiContainingService.Kernel.Get<MainViewModel>();
 
+        await dialogService.ShowMessageBoxAsync(windowOwner,
+            "Импортируйте ключи из CSV и Excel. CSV обязательно должен иметь заголовок \"Value\". " +
+            "Excel не имеет заголовка, ключи располагаются в первом столбце",
+            "Инструкции к импорту", MessageBoxButton.Ok, MessageBoxImage.Information);
+
         var settings = new OpenFileDialogSettings
         {
             Title = "Импортировать ключи",
@@ -103,7 +108,7 @@ public partial class GamePageViewModel : ViewModelBase
         var path = await dialogService.ShowOpenFileDialogAsync(windowOwner, settings);
         if (path is not { }) return;
         await _game.ImportKeysAsync(path);
-        
+
         PurchaseCommand.NotifyCanExecuteChanged();
     }
 
