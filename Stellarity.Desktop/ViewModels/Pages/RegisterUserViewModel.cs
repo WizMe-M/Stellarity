@@ -80,7 +80,7 @@ public partial class RegisterUserViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanRegister))]
     private async Task RegisterAsync()
     {
-        var registrationResult = await Account.RegisterUserAsync(Email, Password, SelectedRole);
+        var registrationResult = await Account.RegisterUserAsync(Email, Password, SelectedRole, true);
         if (registrationResult.IsSuccessful) NavigateToCommunity();
         else
         {

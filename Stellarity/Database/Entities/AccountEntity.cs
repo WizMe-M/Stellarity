@@ -52,14 +52,15 @@ public sealed partial class AccountEntity : SingleImageHolderEntity
             .FirstOrDefault(user => user.Email == email);
     }
 
-    public static async Task<AccountEntity> RegisterAsync(string email, string password, int roleId)
+    public static async Task<AccountEntity> RegisterAsync(string email, string password, int roleId, bool activated)
     {
         await using var context = new StellarityContext();
         var user = new AccountEntity
         {
             Email = email,
             Password = password,
-            Role = (Roles)roleId
+            Role = (Roles)roleId,
+            Activated = activated
         };
         context.Accounts.Add(user);
         await context.SaveChangesAsync();

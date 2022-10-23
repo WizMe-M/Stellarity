@@ -62,13 +62,14 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return Task.FromResult(Keys);
     }
 
-    public static async Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role)
+    public static async Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role, 
+        bool activated = false)
     {
         var exists = AccountEntity.Exists(email);
         if (exists) return RegistrationResult.AlreadyExistsWithEmail();
 
         var hashedPassword = HashedPassword.FromDecrypted(password).Password;
-        var entity = await AccountEntity.RegisterAsync(email, hashedPassword, (int)role);
+        var entity = await AccountEntity.RegisterAsync(email, hashedPassword, (int)role, activated);
         var account = new Account(entity);
         return RegistrationResult.Success(account);
     }
