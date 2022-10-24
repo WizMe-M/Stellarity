@@ -46,10 +46,8 @@
                 VerticalAlignment="Top" ZIndex="2" />
 
         <navigation:NavigationView Name="NavView" Background="Transparent" Header="Stellarity"
-                                   SelectedItem="{Binding #MyProfile}"
                                    ExitCommand="{Binding ExitCommand}">
 
-            <!-- TODO: сделать так, чтобы по умолчанию открывался мой профиль-->
             <navigation:NavigationViewItem Header="My profile" IconValue="{StaticResource MyProfile}">
                 <navigation:NavigationViewItem.ContentPage>
                     <pages:MyProfileView Name="MyProfile" />
