@@ -18,6 +18,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
 
     public bool CanAddGames => Role == Roles.Administrator;
     public bool CanEditGames => Role == Roles.Administrator;
+    public bool CanImportGames => Role == Roles.Administrator;
     public bool CanAddUsers => Role == Roles.Administrator;
     public bool CanBanUsers => Role == Roles.Administrator;
 
@@ -62,7 +63,7 @@ public class Account : SingleImageHolderModel<AccountEntity>
         return Task.FromResult(Keys);
     }
 
-    public static async Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role, 
+    public static async Task<RegistrationResult> RegisterUserAsync(string email, string password, Roles role,
         bool activated = false)
     {
         var exists = AccountEntity.Exists(email);

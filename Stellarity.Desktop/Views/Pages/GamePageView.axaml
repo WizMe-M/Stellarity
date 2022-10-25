@@ -17,11 +17,12 @@
             </Border>
             
             <sg:SpacedGrid DockPanel.Dock="Top" RowDefinitions="*" ColumnDefinitions="* *" ColumnSpacing="20">
-                <Button Grid.Column="0" Content="Редактировать страницу" HorizontalAlignment="Left"
+                <Button Grid.Column="0" Content="Редактировать игру" HorizontalAlignment="Left"
                         IsVisible="{Binding Visitor.CanEditGames}"
                         Command="{Binding NavigateToEditGameCommand}" />
                     
                 <Button Grid.Column="1" Content="Импортировать ключи" HorizontalAlignment="Right"
+                        IsVisible="{Binding Visitor.CanImportGames}"
                         Command="{Binding ImportCommand}" />
             </sg:SpacedGrid>
 
