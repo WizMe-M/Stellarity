@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -41,13 +42,15 @@ public partial class EditGameViewModel : ViewModelBase, IAsyncLoader
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     private bool _free;
 
-    [ObservableProperty]
-    private Bitmap? _cover;
+    [ObservableProperty] private Bitmap? _cover;
+
+    private string _currentTitle;
 
     public EditGameViewModel(Game game, NavigationPublisher navigator)
     {
         _game = game;
         _navigator = navigator;
+        _currentTitle = game.Title;
         Title = _game.Title;
         Description = _game.Description;
         Developer = _game.Developer;
@@ -106,7 +109,7 @@ public partial class EditGameViewModel : ViewModelBase, IAsyncLoader
         builder.RuleFor(vm => vm.Title)
             .NotEmpty()
             .MaxLength(25)
-            .Must(async (title, token) => await GameValidation.NotExistsWithTitleAsync(title, token))
+            .Must(async (title, token) => await TitleIsDuplicateOtherGame(title, token))
             .WithMessage("Game with such title already exists");
 
         builder.RuleFor(vm => vm.Description)
@@ -127,4 +130,7 @@ public partial class EditGameViewModel : ViewModelBase, IAsyncLoader
         var bitmap = await _game.GetImageBitmapAsync();
         if (bitmap is { }) Cover = bitmap;
     }
+
+    private async Task<bool> TitleIsDuplicateOtherGame(string title, CancellationToken token)
+        => title == _currentTitle || await GameValidation.NotExistsWithTitleAsync(title, token);
 }
