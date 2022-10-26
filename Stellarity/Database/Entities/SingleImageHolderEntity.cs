@@ -22,7 +22,11 @@ public abstract class SingleImageHolderEntity : IEntity
     public void SetImage(byte[] imageData, string name = "unknown")
     {
         using var context = new StellarityContext();
-        var newImage = new ImageEntity(name, imageData);
+        var newImage = new ImageEntity
+        {
+            Name = name, 
+            Data = imageData
+        };
         context.Images.Add(newImage);
         var oldImage = context.Images.FirstOrDefault(img => img.Guid == SingleImageId);
         if (oldImage is { }) context.Images.Remove(oldImage);
