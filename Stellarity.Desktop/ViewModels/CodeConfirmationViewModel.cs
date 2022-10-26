@@ -9,7 +9,6 @@ using ReactiveValidation.Extensions;
 using Stellarity.Desktop.Basic;
 using Stellarity.Domain.Email;
 using Stellarity.Domain.Ninject;
-using Stellarity.Domain.Services;
 
 namespace Stellarity.Desktop.ViewModels;
 

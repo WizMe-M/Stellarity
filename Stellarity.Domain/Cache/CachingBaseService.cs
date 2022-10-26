@@ -1,4 +1,4 @@
-﻿namespace Stellarity.Domain.Services.Cache;
+﻿namespace Stellarity.Domain.Cache;
 
 public abstract class CachingBaseService<TCacheDataType> where TCacheDataType : class
 {

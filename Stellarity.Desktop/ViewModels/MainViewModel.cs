@@ -7,7 +7,6 @@ using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Views;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Ninject;
-using Stellarity.Domain.Services;
 
 namespace Stellarity.Desktop.ViewModels;
 

@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Stellarity.Domain.Extensions;
 
-namespace Stellarity.Domain.Services.Cache;
+namespace Stellarity.Domain.Cache;
 
 public class Cacher
 {

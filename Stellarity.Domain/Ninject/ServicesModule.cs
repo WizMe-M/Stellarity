@@ -1,9 +1,8 @@
 using Ninject.Modules;
 using Stellarity.Domain.Authorization;
+using Stellarity.Domain.Cache;
 using Stellarity.Domain.Email;
 using Stellarity.Domain.Import;
-using Stellarity.Domain.Services;
-using Stellarity.Domain.Services.Cache;
 
 namespace Stellarity.Domain.Ninject;
 

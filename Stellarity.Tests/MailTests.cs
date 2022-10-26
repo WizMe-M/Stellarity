@@ -2,7 +2,6 @@ using Stellarity.Database.Entities;
 using Stellarity.Domain.Email;
 using Stellarity.Domain.Email.MailMessages;
 using Stellarity.Domain.Models;
-using Stellarity.Domain.Services;
 
 namespace Stellarity.Tests;
 

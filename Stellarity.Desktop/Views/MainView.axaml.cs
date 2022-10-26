@@ -1,5 +1,4 @@
 ﻿using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml;
@@ -13,7 +12,6 @@ using Stellarity.Desktop.ViewModels.Pages;
 using Stellarity.Desktop.Views.Pages;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Ninject;
-using Stellarity.Domain.Services;
 
 namespace Stellarity.Desktop.Views;
 

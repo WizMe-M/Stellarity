@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using Ninject;
+﻿using Ninject;
 using Stellarity.Database;
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
@@ -7,7 +6,6 @@ using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Cryptography;
 using Stellarity.Domain.Email;
 using Stellarity.Domain.Ninject;
-using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
 
