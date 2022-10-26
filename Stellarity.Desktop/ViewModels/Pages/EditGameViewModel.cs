@@ -14,6 +14,7 @@ using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Extensions;
 using Stellarity.Desktop.Navigation.Event;
 using Stellarity.Domain.Models;
+using Stellarity.Domain.Ninject;
 using Stellarity.Domain.Services;
 using Stellarity.Domain.Validation;
 

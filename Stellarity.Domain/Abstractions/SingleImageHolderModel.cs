@@ -1,6 +1,7 @@
 using Ninject;
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Models;
+using Stellarity.Domain.Ninject;
 using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Abstractions;

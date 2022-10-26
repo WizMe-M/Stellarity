@@ -11,6 +11,7 @@ using Stellarity.Desktop.ViewModels.Wraps;
 using Stellarity.Desktop.Views.Pages;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
+using Stellarity.Domain.Ninject;
 using Stellarity.Domain.Services;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
