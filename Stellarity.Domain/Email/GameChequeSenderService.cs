@@ -1,7 +1,6 @@
-using Stellarity.Domain.Email;
 using Stellarity.Domain.Models;
 
-namespace Stellarity.Domain.Services;
+namespace Stellarity.Domain.Email;
 
 public class GameChequeSenderService
 {
