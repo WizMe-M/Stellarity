@@ -1,6 +1,6 @@
 using Stellarity.Database.Entities;
+using Stellarity.Domain.Extensions;
 using Stellarity.Domain.Models;
-using Stellarity.Extensions;
 
 namespace Stellarity.Tests;
 

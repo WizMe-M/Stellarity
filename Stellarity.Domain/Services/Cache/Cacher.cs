@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-using Stellarity.Extensions;
+using Stellarity.Domain.Extensions;
 
 namespace Stellarity.Domain.Services.Cache;
 

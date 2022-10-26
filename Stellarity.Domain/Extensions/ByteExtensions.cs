@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Stellarity.Extensions;
+namespace Stellarity.Domain.Extensions;
 
 public static class ByteExtensions
 {
