@@ -4,9 +4,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Extensions;
+using Stellarity.Desktop.Navigation.Event;
 using Stellarity.Desktop.Views.Pages;
 using Stellarity.Domain.Models;
-using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Wraps;
 

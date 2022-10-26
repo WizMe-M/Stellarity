@@ -6,11 +6,11 @@ using HanumanInstitute.MvvmDialogs;
 using Ninject;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Extensions;
+using Stellarity.Desktop.Navigation.Event;
 using Stellarity.Desktop.Views.Pages;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
 using Stellarity.Domain.Services;
-using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.ViewModels.Wraps;
 

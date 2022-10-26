@@ -1,4 +1,6 @@
-﻿namespace Stellarity.Navigation.Event;
+﻿using System;
+
+namespace Stellarity.Desktop.Navigation.Event;
 
 public class NavigatedEventArgs : EventArgs
 {

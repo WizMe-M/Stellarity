@@ -1,4 +1,4 @@
-﻿namespace Stellarity.Navigation.Event;
+﻿namespace Stellarity.Desktop.Navigation.Event;
 
 public class NavigationPublisher
 {

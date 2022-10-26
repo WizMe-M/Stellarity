@@ -1,4 +1,6 @@
-﻿namespace Stellarity.Navigation.Stack;
+﻿using System;
+
+namespace Stellarity.Desktop.Navigation.Stack;
 
 /// <summary>
 /// Represents exception raised in navigation stack
