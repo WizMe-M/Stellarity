@@ -5,7 +5,6 @@ using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Cryptography;
-using Stellarity.Domain.Registration;
 using Stellarity.Domain.Services;
 
 namespace Stellarity.Domain.Models;
