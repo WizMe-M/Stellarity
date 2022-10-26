@@ -25,20 +25,20 @@ internal sealed class StellarityContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (optionsBuilder.IsConfigured) return;
-        DatabaseConfiguration config;
+        ConnectionString config;
         try
         {
             var currentDirectory = Directory.GetCurrentDirectory();
             var path = Path.Join(currentDirectory, "config.xml");
-            config = DatabaseXmlReader.ParseXmlFile(path);
+            config = XmlReader.ParseXmlFile(path);
         }
         catch (FileNotFoundException)
         {
-            config = DatabaseConfiguration.FromDefault();
+            config = ConnectionString.FromDefault();
         }
         catch (DirectoryNotFoundException)
         {
-            config = DatabaseConfiguration.FromDefault();
+            config = ConnectionString.FromDefault();
         }
 
         optionsBuilder.UseNpgsql(connectionString: config.ToString());
