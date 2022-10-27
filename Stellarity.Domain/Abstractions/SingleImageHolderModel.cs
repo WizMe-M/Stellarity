@@ -23,16 +23,16 @@ public class SingleImageHolderModel<TEntity> : DomainModel<TEntity>
     public async Task<byte[]?> GetImageBytesAsync()
     {
         if (!HasImage) return null;
-        if (ImageLoaded) return _singleImage?.ImageBinaryData ?? Entity.SingleImageEntity?.Data;
+        if (ImageLoaded) return _singleImage?.BinaryData ?? Entity.SingleImageEntity?.Data;
 
         await LoadImageAsync();
-        return _singleImage?.ImageBinaryData;
+        return _singleImage?.BinaryData;
     }
 
     public byte[]? TryGetImageBytes()
     {
         if (!HasImage) return null;
-        if (ImageLoaded) return _singleImage!.ImageBinaryData;
+        if (ImageLoaded) return _singleImage!.BinaryData;
         return null;
     }
 
@@ -58,6 +58,6 @@ public class SingleImageHolderModel<TEntity> : DomainModel<TEntity>
         if (HasImage) imageCacheService.DeleteCacheFile(Entity.SingleImageId!.Value);
         Entity.SetImage(imageData, name);
         _singleImage = new Image(Entity.SingleImageEntity!);
-        await imageCacheService.SaveImageAsync(_singleImage.Entity);
+        await imageCacheService.SaveImageAsync(_singleImage);
     }
 }

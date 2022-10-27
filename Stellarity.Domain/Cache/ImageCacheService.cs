@@ -1,5 +1,5 @@
-﻿using Stellarity.Database.Entities;
-using Stellarity.Domain.Cryptography;
+﻿using Stellarity.Domain.Cryptography;
+using Stellarity.Domain.Models;
 
 namespace Stellarity.Domain.Cache;
 
@@ -9,11 +9,11 @@ public class ImageCacheService : CachingBaseService<byte[]>
     {
     }
 
-    public Task SaveImageAsync(ImageEntity image)
+    public Task SaveImageAsync(Image image)
     {
         var guidStr = image.Guid.ToString();
         var hashedFileName = MD5Hasher.Encrypt(guidStr);
-        var data = image.Data;
+        var data = image.BinaryData;
         return SaveAsync(hashedFileName, data);
     }
 
