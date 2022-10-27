@@ -1,8 +1,8 @@
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using Stellarity.Desktop.Basic;
+using Stellarity.Desktop.Navigation.Event;
 using Stellarity.Desktop.ViewModels.Pages;
-using Stellarity.Navigation.Event;
 
 namespace Stellarity.Desktop.Views.Pages;
 

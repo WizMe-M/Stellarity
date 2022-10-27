@@ -2,9 +2,9 @@
 
 namespace Stellarity.Database.XmlConfiguration;
 
-public static class DatabaseXmlReader
+public static class XmlReader
 {
-    public static DatabaseConfiguration ParseXmlFile(string path)
+    public static ConnectionString ParseXmlFile(string path)
     {
         var host = string.Empty;
         var port = string.Empty;
@@ -33,6 +33,6 @@ public static class DatabaseXmlReader
             }
         }
 
-        return new DatabaseConfiguration(host, port, database, userId, password);
+        return new ConnectionString(host, port, database, userId, password);
     }
 }

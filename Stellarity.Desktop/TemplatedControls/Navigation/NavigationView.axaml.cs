@@ -2,8 +2,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
-using Stellarity.Navigation.Event;
-using Stellarity.Navigation.Stack;
+using Stellarity.Desktop.Navigation.Event;
+using Stellarity.Desktop.Navigation.Stack;
 
 namespace Stellarity.Desktop.TemplatedControls.Navigation;
 

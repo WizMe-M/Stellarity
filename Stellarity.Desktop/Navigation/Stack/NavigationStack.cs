@@ -1,6 +1,7 @@
-﻿using Stellarity.Navigation.Event;
+﻿using System.Collections.Generic;
+using Stellarity.Desktop.Navigation.Event;
 
-namespace Stellarity.Navigation.Stack;
+namespace Stellarity.Desktop.Navigation.Stack;
 
 public class NavigationStack
 {

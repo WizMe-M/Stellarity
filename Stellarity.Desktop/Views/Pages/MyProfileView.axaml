@@ -11,9 +11,9 @@
              Background="Transparent">
     <UserControl.Resources>
         <RadialGradientBrush x:Key="RadialGradientBackgroundBrush" Radius=".5" Opacity=".3"
-                             GradientOrigin="50% 50%" Center="50% 50%">
-            <GradientStop Color="#98f59c" Offset="0" />
-            <GradientStop Color="#f3be85" Offset="1" />
+                             GradientOrigin="70% 30%" Center="50% 50%">
+            <GradientStop Color="#2f1440" Offset="0" />
+            <GradientStop Color="#4d2424" Offset="1" />
         </RadialGradientBrush>
 
         <converters:CommentProfileIsMyOwnConverter x:Key="IsMyOwnConverter" />

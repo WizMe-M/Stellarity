@@ -7,10 +7,9 @@ public class Image : DomainModel<ImageEntity>
 {
     public Image(ImageEntity entity) : base(entity)
     {
-        Name = entity.Name;
-        ImageBinaryData = entity.Data;
     }
 
-    public byte[] ImageBinaryData { get; }
-    public string Name { get; }
+    public Guid Guid => Entity.Guid;
+    public byte[] BinaryData => Entity.Data;
+    public string Name => Entity.Name;
 }

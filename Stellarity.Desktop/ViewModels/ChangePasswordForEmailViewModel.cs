@@ -12,7 +12,7 @@ using Stellarity.Desktop.Views;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Email;
 using Stellarity.Domain.Models;
-using Stellarity.Domain.Services;
+using Stellarity.Domain.Ninject;
 using Stellarity.Domain.Validation;
 
 namespace Stellarity.Desktop.ViewModels;

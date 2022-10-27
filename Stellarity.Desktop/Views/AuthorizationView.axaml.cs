@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -8,7 +7,7 @@ using Ninject;
 using ReactiveUI;
 using Stellarity.Desktop.ViewModels;
 using Stellarity.Domain.Authorization;
-using Stellarity.Domain.Services;
+using Stellarity.Domain.Ninject;
 
 namespace Stellarity.Desktop.Views;
 

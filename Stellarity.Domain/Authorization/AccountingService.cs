@@ -1,8 +1,7 @@
 using Stellarity.Database;
 using Stellarity.Database.Entities;
+using Stellarity.Domain.Cache;
 using Stellarity.Domain.Models;
-using Stellarity.Domain.Registration;
-using Stellarity.Domain.Services.Cache;
 
 namespace Stellarity.Domain.Authorization;
 

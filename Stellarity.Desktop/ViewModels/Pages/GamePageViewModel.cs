@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,11 +10,11 @@ using Ninject;
 using Stellarity.Desktop.Basic;
 using Stellarity.Desktop.Extensions;
 using Stellarity.Desktop.Image;
+using Stellarity.Desktop.Navigation.Event;
 using Stellarity.Desktop.Views.Pages;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
-using Stellarity.Domain.Services;
-using Stellarity.Navigation.Event;
+using Stellarity.Domain.Ninject;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 

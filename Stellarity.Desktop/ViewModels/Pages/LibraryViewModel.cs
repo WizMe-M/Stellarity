@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Ninject;
 using Stellarity.Desktop.Basic;
+using Stellarity.Desktop.Navigation.Event;
 using Stellarity.Desktop.ViewModels.Wraps;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
-using Stellarity.Domain.Services;
-using Stellarity.Navigation.Event;
+using Stellarity.Domain.Ninject;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 

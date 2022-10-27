@@ -49,12 +49,6 @@ public partial class GameEntity : SingleImageHolderEntity
         return game is { };
     }
 
-    public static GameEntity? ResolveFrom(int gameId)
-    {
-        using var context = new StellarityContext();
-        return context.Games.FirstOrDefault(game => game.Id == gameId);
-    }
-
     public void UpdateInfo(in string title, in string description, in string developer, in decimal cost)
     {
         using var context = new StellarityContext();

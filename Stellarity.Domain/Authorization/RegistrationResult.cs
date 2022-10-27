@@ -1,7 +1,7 @@
 ﻿using Stellarity.Domain.Abstractions;
 using Stellarity.Domain.Models;
 
-namespace Stellarity.Domain.Registration;
+namespace Stellarity.Domain.Authorization;
 
 public class RegistrationResult : Result
 {

@@ -10,7 +10,7 @@ using Stellarity.Desktop.Image;
 using Stellarity.Desktop.ViewModels.Wraps;
 using Stellarity.Domain.Authorization;
 using Stellarity.Domain.Models;
-using Stellarity.Domain.Services;
+using Stellarity.Domain.Ninject;
 
 namespace Stellarity.Desktop.ViewModels.Pages;
 

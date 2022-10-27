@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Stellarity.Navigation.Event;
+using Stellarity.Desktop.Navigation.Event;
 
 namespace Stellarity.Desktop.TemplatedControls.Navigation;
 

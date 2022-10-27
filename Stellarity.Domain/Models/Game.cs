@@ -2,7 +2,7 @@
 using Stellarity.Database.Entities;
 using Stellarity.Domain.Abstractions;
 using Stellarity.Domain.Import;
-using Stellarity.Domain.Services;
+using Stellarity.Domain.Ninject;
 
 namespace Stellarity.Domain.Models;
 
