@@ -16,7 +16,6 @@
         <pc:PaginatorControl DockPanel.Dock="Bottom" PageCount="{Binding PageCount}"
                              PageNumb="{Binding CurrentPageNumber}"/>
 
-        <!-- TODO: сделать templated control с выводом по умолчанию для пустого списка -->
         <ItemsControl Items="{Binding Users}" Margin="10">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

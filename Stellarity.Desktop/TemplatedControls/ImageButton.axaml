@@ -68,10 +68,6 @@
         </Setter>
     </Style>
 
-    <Style Selector="c|ImageButton:pointerover">
-        <!-- <Setter Property="BorderBrush" Value="Transparent" /> -->
-    </Style>
-
     <Style Selector="c|ImageButton:pressed">
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="2" />

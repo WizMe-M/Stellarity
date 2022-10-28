@@ -18,12 +18,10 @@
                 <TextBlock Text="{Binding Balance, StringFormat='{}Баланс: {0} руб.'}"
                            FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
                 <Button Content="Пополнить баланс" VerticalAlignment="Center"
-                        Command="{Binding DepositOnBalanceCommand}"/>
+                        Command="{Binding DepositOnBalanceCommand}" />
             </StackPanel>
         </DockPanel>
 
-        <!-- TODO: сделать сортировку и фильтрацию игр -->
-        <!-- TODO: сделать templated control с выводом по умолчанию для пустого списка -->
         <ScrollViewer VerticalScrollBarVisibility="Visible">
             <ItemsControl Items="{Binding AllGames}" Background="Transparent" Margin="0 20">
                 <ItemsControl.Styles>

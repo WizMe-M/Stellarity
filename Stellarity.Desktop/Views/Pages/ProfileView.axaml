@@ -44,7 +44,6 @@
                             HorizontalAlignment="Right" HotKey="Ctrl+Enter" />
                 </DockPanel>
 
-                <!-- TODO: сделать templated control с выводом по умолчанию для пустого списка -->
                 <ItemsControl Items="{Binding Comments}" Margin="20 0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
